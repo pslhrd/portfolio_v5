@@ -1,0 +1,50 @@
+@font-face {
+  font-family: 'NB';
+  src: url('./nb-regular.ttf') format('truetype')
+}
+
+@font-face {
+  font-family: 'NB Bold';
+  src: url('./nb-bold.ttf') format('truetype')
+}
+
+@font-face {
+	font-family: 'Suisse';
+	src: url('./SuisseIntl-Regular.otf') format('OpenType')
+}
+
+@font-face {
+	font-family: 'Suisse Light';
+	src: url('./SuisseIntl-Light.otf') format('OpenType')
+}
+
+@font-face {
+	font-family: 'Suisse Thin';
+	src: url('./SuisseIntl-Thin.otf') format('OpenType')
+}
+
+@font-face {
+	font-family: 'Suisse Mono';
+	src: url('./SuisseIntlMono-Regular.otf') format('OpenType')
+}
+
+@font-face {
+	font-family: 'Suisse Mono Thin';
+	src: url('./SuisseIntlMono-Thin.otf') format('OpenType')
+}
+
+
+@font-face {
+	font-family: 'Apercu';
+	src: url('./apercu.otf') format('OpenType')
+}
+
+@font-face {
+	font-family: 'Ampersand';
+	src: url('./Ampersand.woff') format('WOFF')
+}
+
+@font-face {
+	font-family: 'Phemister';
+	src: url('./FHPhemister-Regular.otf') format('WOFF')
+}

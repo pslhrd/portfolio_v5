@@ -1,11 +1,331 @@
+$c-set-bg: #080808;
+$c-set-fg: #FCFCFC;
+
+:root {
+  --c-bg: #{$c-set-bg};
+  --c-fg: #{$c-set-fg};
+}
+
+$c-bg: var(--c-bg);
+$c-fg: var(--c-fg);
+
+$ease-out: cubic-bezier(.165, .84, .44, 1);
+
+@mixin mobile {
+  @media (max-width: 1100px) { @content; }
+}
+
+@mixin xs {
+  @media (max-width: 600px) { @content; }
+}
+
+@mixin xl {
+  @media (min-width: 1920px) { @content; }
+}
+
+$ease-out: cubic-bezier(.165, .84, .44, 1);
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body {
+  width: 100vw;
+  height: 400vh;
+  overflow-x: hidden;
   margin: 0;
-  font-family: Helvetica, sans-serif;
+  font-family: 'Suisse', sans-serif;
+  font-kerning: none;
+  background-color: black;
+  color: white;
 
-  > div {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 30px;
+  .container {
+    width: 100vw;
+    height: 400vh;
+  }
+
+  .return {
+    margin-bottom: 1rem;
+  }
+
+
+  a,
+  button.is-a {
+    font-size: 12px;
+    line-height: 12px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: currentColor;
+    background: none;
+    border: none;
+    padding: 0;
+    display: inline-block;
+
+    &:after {
+      content: '';
+      display: block;
+      margin-top: 3px;
+      height: 1px;
+      width: 100%;
+      transform: scaleX(0);
+      transform-origin: left;
+      background-color: currentColor;
+      transition: transform .6s $ease-out;
+    }
+
+    &:hover::after {
+      transform: scaleX(1);
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover{
+      cursor: pointer;
+    }
+  }
+
+  header {
+    pointer-events: none;
+    width: 100vw;
+    position: fixed;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Suisse Mono Thin';
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    padding-top: 50px;
+    mix-blend-mode: difference;
+
+    .logo {
+      margin-left: 4.53125vw;
+    }
+
+    .about {
+      position: relative;
+      z-index: 120;
+      pointer-events: all;
+      margin-right: 17.083vw;
+    }
+  }
+
+  .main-project {
+
+    &-text {
+      font-size: 0.75rem;
+      line-height: 1rem;
+      font-family: 'Suisse Mono Thin';
+      position: absolute;
+      left: 17.03125vw;
+      top: 17.1875vw;
+
+      span {
+        display: block;
+      }
+    }
+
+    &-img {
+      position: absolute;
+      right: 0;
+      top: 20.3125vw;
+      width: 57.96875vw;
+      height: 64.4270vw;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+    }
+  }
+
+  .description {
+    top: 80.375vw;
+    position: absolute;
+    margin-left: 12.8645vw;
+    width: 74.21875vw;
+    height: 300px;
+
+    &-nb {
+      display: none;
+      width: 100%;
+      text-align: right;
+      font-size: 10.41666vw;
+      line-height: 10.41666vw;
+      padding-bottom: 20px;
+      font-family: Suisse;
+
+      &-sec {
+        margin-right: 8.33333vw;
+      }
+
+
+      span {
+        display: block;
+      }
+    }
+
+    &-text {
+      padding-top: 50px;
+      font-size: 4.6875vw;
+      position: relative;
+
+      span {
+        display: block;
+      }
+
+      &-last {
+        position: relative;
+        display: inline-block !important;
+      }
+
+      .internship {
+        margin-top: 22px;
+        position: absolute;
+        transform: translateX(108%);
+        top: 0;
+        right: 0;
+        font-size: 0.75rem;
+        line-height: 1.4;
+        font-family: 'Suisse Mono Thin';
+        width: 11.71875vw;
+      }
+
+      &:before {
+        content: "…………………………………………………………………………: ………………………………………… ……………………………………………………………………………………………………………. ; ………………… , ; :        ………………………………. ………………………………………………………………………. ; ………………… , ; :    ..    ………………………………. …………………. ……………. …………………………………..………………………………………………";
+        position: absolute;
+        font-family: Suisse Mono Thin;
+        letter-spacing: -0.15362vw;
+        top: 0;
+        font-size: 0.7346vw;
+        height: 0px;
+        background: white;
+        width: 74.21875vw;
+      }
+    }
+  }
+
+  .projects {
+    margin-left: 12.8645vw;
+    width: 74.21875vw;
+    position: absolute;
+    top: 112.552vw;
+
+    .project-1, .project-2  {
+      &-img {
+        width: 45.05vw;
+        height: 60.052vw;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+
+    .project-1 {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .project-2 {
+      position: absolute;
+      top: 52.70vw;
+      right: 0;
+    }
+  }
+
+  .grid-w {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    pointer-events: none;
+    opacity: .15;
+
+    .grid {
+      height: 100vh;
+
+      div {
+        position: relative;
+        float: left;
+        width: 4.165vw;
+        height: 100vh;
+
+        &:before {
+          content: "";
+          position: absolute;
+          top: 0;
+          width: 0.390625vw;
+          left: 0;
+          height: 100vh;
+          background: #980000;
+        }
+
+        &:after {
+          content: "";
+          position: absolute;
+          top: 0;
+          width: 0.390625vw;
+          right: 0;
+          height: 100vh;
+          background: #980000;
+        }
+      }
+    }
+
   }
 }
+
+html.has-scroll-smooth {
+  overflow: hidden; }
+
+html.has-scroll-dragging {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
+.has-scroll-smooth body {
+  overflow: hidden; }
+
+.has-scroll-smooth [data-scroll-container] { }
+
+.c-scrollbar {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 11px;
+  height: 100vh;
+  transform-origin: center right;
+  transition: transform 0.3s, opacity 0.3s;
+  opacity: 0; }
+  .c-scrollbar:hover {
+    transform: scaleX(1.45); }
+  .c-scrollbar:hover, .has-scroll-scrolling .c-scrollbar, .has-scroll-dragging .c-scrollbar {
+    opacity: 1; }
+
+.c-scrollbar_thumb {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: black;
+  opacity: 0.5;
+  width: 7px;
+  border-radius: 10px;
+  margin: 2px;
+  cursor: -webkit-grab;
+  cursor: grab; }
+  .has-scroll-dragging .c-scrollbar_thumb {
+    cursor: -webkit-grabbing;
+    cursor: grabbing; }

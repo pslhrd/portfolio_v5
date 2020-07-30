@@ -93,6 +93,13 @@ body {
     }
   }
 
+  .a-hide {
+    display: block;
+    &:after {
+      display: none;
+    }
+  }
+
   header {
     pointer-events: none;
     width: 100vw;
@@ -273,6 +280,20 @@ body {
     }
   }
 
+  .transition {
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    transform-origin: bottom center;
+    transform: scaleY(0);
+    opacity: 1;
+    z-index: 120;
+  }
+
   .i-container {
     position: relative;
     width: 100%;
@@ -424,6 +445,7 @@ body {
         text-transform: uppercase;
         position: relative;
         font-family: Gridnik Medium;
+        cursor: default;
 
         @include mobile {
           font-size: 45px;
@@ -431,6 +453,7 @@ body {
         }
 
         span {
+          cursor: default;
           display: block;
         }
 
@@ -517,6 +540,7 @@ body {
 
       .project-1, .project-2 , .project-3 {
 
+
         &-text {
           font-size: 0.6875rem;
           line-height: 1rem;
@@ -562,6 +586,8 @@ body {
           width: 100%;
           height: 100%;
           overflow: hidden;
+          position: relative;
+          z-index: 10;
 
           img {
             width: 100%;

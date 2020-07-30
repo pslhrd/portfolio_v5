@@ -84,6 +84,22 @@ function aboutScroll() {
 
 function homeScroll() {
 
+  function lettersHover(){
+    const desc = new SplitText(".description-text", {type:"chars, words"}), letters = desc.chars;
+
+    for (const letter of letters) {
+      const tl = gsap.timeline()
+      letter.addEventListener('mouseenter', () => {
+        // let rand = letters[Math.floor(Math.random() * letters.length)];
+        tl
+        .set(letter, {opacity:0})
+        .to(letter, {opacity:1, duration:0.01, ease:'power1.out'}, '+=1.2')
+      })
+    }
+  }
+
+  lettersHover()
+
   const pointAppear = gsap.timeline({paused: true})
   const pointAppear2 = gsap.timeline({paused: true})
   const appear = gsap.timeline({paused: true})
@@ -117,10 +133,11 @@ function homeScroll() {
   pointAppear.fromTo(points, {opacity:0}, {opacity:1, duration:0.01, stagger:0.01})
   pointAppear2.fromTo(points2, {opacity:0}, {opacity:1, duration:0.01, stagger:0.01})
 
+  gsap.set('.description-text span', {y:'110%'})
   appear
   .to(pointAppear,{ duration:2, progress:1, ease:'power4.out'})
   .to(pointAppear2,{ duration:2, progress:1, ease:'power4.out'}, "-=1.9")
-  .fromTo('.description-text span', {y:'110%'}, {y:'0%', duration:1.3, ease:'power3.out', stagger:0.15}, "-=1.9")
+  .to('.description-text span', {y:'0%', duration:1.3, ease:'power3.out', stagger:0.15}, "-=1.9")
 
   for (const letter of letters) {
       const speed = 3
@@ -204,32 +221,22 @@ barba.init({
     name: 'main',
     once({ next }) {
       smooth(next.container)
-      homeLaunch()
+      // homeLaunch()
     },
     beforeEnter({ next }) {
       scroll.destroy()
       smooth(next.container)
     },
     leave(data) {
-
       if (isMobile.any()) {
         gsap.to(window, {duration: 2, scrollTo: 0, ease:'power3.out'});
       }
-
-      return gsap.to(data.current.container, {
-        opacity: 0,
-        duration:1,
-        ease:'power3.inOut'
-      });
+      return gsap.to(data.current.container, {opacity: 0,duration:1,ease:'power3.inOut'})
     },
     enter(data) {
       data.current.container.style.display = 'none';
       scroll.update()
-      return gsap.from(data.next.container, {
-        opacity: 0,
-        duration:1,
-        ease:'power3.inOut'
-      });
+      return gsap.from(data.next.container, {opacity: 0,duration:1,ease:'power3.inOut'})
     }
   }],
   views: [{
@@ -289,3 +296,33 @@ function smooth(container) {
 //     firefoxMultiplier: 50,
 //     touchMultiplier: 2,
 // })
+
+// {
+//     name: 'custom-transition',
+//     from: {namespace:['home']},
+//     to: {namespace:['project']},
+//     beforeEnter({ next }) {
+//       scroll.destroy()
+//       smooth(next.container)
+//     },
+//     beforeLeave(data) {
+//       let projectImg = data.trigger.childNodes[1]
+//       const tl = gsap.timeline()
+//       console.log(projectImg)
+//       scroll.stop()
+//       const done = this.async();
+//       if (isMobile.any()) {
+//         gsap.to(window, {duration: 2, scrollTo: 0, ease:'power3.out'});
+//       }
+//       projectImg.style.zIndex = 120;
+//       tl
+//       .to('.transition', {scaleY:1, duration:1.3, ease:'power4.out', onComplete:done})
+//       .set('.transition', {transformOrigin:'top'})
+//     },
+//     enter(data) {
+//       const done = this.async();
+//       data.current.container.style.display = 'none';
+//       scroll.update()
+//       const tl = gsap.timeline()
+//       tl.to('.transition', {scaleY:0, duration:1.3, ease:'power4.out', onComplete:done})
+//     }

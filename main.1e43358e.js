@@ -10513,6 +10513,26 @@ var _core = _interopRequireDefault(require("@barba/core"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var isMobile = {
+  Android: function Android() {
+    return navigator.userAgent.match(/Android/i);
+  },
+  BlackBerry: function BlackBerry() {
+    return navigator.userAgent.match(/BlackBerry/i);
+  },
+  iOS: function iOS() {
+    return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+  },
+  Opera: function Opera() {
+    return navigator.userAgent.match(/Opera Mini/i);
+  },
+  Windows: function Windows() {
+    return navigator.userAgent.match(/IEMobile/i) || navigator.userAgent.match(/WPDesktop/i);
+  },
+  any: function any() {
+    return isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows();
+  }
+};
 var scroll;
 
 function aboutLaunch() {
@@ -10837,48 +10857,94 @@ function homeLaunch() {
   var tl = _gsap.default.timeline();
 
   var introText = document.querySelectorAll('.logo, .about, .dark');
-  tl.set('.cross', {
-    opacity: 0
-  }).from('.main-project-img img', {
-    duration: 4,
-    ease: 'power3.out',
-    scale: 1.15
-  }).from('.main-project-img img', {
-    duration: 4,
-    ease: 'power1.out',
-    autoAlpha: 0
-  }, "-=4").from('.main-project-img', {
-    duration: 2.6,
-    ease: 'expo.inOut',
-    width: '102vw',
-    height: '70vw',
-    top: '-10px',
-    left: '0'
-  }, 2).add(function () {
-    scroll.start();
-  }, "-=1").fromTo(introText, {
-    opacity: 0
-  }, {
-    y: '0px',
-    opacity: 1,
-    duration: 0.2,
-    ease: 'power3.out',
-    stagger: 0.2
-  }, "-=1.4").fromTo('.line', {
-    scaleX: 0
-  }, {
-    scaleX: 1,
-    duration: 1.2,
-    ease: 'power4.out'
-  }, "-=0.8").add(mainText.play(), "-=2").fromTo('.cross', {
-    rotation: -25,
-    opacity: 0
-  }, {
-    rotation: 0,
-    opacity: 1,
-    duration: 2,
-    ease: 'power3.out'
-  }, "-=1.6");
+
+  if (isMobile.any()) {
+    tl.set('.cross', {
+      opacity: 0
+    }).from('.main-project-img img', {
+      duration: 4,
+      ease: 'power3.out',
+      scale: 1.15
+    }).from('.main-project-img img', {
+      duration: 4,
+      ease: 'power1.out',
+      autoAlpha: 0
+    }, "-=4").from('.main-project-img', {
+      duration: 2.6,
+      ease: 'expo.inOut',
+      width: '102vw',
+      height: '100vh',
+      top: '-10px',
+      left: '0'
+    }, 2).add(function () {
+      scroll.start();
+    }, "-=1").fromTo(introText, {
+      opacity: 0
+    }, {
+      y: '0px',
+      opacity: 1,
+      duration: 0.2,
+      ease: 'power3.out',
+      stagger: 0.2
+    }, "-=1.4").fromTo('.line', {
+      scaleX: 0
+    }, {
+      scaleX: 1,
+      duration: 1.2,
+      ease: 'power4.out'
+    }, "-=0.8").add(mainText.play(), "-=2").fromTo('.cross', {
+      rotation: -25,
+      opacity: 0
+    }, {
+      rotation: 0,
+      opacity: 1,
+      duration: 2,
+      ease: 'power3.out'
+    }, "-=1.6");
+  } else {
+    tl.set('.cross', {
+      opacity: 0
+    }).from('.main-project-img img', {
+      duration: 4,
+      ease: 'power3.out',
+      scale: 1.15
+    }).from('.main-project-img img', {
+      duration: 4,
+      ease: 'power1.out',
+      autoAlpha: 0
+    }, "-=4").from('.main-project-img', {
+      duration: 2.6,
+      ease: 'expo.inOut',
+      width: '102vw',
+      height: '70vw',
+      top: '-10px',
+      left: '0'
+    }, 2).add(function () {
+      scroll.start();
+    }, "-=1").fromTo(introText, {
+      opacity: 0
+    }, {
+      y: '0px',
+      opacity: 1,
+      duration: 0.2,
+      ease: 'power3.out',
+      stagger: 0.2
+    }, "-=1.4").fromTo('.line', {
+      scaleX: 0
+    }, {
+      scaleX: 1,
+      duration: 1.2,
+      ease: 'power4.out'
+    }, "-=0.8").add(mainText.play(), "-=2").fromTo('.cross', {
+      rotation: -25,
+      opacity: 0
+    }, {
+      rotation: 0,
+      opacity: 1,
+      duration: 2,
+      ease: 'power3.out'
+    }, "-=1.6");
+  }
 }
 
 function projectLaunch() {
@@ -10976,7 +11042,8 @@ _core.default.init({
 function smooth(container) {
   scroll = new _locomotiveScroll.default({
     el: container.querySelector('[data-scroll-container]'),
-    smooth: true
+    smooth: true,
+    smoothMobile: false
   });
 } // function initScroll(){
 //    return new LocomotiveScroll({
@@ -11027,7 +11094,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54702" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60865" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

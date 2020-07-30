@@ -1,9 +1,12 @@
 import Smooth from 'smooth-scrolling'
 import Custom from './custom'
 import SplitText from './SplitText'
+import { ScrollToPlugin } from 'gsap/all'
 import gsap from 'gsap'
 import LocomotiveScroll from 'locomotive-scroll'
 import barba from '@barba/core'
+
+gsap.registerPlugin(ScrollToPlugin)
 
 const isMobile = {
     Android: function() {
@@ -208,6 +211,11 @@ barba.init({
       smooth(next.container)
     },
     leave(data) {
+
+      if (isMobile.any()) {
+        gsap.to(window, {duration: 2, scrollTo: 0, ease:'power3.out'});
+      }
+
       return gsap.to(data.current.container, {
         opacity: 0,
         duration:1,

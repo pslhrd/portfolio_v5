@@ -5,6 +5,27 @@ import gsap from 'gsap'
 import LocomotiveScroll from 'locomotive-scroll'
 import barba from '@barba/core'
 
+const isMobile = {
+    Android: function() {
+        return navigator.userAgent.match(/Android/i);
+    },
+    BlackBerry: function() {
+        return navigator.userAgent.match(/BlackBerry/i);
+    },
+    iOS: function() {
+        return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+    },
+    Opera: function() {
+        return navigator.userAgent.match(/Opera Mini/i);
+    },
+    Windows: function() {
+        return navigator.userAgent.match(/IEMobile/i) || navigator.userAgent.match(/WPDesktop/i);
+    },
+    any: function() {
+        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+    }
+};
+
 let scroll;
 
 function aboutLaunch() {
@@ -138,16 +159,29 @@ function homeLaunch() {
   const tl = gsap.timeline()
   const introText = document.querySelectorAll('.logo, .about, .dark')
 
-  tl
-  .set('.cross', {opacity:0})
-  .from('.main-project-img img', {duration: 4, ease:'power3.out', scale:1.15})
-  .from('.main-project-img img', {duration: 4, ease:'power1.out', autoAlpha:0}, "-=4")
-  .from('.main-project-img', {duration:2.6, ease:'expo.inOut', width:'102vw', height:'70vw', top:'-10px', left:'0'}, 2)
-  .add(function(){scroll.start()}, "-=1")
-  .fromTo(introText, {opacity:0}, {y:'0px',opacity:1, duration:0.2, ease:'power3.out', stagger:0.2}, "-=1.4")
-  .fromTo('.line', {scaleX:0}, {scaleX:1, duration:1.2, ease:'power4.out'}, "-=0.8")
-  .add(mainText.play(), "-=2")
-  .fromTo('.cross', {rotation:-25, opacity:0}, {rotation:0, opacity:1, duration:2, ease:'power3.out'}, "-=1.6")
+  if (isMobile.any()) {
+    tl
+    .set('.cross', {opacity:0})
+    .from('.main-project-img img', {duration: 4, ease:'power3.out', scale:1.15})
+    .from('.main-project-img img', {duration: 4, ease:'power1.out', autoAlpha:0}, "-=4")
+    .from('.main-project-img', {duration:2.6, ease:'expo.inOut', width:'102vw', height:'100vh', top:'-10px', left:'0'}, 2)
+    .add(function(){scroll.start()}, "-=1")
+    .fromTo(introText, {opacity:0}, {y:'0px',opacity:1, duration:0.2, ease:'power3.out', stagger:0.2}, "-=1.4")
+    .fromTo('.line', {scaleX:0}, {scaleX:1, duration:1.2, ease:'power4.out'}, "-=0.8")
+    .add(mainText.play(), "-=2")
+    .fromTo('.cross', {rotation:-25, opacity:0}, {rotation:0, opacity:1, duration:2, ease:'power3.out'}, "-=1.6")
+  } else {
+    tl
+    .set('.cross', {opacity:0})
+    .from('.main-project-img img', {duration: 4, ease:'power3.out', scale:1.15})
+    .from('.main-project-img img', {duration: 4, ease:'power1.out', autoAlpha:0}, "-=4")
+    .from('.main-project-img', {duration:2.6, ease:'expo.inOut', width:'102vw', height:'70vw', top:'-10px', left:'0'}, 2)
+    .add(function(){scroll.start()}, "-=1")
+    .fromTo(introText, {opacity:0}, {y:'0px',opacity:1, duration:0.2, ease:'power3.out', stagger:0.2}, "-=1.4")
+    .fromTo('.line', {scaleX:0}, {scaleX:1, duration:1.2, ease:'power4.out'}, "-=0.8")
+    .add(mainText.play(), "-=2")
+    .fromTo('.cross', {rotation:-25, opacity:0}, {rotation:0, opacity:1, duration:2, ease:'power3.out'}, "-=1.6")
+  }
 }
 
 function projectLaunch() {
@@ -218,7 +252,8 @@ barba.init({
 function smooth(container) {
   scroll = new LocomotiveScroll({
     el: container.querySelector('[data-scroll-container]'),
-    smooth: true
+    smooth: true,
+    smoothMobile: false
   });
 }
 

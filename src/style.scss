@@ -12,15 +12,15 @@ $c-fg: var(--c-fg);
 $ease-out: cubic-bezier(.165, .84, .44, 1);
 
 @mixin mobile {
-  @media (max-width: 1100px) { @content; }
+  @media (max-width: 900px) { @content; }
 }
 
 @mixin xs {
   @media (max-width: 600px) { @content; }
 }
 
-@mixin xl {
-  @media (min-width: 1920px) { @content; }
+@mixin medium {
+  @media (max-width: 1300px) { @content; }
 }
 
 $ease-out: cubic-bezier(.165, .84, .44, 1);
@@ -38,7 +38,6 @@ $ease-out: cubic-bezier(.165, .84, .44, 1);
 
 body {
   width: 100vw;
-  overflow-x: hidden;
   margin: 0;
   font-family: 'Gridnik', sans-serif;
   font-kerning: none;
@@ -52,6 +51,10 @@ body {
 
   .return {
     margin-bottom: 1rem;
+
+    @include mobile {
+      margin-bottom: 0.75rem;
+    }
   }
 
 
@@ -101,12 +104,20 @@ body {
     margin-top: 50px;
     mix-blend-mode: difference;
 
+    @include mobile {
+      margin-top: 40px;
+    }
+
     .logo {
       position: absolute;
       z-index: 120;
       left: 0;
       pointer-events: all;
       margin-left: 4.53125vw;
+
+      @include mobile {
+        margin-left: 40px;
+      }
     }
 
     .about {
@@ -115,6 +126,10 @@ body {
       right: 0;
       pointer-events: all;
       margin-right: 17.083vw;
+
+      @include mobile {
+        margin-right: 40px;
+      }
     }
 
     .dark {
@@ -123,6 +138,10 @@ body {
       z-index: 120;
       pointer-events: all;
       margin-right: 8.0209vw;
+
+      @include mobile {
+        display: none;
+      }
     }
 
     .line {
@@ -135,6 +154,9 @@ body {
       height: 1px;
       transform: scaleX(1);
       background-color: $c-fg;
+      @include mobile {
+        display: none;
+      }
     }
   }
 
@@ -149,14 +171,26 @@ body {
     display: flex;
     align-items: center;
 
+    @include mobile {
+      padding-bottom: 40px;
+    }
+
     .logo {
       margin-left: 4.53125vw;
+
+      @include mobile {
+        display: none;
+      }
     }
 
     .scrollUp {
       position: absolute;
       right: 0;
       margin-right: 4.583vw;
+
+      @include mobile {
+        display: none;
+      }
     }
 
     ul {
@@ -167,6 +201,10 @@ body {
       list-style: none;
       display: inline-block;
       margin-left: 20px;
+
+      @include mobile {
+        padding: 5px;
+      }
 
       a {
         &:hover {
@@ -238,10 +276,19 @@ body {
   .i-container {
     position: relative;
     width: 100%;
+    overflow-x:hidden;
+
+    @include mobile {
+      width: 100vw;
+    }
     .footer-wrapper {
       position: relative;
       width: 100%;
       height: 284.4791vw;
+
+      @include mobile {
+        height: 420vh;
+      }
     }
     .main-project {
 
@@ -255,6 +302,11 @@ body {
         position: absolute;
         left: 17.03125vw;
         top: 22.1875vw;
+
+        @include mobile {
+          top: 50vh;
+          left: 50vw;
+        }
 
         span {
           display: block;
@@ -270,6 +322,11 @@ body {
         height: 100px;
         transform-origin: top center;
         transform-style: preserve-3d;
+
+        @include mobile {
+          width: 40px;
+          height: 40px;
+        }
 
         &:before {
           content: "";
@@ -299,6 +356,13 @@ body {
         height: 64.4270vw;
         transform-origin: top;
 
+        @include mobile {
+          width: 100vw;
+          height: 100vh;
+          top: 80vh;
+          right: -20vw;
+        }
+
         img {
           width: 100%;
           height: 100%;
@@ -315,6 +379,12 @@ body {
       width: 74.21875vw;
       height: max-content;
 
+      @include mobile {
+        top: 150vh;
+        width: calc(100vw - 80px);
+        margin-left: 40px;
+      }
+
         .line {
           pointer-events: none;
           font-family: Suisse Mono Thin;
@@ -325,6 +395,10 @@ body {
           height: 0px;
           background: $c-fg;
           width: 74.21875vw;
+
+          @include mobile {
+            display: none;
+          }
         }
 
         .line2 {
@@ -337,6 +411,10 @@ body {
           height: 0px;
           background: $c-fg;
           width: 74.21875vw;
+
+          @include mobile {
+            display: none;
+          }
         }
 
       &-text {
@@ -346,6 +424,11 @@ body {
         text-transform: uppercase;
         position: relative;
         font-family: Gridnik Medium;
+
+        @include mobile {
+          font-size: 45px;
+          line-height: 60px;
+        }
 
         span {
           display: block;
@@ -370,6 +453,15 @@ body {
           line-height: 1.4;
           font-family: 'Gridnik';
           width: 9.71875vw;
+
+          @include mobile {
+            display: none;
+          }
+
+          @include medium {
+            margin-top: 5px;
+            width: 20vw;
+          }
         }
       }
     }
@@ -381,6 +473,12 @@ body {
       position: absolute;
       top: 121.5625vw;
 
+      @include mobile {
+        top: 220vh;
+        width: calc(100vw - 80px);
+        margin-left: 40px;
+      }
+
 
       .cross {
         position: absolute;
@@ -391,6 +489,11 @@ body {
         height: 100px;
         transform-origin: top center;
         transform-style: preserve-3d;
+
+        @include mobile {
+          width: 40px;
+          height: 40px;
+        }
 
         &:before {
           content: "";
@@ -424,6 +527,11 @@ body {
           left: 4.1666vw;
           z-index: 20;
 
+          @include mobile {
+            font-size: 12px;
+            line-height: 12px;
+          }
+
           span {
             display: block;
           }
@@ -431,6 +539,11 @@ body {
 
         width: 36.71875vw;
         height: 48.9583vw;
+
+        @include mobile {
+          width: 60vw;
+          height: 50vh;
+        }
 
         &:hover {
           cursor: pointer;
@@ -463,6 +576,9 @@ body {
         position: absolute;
         left: 0;
         top: 0;
+        @include mobile {
+          z-index: 4;
+        }
       }
 
       .project-2 {
@@ -470,12 +586,22 @@ body {
         position: absolute;
         top: 37.5vw;
         right: 4.16666vw;
+
+        @include mobile {
+          top: 45vh;
+          right: 0;
+        }
       }
 
       .project-3 {
         position: absolute;
         top: 81.510vw;
         right: 16.5625vw;
+
+        @include mobile {
+          top: 90vh;
+          right: 20vw;
+        }
       }
     }
 
@@ -488,6 +614,10 @@ body {
       line-height: 1rem;
       font-family: 'Gridnik';
 
+      @include mobile {
+        top: 380vh;
+      }
+
       .cross {
         position: absolute;
         z-index: 90;
@@ -497,6 +627,11 @@ body {
         height: 100px;
         transform-origin: top center;
         transform-style: preserve-3d;
+
+        @include mobile {
+          width: 40px;
+          height: 40px;
+        }
 
         &:before {
           content: "";
@@ -519,6 +654,11 @@ body {
       }
 
       p {
+
+        @include medium {
+          width: 30vw;
+        }
+
         position: absolute;
         left: 37.8645vw;
         top: 15.6875vw;
@@ -574,11 +714,16 @@ body {
   .a-container {
     position: relative;
     width: 100vw;
+    overflow-x:hidden;
 
     .footer-wrapper {
       position: relative;
       width: 100%;
       height: 120.8541vw;
+
+      @include mobile {
+        height: 300vh;
+      }
     }
 
     .a-intro {
@@ -590,33 +735,16 @@ body {
       left: 37.8645vw;
       top: 22.09375vw;
 
+      @include mobile {
+        top: 140vh;
+        width: 35vw;
+      }
+
       p {
         width: 100%;
       }
     }
 
-
-    .svg-wrapper {
-      display: none;
-      position: absolute;
-      pointer-events: none;
-      mix-blend-mode: difference;
-      z-index: -1;
-      opacity: .2;
-      top: 45.416vw;
-      left: -21.927vw;
-      width: 64.27vw;
-      height: 64.27vw;
-
-      svg {
-        width: 100%;
-        height: 100%;
-
-        path {
-          fill: white;
-        }
-      }
-    }
 
     .a-cross {
       position: absolute;
@@ -627,6 +755,13 @@ body {
       height: 100px;
       transform-origin: top center;
       transform-style: preserve-3d;
+
+      @include mobile {
+        width: 40px;
+        height: 40px;
+        top: 20vh;
+        left: 70vw;
+      }
 
       &:before {
         content: "";
@@ -658,6 +793,12 @@ body {
       transform-origin: top center;
       transform-style: preserve-3d;
 
+      @include mobile {
+        width: 40px;
+        height: 40px;
+        top: 170vh;
+      }
+
       &:before {
         content: "";
         display: block;
@@ -685,6 +826,13 @@ body {
       width: 53.38541vw;
       left: 12.86458vw;
       font-size: 1.5625vw;
+
+      @include mobile {
+        width: calc(100vw - 80px);
+        left: 40px;
+        top: 200vh;
+        font-size: 20px;
+      }
     }
 
     .a-content {
@@ -696,6 +844,14 @@ body {
       font-size: 0.875rem;
       line-height: 1.5rem;
 
+      @include mobile {
+        width: calc(100vw - 80px);
+        left: 40px;
+        top: 250vh;
+        font-size: 14px;
+        line-height: 20px;
+      }
+
       p {
         width: 100%;
       }
@@ -706,11 +862,21 @@ body {
       font-family: Gridnik Medium;
       line-height: 15.625vw;
 
+      @include mobile {
+        font-size: 140px;
+        line-height: 140px;
+      }
+
       &-n1 {
         overflow: hidden;
         position: absolute;
         left: 12.8645vw;
         top: 16.302vw;
+
+        @include mobile {
+          top: 30vh;
+          left: 40px;
+        }
 
         span {
           display: block;
@@ -723,6 +889,12 @@ body {
         left: 50.3645vw;
         top: 34.6875vw;
 
+        @include mobile {
+          top: 60vh;
+          left: auto;
+          right: 40px;
+        }
+
         span {
           display: block;
         }
@@ -733,6 +905,11 @@ body {
         position: absolute;
         left: 29.53125vw;
         top: 53.0729vw;
+
+        @include mobile {
+          top: 90vh;
+          left: 40px;
+        }
 
         span {
           display: block;
@@ -751,6 +928,12 @@ body {
       width: 74.21875vw;
       margin-left: 12.890625vw;
 
+      @include mobile {
+        margin-top: 60px;
+        width: calc(100vw - 80px);
+        margin-left: 40px;
+      }
+
       &-img {
         width: 100%;
         height: auto;
@@ -766,6 +949,11 @@ body {
     .project-header {
       width: 74.21875vw;
       margin-left: 12.890625vw;
+
+      @include mobile {
+        width: calc(100vw - 80px);
+        margin-left: 40px;
+      }
 
       .line {
         pointer-events: none;
@@ -783,31 +971,60 @@ body {
         font-family: Gridnik;
         font-size: 12.5vw;
         line-height: 12.5vw;
+
+        @include mobile {
+          font-size: 120px;
+          line-height: 120px;
+          padding-top: 60vh;
+        }
       }
 
       .project-infos {
         position: relative;
         display: flex;
-        font-size: 0.75rem;
-        line-height: 1rem;
+        font-size: 12px;
+        line-height: 12px;
         font-family: 'Gridnik';
+
+        @include mobile {
+          flex-direction: column;
+        }
 
         .date {
           width: 4.1666vw;
+          @include mobile {
+            width: 80vw;
+            margin-bottom: 15px;
+          }
         }
 
         .infos {
           margin-left: 16.6666vw;
           width: 28.385vw;
 
+          @include mobile {
+            width: 80vw;
+            margin-left: 0;
+
+          }
+
           &-title {
             margin-bottom: 2.03125vw;
+
+            @include mobile {
+              margin-bottom: 15px;
+            }
           }
 
           &-content {
             font-family: Suisse;
             font-size: 40px;
             line-height: 56px;
+
+            @include mobile {
+              font-size: 30px;
+              line-height: 45px;
+            }
           }
 
           &-extra {
@@ -816,17 +1033,34 @@ body {
             font-family: Suisse;
             font-size: 0.875rem;
             line-height: 1.5rem;
+
+            @include mobile {
+              margin-top: 15px;
+              width: 100%;
+            }
           }
         }
 
         .type {
           margin-left: 4.1666vw;
           width: 7.552vw;
+
+          @include mobile {
+            width: 80vw;
+            margin-left: 0;
+            margin-bottom: 15px;
+          }
         }
 
         .number {
           margin-left: 4.94791vw;
           width: 4.1666vw;
+
+          @include mobile {
+            width: 80vw;
+            margin-left: 0;
+            margin-bottom: 80px;
+          }
 
           span {
             display: block;

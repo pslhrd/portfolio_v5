@@ -68,6 +68,12 @@ body a:hover,
 body button.is-a:hover {
   cursor: pointer;
 }
+body .a-hide {
+  display: block;
+}
+body .a-hide:after {
+  display: none;
+}
 body header {
   pointer-events: none;
   width: 100vw;
@@ -212,6 +218,19 @@ body footer .loading-square3 {
   opacity: 0;
   animation: square3 2s cubic-bezier(0.165, 0.84, 0.44, 1) infinite 3s;
   background-color: var(--c-fg);
+}
+body .transition {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  transform-origin: bottom center;
+  transform: scaleY(0);
+  opacity: 1;
+  z-index: 120;
 }
 body .i-container {
   position: relative;
@@ -362,6 +381,7 @@ body .i-container .description-text {
   text-transform: uppercase;
   position: relative;
   font-family: Gridnik Medium;
+  cursor: default;
 }
 @media (max-width: 900px) {
   body .i-container .description-text {
@@ -370,6 +390,7 @@ body .i-container .description-text {
   }
 }
 body .i-container .description-text span {
+  cursor: default;
   display: block;
 }
 body .i-container .description-text .wrapper {
@@ -490,6 +511,8 @@ body .i-container .projects .project-1-img, body .i-container .projects .project
   width: 100%;
   height: 100%;
   overflow: hidden;
+  position: relative;
+  z-index: 10;
 }
 body .i-container .projects .project-1-img img, body .i-container .projects .project-2-img img, body .i-container .projects .project-3-img img {
   width: 100%;

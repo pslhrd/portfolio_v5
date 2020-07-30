@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="./src/assets/fonts/fonts.css">
   <link rel="stylesheet" href="./src/style.scss">
 </head>
-<body data-router-wrapper>
+<body data-barba="wrapper">
 
   <header>
     <div class="logo"><a href="index.html">Paul Soulhiard</a></div>
@@ -17,8 +17,36 @@
     <div class="line"></div>
   </header>
 
-  <div>
-    <div class="container" data-scroll-container>
+  <main data-barba="container" data-barba-namespace="project">
+    <div class="p-container" data-scroll-container>
+
+    	<div class="project-header">
+    		<div class="project-title">MISSION 3</div>
+	        <div class="line"></div>
+	        <div class="project-infos">
+	        	<div class="date">EARLY 2020</div>
+	        	<div class="type">MUSIC COMPOSITION & INTERACTIVE EXPERIENCE</div>
+	        	<div class="number">
+	        		<span>PROJECT</span>
+              <span>01/04</span>
+            </div>
+	        	<div class="infos">
+	        		<div class="infos-title">INFOS</div>
+	        		<div class="infos-content"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sodales pellentesque diam, eu venenatis sapien ullamcorper eu. Sed ultrices ac mauris in blandit. Duis iaculis, eros ut euismod dictum, nisl augue lacinia mi, sit amet porta felis quam non lorem.</p></div>
+              <div class="infos-extra"><p>Aliquam a volutpat leo, quis auctor dolor. Nunc hendrerit molestie ex, vel tempus sapien vehicula sed. Mauris fringilla ante magna, at tincidunt est feugiat eu. Nullam in bibendum tortor. Fusce sit amet pharetra ante. Praesent metus metus, iaculis ut nunc ut, euismod egestas est. Pellentesque maximus lectus vitae nulla mattis, id sagittis tortor commodo.</p></div>
+	        	</div>
+	        </div>
+    	</div>
+
+      <div class="project-content">
+        <div class="project-content-img">
+          <img src="/src/assets/images/mission3.png" alt="Mission 3">
+        </div>
+
+        <div class="project-content-img">
+          <img src="/src/assets/images/mission3.png" alt="Mission 3">
+        </div>
+      </div>
       <footer>
         <div class="logo">
           <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg"> <path d="M25 12.5c-11.486.56-11.94 1.014-12.5 12.5-.56-11.486-1.014-11.94-12.5-12.5 11.486-.56 11.94-1.014 12.5-12.5.56 11.486 1.014 11.94 12.5 12.5" fill="#FFF" fill-rule="evenodd"/></svg>
@@ -33,7 +61,7 @@
         </ul>
       </footer>
     </div>
-  </div>
+  </main>
 
   <script src="./src/main.js"></script>
 </body>

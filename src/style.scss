@@ -46,8 +46,8 @@ body {
   color: $c-fg;
 
   .container {
+    position: relative;
     width: 100vw;
-    height: 500vh;
   }
 
   .return {
@@ -133,7 +133,7 @@ body {
       margin-top: 7px;
       width: 25px;
       height: 1px;
-      transform: scaleX(0);
+      transform: scaleX(1);
       background-color: $c-fg;
     }
   }
@@ -142,10 +142,9 @@ body {
     pointer-events: none;
     width: 100vw;
     bottom: 0;
-    position: absolute;
     z-index: 100;
     font-size: 0.6875rem;
-    margin-bottom: 50px;
+    padding-bottom: 50px;
     mix-blend-mode: difference;
     display: flex;
     align-items: center;
@@ -236,287 +235,296 @@ body {
     }
   }
 
-  .main-project {
-
-    width: 100vw;
-    height: max-content;
-
-    &-text {
-      font-size: 0.6875rem;
-      line-height: 1rem;
-      font-family: 'Gridnik';
-      position: absolute;
-      left: 17.03125vw;
-      top: 22.1875vw;
-
-      span {
-        display: block;
-      }
-    }
-
-    .cross {
-      position: absolute;
-      z-index: 90;
-      top: 48.302vw;
-      left: 25.3645vw;
-      width: 100px;
-      height: 100px;
-      transform-origin: top center;
-      transform-style: preserve-3d;
-
-      &:before {
-        content: "";
-        display: block;
-        width: 100%;
-        height: 1px;
-        background-color: $c-fg;
-        transform-style: preserve-3d;
-      }
-
-      &:after {
-        content: "";
-        display: block;
-        transform: rotate(90deg);
-        width: 100%;
-        height: 1px;
-        background-color: $c-fg;
-        transform-style: preserve-3d;
-      }
-    }
-
-    &-img {
-      position: absolute;
-      right: 0;
-      top: 20.3125vw;
-      width: 57.96875vw;
-      height: 64.4270vw;
-      transform-origin: top;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-      }
-    }
-  }
-
-  .description {
-    top: 78.125vw;
-    position: absolute;
-    margin-left: 12.8645vw;
-    width: 74.21875vw;
-    height: max-content;
-
-      .line {
-        pointer-events: none;
-        font-family: Suisse Mono Thin;
-        letter-spacing: -0.15362vw;
-        margin-bottom: 2.6041vw;
-        font-size: 0.7346vw;
-        line-height: 0;
-        height: 0px;
-        background: $c-fg;
-        width: 74.21875vw;
-      }
-
-      .line2 {
-        pointer-events: none;
-        font-family: Suisse Mono Thin;
-        letter-spacing: -0.15362vw;
-        margin-top: 1.6666vw;
-        font-size: 0.7346vw;
-        line-height: 0;
-        height: 0px;
-        background: $c-fg;
-        width: 74.21875vw;
-      }
-
-    &-text {
-      font-size: 5.7291vw;
-      line-height: 6.25vw;
-      height: 100%;
-      text-transform: uppercase;
+  .i-container {
+    position: relative;
+    width: 100%;
+    .footer-wrapper {
       position: relative;
-      font-family: Gridnik Medium;
-
-      span {
-        display: block;
-      }
-
-      .wrapper {
-        overflow: hidden;
-      }
-
-      &-last {
-        position: relative;
-        display: inline-block !important;
-      }
-
-      .internship {
-        margin-top: 22px;
-        position: absolute;
-        transform: translateX(108%);
-        top: 0;
-        right: 0;
-        font-size: 0.6875rem;
-        line-height: 1.4;
-        font-family: 'Gridnik';
-        width: 9.71875vw;
-      }
+      width: 100%;
+      height: 284.4791vw;
     }
-  }
+    .main-project {
 
-  .projects {
-    margin-left: 12.8645vw;
-    width: 74.21875vw;
-    height: 130.46875vw;
-    position: absolute;
-    top: 121.5625vw;
-
-
-    .cross {
-      position: absolute;
-      z-index: 90;
-      top: 27.2395vw;
-      right: 6.1458vw;
-      width: 100px;
-      height: 100px;
-      transform-origin: top center;
-      transform-style: preserve-3d;
-
-      &:before {
-        content: "";
-        display: block;
-        width: 100%;
-        height: 1px;
-        background-color: $c-fg;
-        transform-style: preserve-3d;
-      }
-
-      &:after {
-        content: "";
-        display: block;
-        transform: rotate(90deg);
-        width: 100%;
-        height: 1px;
-        background-color: $c-fg;
-        transform-style: preserve-3d;
-      }
-    }
-
-    .project-1, .project-2 , .project-3 {
+      width: 100vw;
+      height: max-content;
 
       &-text {
         font-size: 0.6875rem;
         line-height: 1rem;
         font-family: 'Gridnik';
-        mix-blend-mode: difference;
         position: absolute;
-        bottom: 4.1666vw;
-        left: 4.1666vw;
-        z-index: 20;
+        left: 17.03125vw;
+        top: 22.1875vw;
 
         span {
           display: block;
         }
       }
 
-      width: 36.71875vw;
-      height: 48.9583vw;
+      .cross {
+        position: absolute;
+        z-index: 90;
+        top: 48.302vw;
+        left: 25.3645vw;
+        width: 100px;
+        height: 100px;
+        transform-origin: top center;
+        transform-style: preserve-3d;
 
-      &:hover {
-        cursor: pointer;
-
-        a::after {
-          transform: scaleX(1);
+        &:before {
+          content: "";
+          display: block;
+          width: 100%;
+          height: 1px;
+          background-color: $c-fg;
+          transform-style: preserve-3d;
         }
 
-        img {
-          transform: scale(1.10) rotate(2deg);
+        &:after {
+          content: "";
+          display: block;
+          transform: rotate(90deg);
+          width: 100%;
+          height: 1px;
+          background-color: $c-fg;
+          transform-style: preserve-3d;
         }
       }
 
       &-img {
-
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
+        position: absolute;
+        right: 0;
+        top: 20.3125vw;
+        width: 57.96875vw;
+        height: 64.4270vw;
+        transform-origin: top;
 
         img {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          transition: transform 1s $ease-out;
+          object-position: center;
         }
       }
     }
 
-    .project-1 {
+    .description {
+      top: 78.125vw;
       position: absolute;
-      left: 0;
-      top: 0;
+      margin-left: 12.8645vw;
+      width: 74.21875vw;
+      height: max-content;
+
+        .line {
+          pointer-events: none;
+          font-family: Suisse Mono Thin;
+          letter-spacing: -0.15362vw;
+          margin-bottom: 2.6041vw;
+          font-size: 0.7346vw;
+          line-height: 0;
+          height: 0px;
+          background: $c-fg;
+          width: 74.21875vw;
+        }
+
+        .line2 {
+          pointer-events: none;
+          font-family: Suisse Mono Thin;
+          letter-spacing: -0.15362vw;
+          margin-top: 1.6666vw;
+          font-size: 0.7346vw;
+          line-height: 0;
+          height: 0px;
+          background: $c-fg;
+          width: 74.21875vw;
+        }
+
+      &-text {
+        font-size: 5.7291vw;
+        line-height: 6.25vw;
+        height: 100%;
+        text-transform: uppercase;
+        position: relative;
+        font-family: Gridnik Medium;
+
+        span {
+          display: block;
+        }
+
+        .wrapper {
+          overflow: hidden;
+        }
+
+        &-last {
+          position: relative;
+          display: inline-block !important;
+        }
+
+        .internship {
+          margin-top: 22px;
+          position: absolute;
+          transform: translateX(108%);
+          top: 0;
+          right: 0;
+          font-size: 0.6875rem;
+          line-height: 1.4;
+          font-family: 'Gridnik';
+          width: 9.71875vw;
+        }
+      }
     }
 
-    .project-2 {
-      z-index: 3;
+    .projects {
+      margin-left: 12.8645vw;
+      width: 74.21875vw;
+      height: 130.46875vw;
       position: absolute;
-      top: 37.5vw;
-      right: 4.16666vw;
-    }
+      top: 121.5625vw;
 
-    .project-3 {
-      position: absolute;
-      top: 81.510vw;
-      right: 16.5625vw;
-    }
-  }
 
-  .last-container {
-    position: absolute;
-    top: 252.03vw;
-    width: 100vw;
-    height: 32.4791vw;
-    font-size: 0.6875rem;
-    line-height: 1rem;
-    font-family: 'Gridnik';
-
-    .cross {
-      position: absolute;
-      z-index: 90;
-      top: 0;
-      left: 17.03125vw;
-      width: 100px;
-      height: 100px;
-      transform-origin: top center;
-      transform-style: preserve-3d;
-
-      &:before {
-        content: "";
-        display: block;
-        width: 100%;
-        height: 1px;
-        background-color: $c-fg;
+      .cross {
+        position: absolute;
+        z-index: 90;
+        top: 27.2395vw;
+        right: 6.1458vw;
+        width: 100px;
+        height: 100px;
+        transform-origin: top center;
         transform-style: preserve-3d;
+
+        &:before {
+          content: "";
+          display: block;
+          width: 100%;
+          height: 1px;
+          background-color: $c-fg;
+          transform-style: preserve-3d;
+        }
+
+        &:after {
+          content: "";
+          display: block;
+          transform: rotate(90deg);
+          width: 100%;
+          height: 1px;
+          background-color: $c-fg;
+          transform-style: preserve-3d;
+        }
       }
 
-      &:after {
-        content: "";
-        display: block;
-        transform: rotate(90deg);
-        width: 100%;
-        height: 1px;
-        background-color: $c-fg;
-        transform-style: preserve-3d;
+      .project-1, .project-2 , .project-3 {
+
+        &-text {
+          font-size: 0.6875rem;
+          line-height: 1rem;
+          font-family: 'Gridnik';
+          mix-blend-mode: difference;
+          position: absolute;
+          bottom: 4.1666vw;
+          left: 4.1666vw;
+          z-index: 20;
+
+          span {
+            display: block;
+          }
+        }
+
+        width: 36.71875vw;
+        height: 48.9583vw;
+
+        &:hover {
+          cursor: pointer;
+
+          a::after {
+            transform: scaleX(1);
+          }
+
+          img {
+            transform: scale(1.10) rotate(2deg);
+          }
+        }
+
+        &-img {
+
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1s $ease-out;
+          }
+        }
+      }
+
+      .project-1 {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+      .project-2 {
+        z-index: 3;
+        position: absolute;
+        top: 37.5vw;
+        right: 4.16666vw;
+      }
+
+      .project-3 {
+        position: absolute;
+        top: 81.510vw;
+        right: 16.5625vw;
       }
     }
 
-    p {
+    .last-container {
       position: absolute;
-      left: 37.8645vw;
-      top: 15.6875vw;
-      width: 7.552vw;
-      display: block;
+      top: 252.03vw;
+      width: 100vw;
+      height: 32.4791vw;
+      font-size: 0.6875rem;
+      line-height: 1rem;
+      font-family: 'Gridnik';
+
+      .cross {
+        position: absolute;
+        z-index: 90;
+        top: 0;
+        left: 17.03125vw;
+        width: 100px;
+        height: 100px;
+        transform-origin: top center;
+        transform-style: preserve-3d;
+
+        &:before {
+          content: "";
+          display: block;
+          width: 100%;
+          height: 1px;
+          background-color: $c-fg;
+          transform-style: preserve-3d;
+        }
+
+        &:after {
+          content: "";
+          display: block;
+          transform: rotate(90deg);
+          width: 100%;
+          height: 1px;
+          background-color: $c-fg;
+          transform-style: preserve-3d;
+        }
+      }
+
+      p {
+        position: absolute;
+        left: 37.8645vw;
+        top: 15.6875vw;
+        width: 7.552vw;
+        display: block;
+      }
     }
   }
 
@@ -564,8 +572,14 @@ body {
   }
 
   .a-container {
+    position: relative;
     width: 100vw;
-    height: 220vh;
+
+    .footer-wrapper {
+      position: relative;
+      width: 100%;
+      height: 120.8541vw;
+    }
 
     .a-intro {
       font-size: 0.75rem;
@@ -727,6 +741,100 @@ body {
     }
   }
 
+  .p-container {
+    position: relative;
+    width: 100vw;
+
+    .project-content {
+      margin-top: 5.7291vw;
+      margin-bottom: 5.7291vw;
+      width: 74.21875vw;
+      margin-left: 12.890625vw;
+
+      &-img {
+        width: 100%;
+        height: auto;
+        margin-bottom: 2.03125vw;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .project-header {
+      width: 74.21875vw;
+      margin-left: 12.890625vw;
+
+      .line {
+        pointer-events: none;
+        margin-bottom: 5.7291vw;
+        height: 1px;
+        background: $c-fg;
+        width: 74.21875vw;
+        transform: scaleX(0);
+        transform-origin: left;
+      }
+
+      .project-title {
+        overflow: hidden;
+        padding-top: 31.25vw;
+        font-family: Gridnik;
+        font-size: 12.5vw;
+        line-height: 12.5vw;
+      }
+
+      .project-infos {
+        position: relative;
+        display: flex;
+        font-size: 0.75rem;
+        line-height: 1rem;
+        font-family: 'Gridnik';
+
+        .date {
+          width: 4.1666vw;
+        }
+
+        .infos {
+          margin-left: 16.6666vw;
+          width: 28.385vw;
+
+          &-title {
+            margin-bottom: 2.03125vw;
+          }
+
+          &-content {
+            font-family: Suisse;
+            font-size: 40px;
+            line-height: 56px;
+          }
+
+          &-extra {
+            margin-top: 2.03125vw;
+            width: 20.052vw;
+            font-family: Suisse;
+            font-size: 0.875rem;
+            line-height: 1.5rem;
+          }
+        }
+
+        .type {
+          margin-left: 4.1666vw;
+          width: 7.552vw;
+        }
+
+        .number {
+          margin-left: 4.94791vw;
+          width: 4.1666vw;
+
+          span {
+            display: block;
+          }
+        }
+      }
+    }
+  }
 }
 
 html.has-scroll-smooth {

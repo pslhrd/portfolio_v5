@@ -5,13 +5,7 @@ import gsap from 'gsap'
 import LocomotiveScroll from 'locomotive-scroll'
 import barba from '@barba/core'
 
-const scroll = new LocomotiveScroll({
-    el: document.querySelector('[data-scroll-container]'),
-    smooth: true,
-    lerp: 0.1,
-    firefoxMultiplier: 50,
-    touchMultiplier: 2,
-})
+let scroll;
 
 function aboutLaunch() {
   const tl = gsap.timeline()
@@ -42,15 +36,10 @@ function aboutLaunch() {
   .fromTo('.a-cross', {rotation:-25, opacity:0}, {rotation:0, opacity:1, duration:2, ease:'power3.out'}, "-=1")
 }
 
-// aboutLaunch()
-
 function aboutScroll() {
 
   const aTitle = new SplitText(".a-title h1", {type:"lines"})
   const aContent = new SplitText(".a-content p", {type:"lines"})
-
-  console.log(aTitle)
-
   const title = gsap.timeline({paused: true})
   const content = gsap.timeline({paused: true})
 
@@ -69,9 +58,7 @@ function aboutScroll() {
   })
 }
 
-// aboutScroll()
-
-function homeScroll(event, element, i) {
+function homeScroll() {
 
   const pointAppear = gsap.timeline({paused: true})
   const pointAppear2 = gsap.timeline({paused: true})
@@ -79,6 +66,8 @@ function homeScroll(event, element, i) {
   const project = gsap.timeline({paused: true})
 
   gsap.set('[data-scroll-call=project]', {opacity:0, rotation:2, y:'20%'})
+
+  console.log(scroll)
 
   scroll.on('call', function(event, element, i){
 
@@ -122,7 +111,6 @@ function homeScroll(event, element, i) {
       }
   }
 }
-// homeScroll()
 
 function homeLaunch() {
 
@@ -162,4 +150,99 @@ function homeLaunch() {
   .fromTo('.cross', {rotation:-25, opacity:0}, {rotation:0, opacity:1, duration:2, ease:'power3.out'}, "-=1.6")
 }
 
-// homeLaunch()
+function projectLaunch() {
+  const title = new SplitText(".project-title", {type:"words"}), words = title.words;
+  const type = new SplitText(".type", {type:"lines"})
+  const tl = gsap.timeline()
+  const appear = gsap.timeline({paused: true})
+
+  tl
+  .fromTo(words, {y:'100%'}, {y:'0%', duration:1.6, ease:'power3.out', stagger:0.15})
+  .to('.line', {scaleX:1, duration:2, ease:'expo.inOut'}, '-=1')
+  .fromTo('.date, .type, .number, .infos-title, .infos-content', {y:30, opacity:0}, {y:0, opacity:1, duration:1, ease:'power3.out', stagger:0.1}, '-=1.3')
+}
+
+barba.init({
+  transitions: [{
+    name: 'main',
+    once({ next }) {
+      smooth(next.container)
+      homeLaunch()
+    },
+    beforeEnter({ next }) {
+      scroll.destroy()
+      smooth(next.container)
+    },
+    leave(data) {
+      return gsap.to(data.current.container, {
+        opacity: 0,
+        duration:1,
+        ease:'power3.inOut'
+      });
+    },
+    enter(data) {
+      data.current.container.style.display = 'none';
+      scroll.update()
+      return gsap.from(data.next.container, {
+        opacity: 0,
+        duration:1,
+        ease:'power3.inOut'
+      });
+    }
+  }],
+  views: [{
+    namespace: 'home',
+    beforeEnter(){
+      console.log('beforeEnter Home')
+    },
+    afterEnter(){
+      homeScroll()
+    }
+  }, {
+    namespace: 'about',
+    beforeEnter(){
+      aboutLaunch()
+      
+    },
+    afterEnter(){
+      aboutScroll()
+    }
+  }, {
+    namespace: 'project',
+    beforeEnter(){
+      projectLaunch();
+    }
+  }]
+})
+
+function smooth(container) {
+  scroll = new LocomotiveScroll({
+    el: container.querySelector('[data-scroll-container]'),
+    smooth: true
+  });
+}
+
+// function initScroll(){
+//    return new LocomotiveScroll({
+//       el: document.querySelector('[data-scroll-container]'),
+//       smooth: true
+//    });
+// }
+// let smoothScroll = initScroll();
+
+// barba.hooks.beforeEnter(() => {
+//   smoothScroll = initScroll();
+// })
+
+// barba.hooks.beforeLeave((data) => {
+//   smoothScroll.destroy()
+//   body.cursor.style = 'wait';
+// })
+
+// const scroll = new LocomotiveScroll({
+//     el: document.querySelector('[data-scroll-container]'),
+//     smooth: true,
+//     lerp: 0.1,
+//     firefoxMultiplier: 50,
+//     touchMultiplier: 2,
+// })

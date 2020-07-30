@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="./src/assets/fonts/fonts.css">
   <link rel="stylesheet" href="./src/style.scss">
 </head>
-<body>
+<body data-barba="wrapper">
 
   <header>
     <div class="logo"><a href="index.html">Paul Soulhiard</a></div>
@@ -17,86 +17,82 @@
     <div class="line"></div>
   </header>
 
-  <div>
+  <main data-barba="container" data-barba-namespace="home">
 
-    <div class="container" data-scroll-container>
-      <div class="main-project">
+    <div class="i-container" data-scroll-container>
+      <div class="footer-wrapper">
+        <section class="main-project">
 
-        <div class="cross"></div>
+          <div class="cross"></div>
 
-        <div class="main-project-img"  data-scroll data-scroll-speed="-2.2">
-          <img src="/src/assets/images/mission3.png" alt="Mission 3">
-        </div>
-
-        <div class="main-project-text">
-          <span class="return">1. MISSION 3</span>
-          <span class="return">EARLY 2020</span>
-          <span>MUSIC COMPOSITION &</span>
-          <span class="return">INTERACTIVE EXPERIENCE</span>
-          <span class="inline"><a href="project.html">VIEW THE PROJECT</a></span>
-        </div>
-      </div>
-
-      <div class="description">
-
-          <div class="line">…………………………………………………………………………: ………………………………………… ……………………………………………………………………………………………………………. : ………………… ,:        ………………………………. ………………………………………………………………………. ; ………………… ,    ..    …………………………………………………………………………. …………………………………..</div>
-
-        <div class="description-text" data-scroll data-scroll-offset="30%" data-scroll-call="internship">
-          <div class="wrapper"><span>French student at</span></div>
-          <div class="wrapper"><span>gobelins (paris, fr).</span></div>
-          <div class="wrapper"><span>learning interactive</span></div>
-          <div class="wrapper"><span class="description-text-last">
-            design.
-            <div class="internship" data-scroll>(CURRENTLY LOOKING FOR AN INTERNSHIP) .....</div>
-          </span>
+          <div class="main-project-img"  data-scroll data-scroll-speed="-2.2">
+            <img src="/src/assets/images/mission3.png" alt="Mission 3">
           </div>
-        </div>
 
-        <div class="line2">…………………………………………………………………………: ………………………………………… ……………………………………………………………………………………………………………. : ………………… ,:        ………………………………. ………………………………………………………………………. ; ………………… ,    ..    …………………………………………………………………………. …………………………………..</div>
-
-      </div>
-
-      <div class="projects">
-
-        <div class="project-1" data-scroll data-scroll-call="project" data-scroll-offset="30%">
-          <div class="project-1-text">
-            <span class="return">2. THE IRISHMAN</span>
+          <div class="main-project-text">
+            <span class="return">1. MISSION 3</span>
             <span class="return">EARLY 2020</span>
+            <span>MUSIC COMPOSITION &</span>
             <span class="return">INTERACTIVE EXPERIENCE</span>
-            <span class="inline"><a href="#">VIEW THE PROJECT</a></span>
+            <span class="inline"><a href="project.html">VIEW THE PROJECT</a></span>
           </div>
-          <div class="project-1-img">
-            <img src="/src/assets/images/irishman.jpg" alt="The Irishman - Interactive Experience">
+        </section>
+        <section class="description">
+          <div class="line">
+            …………………………………………………………………………: ………………………………………… ……………………………………………………………………………………………………………. : ………………… ,:        ………………………………. ………………………………………………………………………. ; ………………… ,    ..    …………………………………………………………………………. …………………………………..
           </div>
-        </div>
+          <div class="description-text" data-scroll data-scroll-offset="30%" data-scroll-call="internship">
+            <div class="wrapper"><span>French student at</span></div>
+            <div class="wrapper"><span>gobelins (paris, fr).</span></div>
+            <div class="wrapper"><span>learning interactive</span></div>
+            <div class="wrapper"><span class="description-text-last">design.<div class="internship" data-scroll>(CURRENTLY LOOKING FOR AN INTERNSHIP) .....</div></span></div>
+          </div>
+          <div class="line2">
+            …………………………………………………………………………: ………………………………………… ……………………………………………………………………………………………………………. : ………………… ,:        ………………………………. ………………………………………………………………………. ; ………………… ,    ..    …………………………………………………………………………. …………………………………..
+          </div>
+        </section>
+        <section class="projects">
 
-        <div class="project-2" data-scroll data-scroll-call="project" data-scroll-speed="1.2" data-scroll-offset="30%">
-          <div class="project-2-text">
-            <span class="return">3. ÂME TAPISSIER</span>
-            <span class="return">EARLY 2020</span>
-            <span>ARTIST PORTFOLIO MADE</span>
-            <span class="return">AT EXTRA L'AGENCE</span>
-            <span class="inline"><a href="#">VIEW THE PROJECT</a></span>
+          <div class="project-1" data-scroll data-scroll-call="project" data-scroll-offset="30%">
+            <div class="project-1-text">
+              <span class="return">2. THE IRISHMAN</span>
+              <span class="return">EARLY 2020</span>
+              <span class="return">INTERACTIVE EXPERIENCE</span>
+              <span class="inline"><a href="project.html">VIEW THE PROJECT</a></span>
+            </div>
+            <div class="project-1-img">
+              <img src="/src/assets/images/irishman.jpg" alt="The Irishman - Interactive Experience">
+            </div>
           </div>
-          <div class="project-2-img">
-            <img src="/src/assets/images/ame.jpg" alt="Âme Tapisser - Portfolio">
-          </div>
-        </div>
 
-        <div class="cross"></div>
+          <div class="project-2" data-scroll data-scroll-call="project" data-scroll-speed="1.2" data-scroll-offset="30%">
+            <div class="project-2-text">
+              <span class="return">3. ÂME TAPISSIER</span>
+              <span class="return">EARLY 2020</span>
+              <span>ARTIST PORTFOLIO MADE</span>
+              <span class="return">AT EXTRA L'AGENCE</span>
+              <span class="inline"><a href="project.html">VIEW THE PROJECT</a></span>
+            </div>
+            <div class="project-2-img">
+              <img src="/src/assets/images/ame.jpg" alt="Âme Tapisser - Portfolio">
+            </div>
+          </div>
 
-        <div class="project-3" data-scroll data-scroll-call="project" data-scroll-offset="30%">
-          <div class="project-3-text">
-            <span class="return">3. REGULARTYPE</span>
-            <span class="return">EARLY 2020</span>
-            <span>HELP DESIGNERS DISCOVER</span>
-            <span class="return">NEW TYPOGRAPHY</span>
-            <span class="inline"><a href="#">VIEW THE PROJECT</a></span>
+          <div class="cross"></div>
+
+          <div class="project-3" data-scroll data-scroll-call="project" data-scroll-offset="30%">
+            <div class="project-3-text">
+              <span class="return">3. REGULARTYPE</span>
+              <span class="return">EARLY 2020</span>
+              <span>HELP DESIGNERS DISCOVER</span>
+              <span class="return">NEW TYPOGRAPHY</span>
+              <span class="inline"><a href="project.html">VIEW THE PROJECT</a></span>
+            </div>
+            <div class="project-3-img">
+              <img src="/src/assets/images/regular.jpg" alt="Regular-Type.com">
+            </div>
           </div>
-          <div class="project-3-img">
-            <img src="/src/assets/images/regular.jpg" alt="Regular-Type.com">
-          </div>
-        </div>
+        </section>
       </div>
 
       <div class="last-container">
@@ -149,7 +145,7 @@
       </footer>
     </div>
 
-  </div>
+  </main>
 
   <script src="./src/main.js"></script>
 </body>

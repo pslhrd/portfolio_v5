@@ -40,6 +40,17 @@
 }
 
 @font-face {
+	font-family: 'Gridnik';
+	src: url('./FoundryGridnik-Regular.otf') format('OpenType')
+}
+
+@font-face {
+	font-family: 'Gridnik Medium';
+	src: url('./FoundryGridnik-Medium.otf') format('OpenType')
+}
+
+
+@font-face {
 	font-family: 'Ampersand';
 	src: url('./Ampersand.woff') format('WOFF')
 }

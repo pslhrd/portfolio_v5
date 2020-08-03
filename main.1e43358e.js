@@ -19373,11 +19373,44 @@ function aboutScroll() {
 }
 
 function homeScroll() {
+  var desc;
+  var line = document.querySelector('.description .line span');
+  var line2 = document.querySelector('.description .line2 span');
+
+  var appear = _gsap.default.timeline({
+    paused: true
+  });
+
+  var project = _gsap.default.timeline({
+    paused: true
+  });
+
+  _gsap.default.set('[data-scroll-call=project]', {
+    opacity: 0,
+    rotation: 2,
+    y: '20%'
+  });
+
+  function makeid(length) {
+    var result = '';
+    var characters = '…………………………………… ………………………………………………………………………………………………………:. ;.';
+    var charactersLength = characters.length;
+
+    for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result;
+  }
+
+  line.innerHTML = makeid(250);
+  line2.innerHTML = makeid(250);
+
   function lettersHover() {
-    var desc = new _SplitText.default(".description-text", {
+    desc = new _SplitText.default(".description-text", {
       type: "chars, words"
-    }),
-        letters = desc.chars;
+    });
+    var letters = desc.chars;
     var _iteratorNormalCompletion2 = true;
     var _didIteratorError2 = false;
     var _iteratorError2 = undefined;
@@ -19389,10 +19422,10 @@ function homeScroll() {
         var tl = _gsap.default.timeline();
 
         letter.addEventListener('mouseenter', function () {
-          // let rand = letters[Math.floor(Math.random() * letters.length)];
-          tl.set(letter, {
+          var rand = letters[Math.floor(Math.random() * letters.length)];
+          tl.set(rand, {
             opacity: 0
-          }).to(letter, {
+          }).to(rand, {
             opacity: 1,
             duration: 0.01,
             ease: 'power1.out'
@@ -19420,30 +19453,11 @@ function homeScroll() {
   }
 
   lettersHover();
-
-  var pointAppear = _gsap.default.timeline({
-    paused: true
-  });
-
-  var pointAppear2 = _gsap.default.timeline({
-    paused: true
-  });
-
-  var appear = _gsap.default.timeline({
-    paused: true
-  });
-
-  var project = _gsap.default.timeline({
-    paused: true
-  });
-
-  _gsap.default.set('[data-scroll-call=project]', {
-    opacity: 0,
-    rotation: 2,
-    y: '20%'
-  });
-
-  console.log(scroll);
+  var node = document.createElement('span');
+  var textnode = document.createTextNode('(Currently looking for an internship.)');
+  node.appendChild(textnode);
+  node.classList.add('internship');
+  desc.words[0].appendChild(node);
   scroll.on('call', function (event, element, i) {
     if (event === 'project') {
       projectAppear(i);
@@ -19463,100 +19477,6 @@ function homeScroll() {
       ease: 'power3.out'
     });
   }
-
-  var Internship = new _SplitText.default(".internship", {
-    type: "chars, words"
-  }),
-      letters = Internship.chars;
-  var line = new _SplitText.default(".line", {
-    type: "chars"
-  }),
-      points = line.chars;
-  var line2 = new _SplitText.default(".line2", {
-    type: "chars"
-  }),
-      points2 = line2.chars;
-  var mainText = new _SplitText.default(".main-project-text", {
-    type: "chars, words"
-  });
-  pointAppear.fromTo(points, {
-    opacity: 0
-  }, {
-    opacity: 1,
-    duration: 0.01,
-    stagger: 0.01
-  });
-  pointAppear2.fromTo(points2, {
-    opacity: 0
-  }, {
-    opacity: 1,
-    duration: 0.01,
-    stagger: 0.01
-  });
-
-  _gsap.default.set('.description-text span', {
-    y: '110%'
-  });
-
-  appear.to(pointAppear, {
-    duration: 2,
-    progress: 1,
-    ease: 'power4.out'
-  }).to(pointAppear2, {
-    duration: 2,
-    progress: 1,
-    ease: 'power4.out'
-  }, "-=1.9").to('.description-text span', {
-    y: '0%',
-    duration: 1.3,
-    ease: 'power3.out',
-    stagger: 0.15
-  }, "-=1.9");
-  var _iteratorNormalCompletion3 = true;
-  var _didIteratorError3 = false;
-  var _iteratorError3 = undefined;
-
-  try {
-    for (var _iterator3 = letters[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-      var letter = _step3.value;
-      var speed = 3;
-
-      var random = _gsap.default.utils.interpolate(0.1, 0.8, Math.random());
-
-      var time = Math.min((1 / random * 0.1 + random * 0.3) / 1 * speed, 2);
-
-      var duration = _gsap.default.utils.interpolate(0.1, 0.35, Math.random());
-
-      appear.to(letter, {
-        opacity: 1,
-        duration: duration
-      }, time);
-
-      if (Math.random() > 0) {
-        appear.to(letter, {
-          opacity: 0,
-          duration: duration
-        }, time + duration);
-        appear.from(letter, {
-          opacity: 0,
-          duration: duration
-        }, time + duration);
-      }
-    }
-  } catch (err) {
-    _didIteratorError3 = true;
-    _iteratorError3 = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
-        _iterator3.return();
-      }
-    } finally {
-      if (_didIteratorError3) {
-        throw _iteratorError3;
-      }
-    }
-  }
 }
 
 function homeLaunch() {
@@ -19570,13 +19490,13 @@ function homeLaunch() {
   });
 
   scroll.stop();
-  var _iteratorNormalCompletion4 = true;
-  var _didIteratorError4 = false;
-  var _iteratorError4 = undefined;
+  var _iteratorNormalCompletion3 = true;
+  var _didIteratorError3 = false;
+  var _iteratorError3 = undefined;
 
   try {
-    for (var _iterator4 = chars[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-      var char = _step4.value;
+    for (var _iterator3 = chars[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+      var char = _step3.value;
       var speed = 2;
 
       var random = _gsap.default.utils.interpolate(0.1, 0.8, Math.random());
@@ -19602,16 +19522,16 @@ function homeLaunch() {
       }
     }
   } catch (err) {
-    _didIteratorError4 = true;
-    _iteratorError4 = err;
+    _didIteratorError3 = true;
+    _iteratorError3 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
-        _iterator4.return();
+      if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
+        _iterator3.return();
       }
     } finally {
-      if (_didIteratorError4) {
-        throw _iteratorError4;
+      if (_didIteratorError3) {
+        throw _iteratorError3;
       }
     }
   }
@@ -19632,7 +19552,7 @@ function homeLaunch() {
       ease: 'power1.out',
       autoAlpha: 0
     }, "-=4").from('.main-project-img', {
-      duration: 2.6,
+      duration: 2.3,
       ease: 'expo.inOut',
       width: '102vw',
       height: '100vh',
@@ -19731,11 +19651,11 @@ function projectLaunch() {
     duration: 1.6,
     ease: 'power3.out',
     stagger: 0.15
-  }).to('.line', {
+  }, "+=0.8").to('.line', {
     scaleX: 1,
-    duration: 2,
+    duration: 1.8,
     ease: 'expo.inOut'
-  }, '-=1').fromTo('.date, .type, .number, .infos-title, .infos-content', {
+  }, '-=1.2').fromTo('.date, .type, .number, .infos-title, .infos-content', {
     y: 30,
     opacity: 0
   }, {
@@ -19744,16 +19664,75 @@ function projectLaunch() {
     duration: 1,
     ease: 'power3.out',
     stagger: 0.1
+  }, '-=1').fromTo('.image-cover img', {
+    scale: 1.4,
+    autoAlpha: 0
+  }, {
+    scale: 1.2,
+    autoAlpha: 1,
+    duration: 1.5,
+    ease: 'power3.inOut'
   }, '-=1.3');
 }
 
+function Transition() {
+  var tl = _gsap.default.timeline();
+
+  var text = new _SplitText.default(".transition-flex span", {
+    type: "chars"
+  }),
+      letters = text.chars;
+
+  _gsap.default.set('.transition', {
+    clip: 'rect(100vh 100vw 100vh 0vh)'
+  });
+
+  _gsap.default.set('.transition-flex', {
+    rotation: -6,
+    scale: 1.2,
+    autoAlpha: 0.8
+  });
+
+  _gsap.default.set(letters[1], {
+    y: '15%',
+    autoAlpha: 0
+  });
+
+  tl.to('.transition', {
+    clip: 'rect(0vh 100vw 100vh 0vh)',
+    duration: 1.5,
+    ease: 'expo.inOut'
+  }).to('.transition-flex', {
+    rotation: 0,
+    scale: 1,
+    autoAlpha: 1,
+    duration: 2,
+    ease: 'power3.inOut'
+  }, '-=1.5').to(letters[1], {
+    y: '0%',
+    duration: 1.5,
+    autoAlpha: 1,
+    ease: 'power4.inOut'
+  }, '-=1.5').to('.transition-plane', {
+    scaleY: 1,
+    duration: 1.5,
+    ease: 'expo.inOut'
+  }, '-=0.6').to('.transition-flex', {
+    y: '-10%',
+    rotation: 0,
+    duration: 1.5,
+    ease: 'power3.inOut'
+  }, '-=1.5');
+} // Transition()
+
+
 _core.default.init({
+  debug: true,
   transitions: [{
     name: 'main',
     once: function once(_ref) {
       var next = _ref.next;
-      smooth(next.container);
-      homeLaunch();
+      smooth(next.container); // homeLaunch()
     },
     beforeEnter: function beforeEnter(_ref2) {
       var next = _ref2.next;
@@ -19784,12 +19763,112 @@ _core.default.init({
         ease: 'power3.inOut'
       });
     }
+  }, {
+    name: 'projects',
+    from: {
+      namespace: ['home']
+    },
+    to: {
+      namespace: ['project']
+    },
+    beforeEnter: function beforeEnter(_ref3) {
+      var next = _ref3.next;
+
+      var tl = _gsap.default.timeline();
+
+      tl.to('.transition-plane', {
+        scaleY: 1,
+        duration: 1.5,
+        ease: 'expo.inOut'
+      }, "+=0.3").to('.transition-flex', {
+        y: '-10%',
+        rotation: 0,
+        duration: 1.5,
+        ease: 'power3.inOut'
+      }, '-=1.5').to('.transition', {
+        clip: 'rect(0vh 100vw 0vh 0vh)',
+        duration: 1.5,
+        ease: 'power3.inOut'
+      }, '-=1.5').set('.transition-plane', {
+        scaleY: 0
+      });
+      scroll.destroy();
+      smooth(next.container);
+    },
+    beforeLeave: function beforeLeave(data) {
+      var projectNumber = document.querySelector('.transition-flex span');
+      var nb = data.trigger.getAttribute('project-index');
+      projectNumber.innerHTML = nb;
+      console.log(projectNumber);
+
+      var tl = _gsap.default.timeline();
+
+      var text = new _SplitText.default(projectNumber, {
+        type: "chars"
+      }),
+          letters = text.chars;
+
+      _gsap.default.set('.transition', {
+        clip: 'rect(100vh 100vw 100vh 0vh)'
+      });
+
+      _gsap.default.set('.transition-flex', {
+        rotation: -6,
+        scale: 1.2,
+        autoAlpha: 0.8,
+        y: '0%'
+      });
+
+      _gsap.default.set(letters[1], {
+        y: '15%',
+        autoAlpha: 0
+      });
+
+      tl.to('.transition', {
+        clip: 'rect(0vh 100vw 100vh 0vh)',
+        duration: 1.5,
+        ease: 'expo.inOut'
+      }).to('.transition-flex', {
+        rotation: 0,
+        scale: 1,
+        autoAlpha: 1,
+        duration: 2,
+        ease: 'power3.inOut'
+      }, '-=1.5').to(letters[1], {
+        y: '0%',
+        duration: 1.5,
+        autoAlpha: 1,
+        ease: 'power4.inOut'
+      }, '-=1.5');
+    },
+    leave: function leave(data) {
+      if (isMobile.any()) {
+        _gsap.default.to(window, {
+          duration: 2,
+          scrollTo: 0,
+          ease: 'power3.out'
+        });
+      }
+
+      return _gsap.default.to(data.current.container, {
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.inOut'
+      });
+    },
+    enter: function enter(data) {
+      data.current.container.style.display = 'none';
+      scroll.update();
+      return _gsap.default.from(data.next.container, {
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.inOut'
+      });
+    }
   }],
   views: [{
     namespace: 'home',
-    beforeEnter: function beforeEnter() {
-      console.log('beforeEnter Home');
-    },
+    beforeEnter: function beforeEnter() {},
     afterEnter: function afterEnter() {
       homeScroll();
     }
@@ -19845,7 +19924,7 @@ function smooth(container) {
 //       smooth(next.container)
 //     },
 //     beforeLeave(data) {
-//       let projectImg = data.trigger.childNodes[1]
+//       let projectImg = data.go.childNodes[1]
 //       const tl = gsap.timeline()
 //       console.log(projectImg)
 //       scroll.stop()
@@ -19893,7 +19972,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65256" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51595" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -143,7 +143,6 @@ body header .line {
   }
 }
 body footer {
-  pointer-events: none;
   width: 100vw;
   bottom: 0;
   z-index: 100;
@@ -220,7 +219,6 @@ body footer .loading-square3 {
   background-color: var(--c-fg);
 }
 body .transition {
-  pointer-events: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -228,9 +226,41 @@ body .transition {
   height: 100vh;
   background-color: white;
   transform-origin: bottom center;
-  transform: scaleY(0);
   opacity: 1;
   z-index: 120;
+  overflow: hidden;
+  clip: rect(100vh 100vw 100vh 0vh);
+}
+body .transition-plane {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  transform: scaleY(0);
+  transform-origin: bottom;
+}
+body .transition-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+body .transition-wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+}
+body .transition span {
+  display: block;
+  margin-top: 6vw;
+  font-size: 50vw;
+  color: black;
+  font-family: Gridnik Medium;
 }
 body .i-container {
   position: relative;
@@ -245,7 +275,7 @@ body .i-container {
 body .i-container .footer-wrapper {
   position: relative;
   width: 100%;
-  height: 284.4791vw;
+  height: 309.4791vw;
 }
 @media (max-width: 900px) {
   body .i-container .footer-wrapper {
@@ -337,21 +367,27 @@ body .i-container .description {
 }
 @media (max-width: 900px) {
   body .i-container .description {
-    top: 150vh;
+    top: 160vh;
     width: calc(100vw - 80px);
     margin-left: 40px;
   }
 }
 body .i-container .description .line {
+  position: relative;
   pointer-events: none;
   font-family: Suisse Mono Thin;
   letter-spacing: -0.15362vw;
   margin-bottom: 2.6041vw;
   font-size: 0.7346vw;
-  line-height: 0;
-  height: 0px;
-  background: var(--c-fg);
   width: 74.21875vw;
+  overflow: hidden;
+  height: 20px;
+}
+body .i-container .description .line span {
+  position: absolute;
+  top: 0;
+  white-space: nowrap;
+  left: 0;
 }
 @media (max-width: 900px) {
   body .i-container .description .line {
@@ -359,15 +395,21 @@ body .i-container .description .line {
   }
 }
 body .i-container .description .line2 {
+  position: relative;
   pointer-events: none;
   font-family: Suisse Mono Thin;
   letter-spacing: -0.15362vw;
   margin-top: 1.6666vw;
   font-size: 0.7346vw;
-  line-height: 0;
-  height: 0px;
-  background: var(--c-fg);
   width: 74.21875vw;
+  overflow: hidden;
+  height: 20px;
+}
+body .i-container .description .line2 span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
 }
 @media (max-width: 900px) {
   body .i-container .description .line2 {
@@ -375,8 +417,8 @@ body .i-container .description .line2 {
   }
 }
 body .i-container .description-text {
-  font-size: 5.7291vw;
-  line-height: 6.25vw;
+  font-size: 12.5vw;
+  line-height: 12.5vw;
   height: 100%;
   text-transform: uppercase;
   position: relative;
@@ -385,7 +427,7 @@ body .i-container .description-text {
 }
 @media (max-width: 900px) {
   body .i-container .description-text {
-    font-size: 45px;
+    font-size: 60px;
     line-height: 60px;
   }
 }
@@ -427,7 +469,7 @@ body .i-container .projects {
   width: 74.21875vw;
   height: 130.46875vw;
   position: absolute;
-  top: 121.5625vw;
+  top: 146.5625vw;
 }
 @media (max-width: 900px) {
   body .i-container .projects {
@@ -555,7 +597,7 @@ body .i-container .projects .project-3 {
 }
 body .i-container .last-container {
   position: absolute;
-  top: 252.03vw;
+  top: 277.03vw;
   width: 100vw;
   height: 32.4791vw;
   font-size: 0.6875rem;
@@ -872,10 +914,6 @@ body .p-container .project-content img {
   width: 100%;
   height: 100%;
 }
-body .p-container .project-header {
-  width: 74.21875vw;
-  margin-left: 12.890625vw;
-}
 @media (max-width: 900px) {
   body .p-container .project-header {
     width: calc(100vw - 80px);
@@ -890,6 +928,7 @@ body .p-container .project-header .line {
   width: 74.21875vw;
   transform: scaleX(0);
   transform-origin: left;
+  margin-left: 12.890625vw;
 }
 body .p-container .project-header .project-title {
   overflow: hidden;
@@ -897,6 +936,7 @@ body .p-container .project-header .project-title {
   font-family: Gridnik;
   font-size: 12.5vw;
   line-height: 12.5vw;
+  margin-left: 12.890625vw;
 }
 @media (max-width: 900px) {
   body .p-container .project-header .project-title {
@@ -905,12 +945,26 @@ body .p-container .project-header .project-title {
     padding-top: 60vh;
   }
 }
+body .p-container .project-header .image-cover {
+  width: 100vw;
+  height: 95vh;
+  overflow: hidden;
+}
+body .p-container .project-header .image-cover img {
+  transform: scale(1.2);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
 body .p-container .project-header .project-infos {
   position: relative;
   display: flex;
   font-size: 12px;
   line-height: 12px;
   font-family: "Gridnik";
+  margin-left: 12.890625vw;
+  margin-bottom: 5.7291vw;
 }
 @media (max-width: 900px) {
   body .p-container .project-header .project-infos {

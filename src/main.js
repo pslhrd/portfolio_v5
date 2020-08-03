@@ -27,7 +27,7 @@ const isMobile = {
     any: function() {
         return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
     }
-};
+}
 
 let scroll;
 
@@ -84,30 +84,50 @@ function aboutScroll() {
 
 function homeScroll() {
 
-  function lettersHover(){
-    const desc = new SplitText(".description-text", {type:"chars, words"}), letters = desc.chars;
-
-    for (const letter of letters) {
-      const tl = gsap.timeline()
-      letter.addEventListener('mouseenter', () => {
-        // let rand = letters[Math.floor(Math.random() * letters.length)];
-        tl
-        .set(letter, {opacity:0})
-        .to(letter, {opacity:1, duration:0.01, ease:'power1.out'}, '+=1.2')
-      })
-    }
-  }
-
-  lettersHover()
-
-  const pointAppear = gsap.timeline({paused: true})
-  const pointAppear2 = gsap.timeline({paused: true})
+  let desc;
+  const line = document.querySelector('.description .line span')
+  const line2 = document.querySelector('.description .line2 span')
   const appear = gsap.timeline({paused: true})
   const project = gsap.timeline({paused: true})
 
   gsap.set('[data-scroll-call=project]', {opacity:0, rotation:2, y:'20%'})
 
-  console.log(scroll)
+  function makeid(length) {
+     var result           = '';
+     var characters       = '…………………………………… ………………………………………………………………………………………………………:. ;.';
+     var charactersLength = characters.length;
+     for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+     }
+     return result;
+  }
+
+  line.innerHTML = makeid(250)
+  line2.innerHTML = makeid(250)
+
+
+  function lettersHover(){
+    desc = new SplitText(".description-text", {type:"chars, words"})
+    let letters = desc.chars
+
+    for (const letter of letters) {
+      const tl = gsap.timeline()
+      letter.addEventListener('mouseenter', () => {
+        let rand = letters[Math.floor(Math.random() * letters.length)];
+        tl
+        .set(rand, {opacity:0})
+        .to(rand, {opacity:1, duration:0.01, ease:'power1.out'}, '+=1.2')
+      })
+    }
+  }
+  lettersHover()
+
+  const node = document.createElement('span')
+  const textnode = document.createTextNode('(Currently looking for an internship.)')
+  node.appendChild(textnode)
+  node.classList.add('internship')
+
+  desc.words[0].appendChild(node)
 
   scroll.on('call', function(event, element, i){
 
@@ -122,34 +142,6 @@ function homeScroll() {
 
   function projectAppear (i) {
     gsap.to(i.el, {rotation:0,y:'0%', opacity:1, duration:1.3, ease:'power3.out'})
-  }
-
-  const Internship = new SplitText(".internship", {type:"chars, words"}), letters = Internship.chars;
-  const line = new SplitText(".line", {type:"chars"}), points = line.chars;
-  const line2 = new SplitText(".line2", {type:"chars"}), points2 = line2.chars;
-
-  const mainText = new SplitText(".main-project-text", {type:"chars, words"})
-
-  pointAppear.fromTo(points, {opacity:0}, {opacity:1, duration:0.01, stagger:0.01})
-  pointAppear2.fromTo(points2, {opacity:0}, {opacity:1, duration:0.01, stagger:0.01})
-
-  gsap.set('.description-text span', {y:'110%'})
-  appear
-  .to(pointAppear,{ duration:2, progress:1, ease:'power4.out'})
-  .to(pointAppear2,{ duration:2, progress:1, ease:'power4.out'}, "-=1.9")
-  .to('.description-text span', {y:'0%', duration:1.3, ease:'power3.out', stagger:0.15}, "-=1.9")
-
-  for (const letter of letters) {
-      const speed = 3
-      const random = gsap.utils.interpolate(0.1, 0.8, Math.random())
-      const time = Math.min((((1 / random) * 0.1 + random * 0.3) / 1) * speed, 2)
-      const duration = gsap.utils.interpolate(0.1, 0.35, Math.random())
-      appear.to(letter, { opacity:1, duration }, time);
-
-      if (Math.random() > 0) {
-          appear.to(letter, { opacity:0, duration }, time + duration);
-          appear.from(letter, { opacity:0, duration }, time + duration);
-      }
   }
 }
 
@@ -184,7 +176,7 @@ function homeLaunch() {
     .set('.cross', {opacity:0})
     .from('.main-project-img img', {duration: 4, ease:'power3.out', scale:1.15})
     .from('.main-project-img img', {duration: 4, ease:'power1.out', autoAlpha:0}, "-=4")
-    .from('.main-project-img', {duration:2.6, ease:'expo.inOut', width:'102vw', height:'100vh', top:'-10px', left:'0'}, 2)
+    .from('.main-project-img', {duration:2.3, ease:'expo.inOut', width:'102vw', height:'100vh', top:'-10px', left:'0'}, 2)
     .add(function(){scroll.start()}, "-=1")
     .fromTo(introText, {opacity:0}, {y:'0px',opacity:1, duration:0.2, ease:'power3.out', stagger:0.2}, "-=1.4")
     .fromTo('.line', {scaleX:0}, {scaleX:1, duration:1.2, ease:'power4.out'}, "-=0.8")
@@ -211,12 +203,30 @@ function projectLaunch() {
   const appear = gsap.timeline({paused: true})
 
   tl
-  .fromTo(words, {y:'100%'}, {y:'0%', duration:1.6, ease:'power3.out', stagger:0.15})
-  .to('.line', {scaleX:1, duration:2, ease:'expo.inOut'}, '-=1')
-  .fromTo('.date, .type, .number, .infos-title, .infos-content', {y:30, opacity:0}, {y:0, opacity:1, duration:1, ease:'power3.out', stagger:0.1}, '-=1.3')
+  .fromTo(words, {y:'100%'}, {y:'0%', duration:1.6, ease:'power3.out', stagger:0.15}, "+=0.8")
+  .to('.line', {scaleX:1, duration:1.8, ease:'expo.inOut'}, '-=1.2')
+  .fromTo('.date, .type, .number, .infos-title, .infos-content', {y:30, opacity:0}, {y:0, opacity:1, duration:1, ease:'power3.out', stagger:0.1}, '-=1')
+  .fromTo('.image-cover img', {scale:1.4, autoAlpha:0}, {scale:1.2, autoAlpha:1, duration:1.5, ease:'power3.inOut'}, '-=1.3')
 }
 
+function Transition() {
+  const tl = gsap.timeline()
+  const text = new SplitText(".transition-flex span", {type:"chars"}), letters = text.chars;
+  gsap.set('.transition', {clip:'rect(100vh 100vw 100vh 0vh)'})
+  gsap.set('.transition-flex', {rotation:-6, scale:1.2, autoAlpha:0.8})
+  gsap.set(letters[1], {y:'15%', autoAlpha:0})
+  tl
+  .to('.transition', {clip:'rect(0vh 100vw 100vh 0vh)', duration:1.5, ease:'expo.inOut'})
+  .to('.transition-flex', {rotation:0, scale:1, autoAlpha:1, duration:2, ease:'power3.inOut'}, '-=1.5')
+  .to(letters[1], {y:'0%', duration:1.5, autoAlpha:1, ease:'power4.inOut'}, '-=1.5')
+  .to('.transition-plane', {scaleY:1, duration:1.5, ease:'expo.inOut'}, '-=0.6')
+  .to('.transition-flex', {y:'-10%', rotation:0, duration:1.5, ease:'power3.inOut'}, '-=1.5')
+}
+
+// Transition()
+
 barba.init({
+  debug: true,
   transitions: [{
     name: 'main',
     once({ next }) {
@@ -238,11 +248,50 @@ barba.init({
       scroll.update()
       return gsap.from(data.next.container, {opacity: 0,duration:1,ease:'power3.inOut'})
     }
+  }, {
+    name: 'projects',
+    from: {namespace:['home']},
+    to: {namespace:['project']},
+    beforeEnter({ next }) {
+      const tl = gsap.timeline()
+      tl
+      .to('.transition-plane', {scaleY:1, duration:1.5, ease:'expo.inOut'}, "+=0.3")
+      .to('.transition-flex', {y:'-10%', rotation:0, duration:1.5, ease:'power3.inOut'}, '-=1.5')
+      .to('.transition', {clip:'rect(0vh 100vw 0vh 0vh)', duration:1.5, ease:'power3.inOut'}, '-=1.5')
+      .set('.transition-plane', {scaleY:0})
+      scroll.destroy()
+      smooth(next.container)
+    },
+    beforeLeave(data) {
+      const projectNumber = document.querySelector('.transition-flex span')
+      let nb = data.trigger.getAttribute('project-index')
+      projectNumber.innerHTML = nb
+      console.log(projectNumber)
+      const tl = gsap.timeline()
+      const text = new SplitText(projectNumber, {type:"chars"}), letters = text.chars;
+      gsap.set('.transition', {clip:'rect(100vh 100vw 100vh 0vh)'})
+      gsap.set('.transition-flex', {rotation:-6, scale:1.2, autoAlpha:0.8, y:'0%'})
+      gsap.set(letters[1], {y:'15%', autoAlpha:0})
+      tl
+      .to('.transition', {clip:'rect(0vh 100vw 100vh 0vh)', duration:1.5, ease:'expo.inOut'})
+      .to('.transition-flex', {rotation:0, scale:1, autoAlpha:1, duration:2, ease:'power3.inOut'}, '-=1.5')
+      .to(letters[1], {y:'0%', duration:1.5, autoAlpha:1, ease:'power4.inOut'}, '-=1.5')
+    },
+    leave(data) {
+      if (isMobile.any()) {
+        gsap.to(window, {duration: 2, scrollTo: 0, ease:'power3.out'});
+      }
+      return gsap.to(data.current.container, {opacity: 0,duration:1,ease:'power3.inOut'})
+    },
+    enter(data) {
+      data.current.container.style.display = 'none';
+      scroll.update()
+      return gsap.from(data.next.container, {opacity: 0,duration:1,ease:'power3.inOut'})
+    }
   }],
   views: [{
     namespace: 'home',
     beforeEnter(){
-      console.log('beforeEnter Home')
     },
     afterEnter(){
       homeScroll()
@@ -306,7 +355,7 @@ function smooth(container) {
 //       smooth(next.container)
 //     },
 //     beforeLeave(data) {
-//       let projectImg = data.trigger.childNodes[1]
+//       let projectImg = data.go.childNodes[1]
 //       const tl = gsap.timeline()
 //       console.log(projectImg)
 //       scroll.stop()

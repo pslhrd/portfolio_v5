@@ -57,7 +57,6 @@ body {
     }
   }
 
-
   a,
   button.is-a {
     text-transform: uppercase;
@@ -168,7 +167,6 @@ body {
   }
 
   footer {
-    pointer-events: none;
     width: 100vw;
     bottom: 0;
     z-index: 100;
@@ -281,7 +279,7 @@ body {
   }
 
   .transition {
-    pointer-events: none;
+    // pointer-events: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -289,9 +287,46 @@ body {
     height: 100vh;
     background-color: white;
     transform-origin: bottom center;
-    transform: scaleY(0);
     opacity: 1;
     z-index: 120;
+    overflow:hidden;
+    clip: rect(100vh 100vw 100vh 0vh);
+
+    &-plane {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: black;
+      transform: scaleY(0);
+      transform-origin: bottom;
+    }
+
+    &-flex {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    &-wrapper {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    span {
+      display: block;
+      margin-top: 6vw;
+      font-size: 50vw;
+      color: black;
+      font-family: Gridnik Medium;
+    }
+
   }
 
   .i-container {
@@ -305,7 +340,7 @@ body {
     .footer-wrapper {
       position: relative;
       width: 100%;
-      height: 284.4791vw;
+      height: 309.4791vw;
 
       @include mobile {
         height: 420vh;
@@ -401,21 +436,28 @@ body {
       height: max-content;
 
       @include mobile {
-        top: 150vh;
+        top: 160vh;
         width: calc(100vw - 80px);
         margin-left: 40px;
       }
 
         .line {
+          position: relative;
           pointer-events: none;
           font-family: Suisse Mono Thin;
           letter-spacing: -0.15362vw;
           margin-bottom: 2.6041vw;
           font-size: 0.7346vw;
-          line-height: 0;
-          height: 0px;
-          background: $c-fg;
           width: 74.21875vw;
+          overflow: hidden;
+          height: 20px;
+
+          span {
+            position: absolute;
+            top: 0;
+            white-space: nowrap;
+            left: 0;
+          }
 
           @include mobile {
             display: none;
@@ -423,15 +465,23 @@ body {
         }
 
         .line2 {
+          position: relative;
           pointer-events: none;
           font-family: Suisse Mono Thin;
           letter-spacing: -0.15362vw;
           margin-top: 1.6666vw;
           font-size: 0.7346vw;
-          line-height: 0;
-          height: 0px;
-          background: $c-fg;
           width: 74.21875vw;
+          overflow: hidden;
+          height: 20px;
+
+          span {
+            position: absolute;
+            top: 0;
+            left: 0;
+            white-space: nowrap;
+          }
+
 
           @include mobile {
             display: none;
@@ -439,8 +489,8 @@ body {
         }
 
       &-text {
-        font-size: 5.7291vw;
-        line-height: 6.25vw;
+        font-size: 12.5vw;
+        line-height: 12.5vw;
         height: 100%;
         text-transform: uppercase;
         position: relative;
@@ -448,7 +498,7 @@ body {
         cursor: default;
 
         @include mobile {
-          font-size: 45px;
+          font-size: 60px;
           line-height: 60px;
         }
 
@@ -494,7 +544,7 @@ body {
       width: 74.21875vw;
       height: 130.46875vw;
       position: absolute;
-      top: 121.5625vw;
+      top: 146.5625vw;
 
       @include mobile {
         top: 220vh;
@@ -633,7 +683,7 @@ body {
 
     .last-container {
       position: absolute;
-      top: 252.03vw;
+      top: 277.03vw;
       width: 100vw;
       height: 32.4791vw;
       font-size: 0.6875rem;
@@ -973,8 +1023,6 @@ body {
     }
 
     .project-header {
-      width: 74.21875vw;
-      margin-left: 12.890625vw;
 
       @include mobile {
         width: calc(100vw - 80px);
@@ -989,6 +1037,7 @@ body {
         width: 74.21875vw;
         transform: scaleX(0);
         transform-origin: left;
+        margin-left: 12.890625vw;
       }
 
       .project-title {
@@ -997,11 +1046,26 @@ body {
         font-family: Gridnik;
         font-size: 12.5vw;
         line-height: 12.5vw;
+        margin-left: 12.890625vw;
 
         @include mobile {
           font-size: 120px;
           line-height: 120px;
           padding-top: 60vh;
+        }
+      }
+
+      .image-cover {
+        width: 100vw;
+        height: 95vh;
+        overflow: hidden;
+
+        img {
+          transform: scale(1.2);
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
         }
       }
 
@@ -1011,6 +1075,8 @@ body {
         font-size: 12px;
         line-height: 12px;
         font-family: 'Gridnik';
+        margin-left: 12.890625vw;
+        margin-bottom: 5.7291vw;
 
         @include mobile {
           flex-direction: column;

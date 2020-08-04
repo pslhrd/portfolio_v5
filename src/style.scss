@@ -9,8 +9,6 @@ $c-set-fg: #FFFFFF;
 $c-bg: var(--c-bg);
 $c-fg: var(--c-fg);
 
-$ease-out: cubic-bezier(.165, .84, .44, 1);
-
 @mixin mobile {
   @media (max-width: 900px) { @content; }
 }
@@ -23,7 +21,7 @@ $ease-out: cubic-bezier(.165, .84, .44, 1);
   @media (max-width: 1300px) { @content; }
 }
 
-$ease-out: cubic-bezier(.165, .84, .44, 1);
+$ease-out: cubic-bezier(.80,0,.20,1);
 
 .dark-mode {
   --c-bg: #{$c-set-fg};
@@ -309,6 +307,10 @@ body {
       align-items: center;
       width: 100vw;
       height: 100vh;
+
+      span {
+        white-space: nowrap;
+      }
     }
 
     &-wrapper {
@@ -340,7 +342,7 @@ body {
     .footer-wrapper {
       position: relative;
       width: 100%;
-      height: 309.4791vw;
+      height: 359.4791vw;
 
       @include mobile {
         height: 420vh;
@@ -407,6 +409,7 @@ body {
       &-img {
         position: absolute;
         right: 0;
+        overflow: hidden;
         top: 20.3125vw;
         width: 57.96875vw;
         height: 64.4270vw;
@@ -588,10 +591,11 @@ body {
         }
       }
 
-      .project-1, .project-2 , .project-3 {
+      .project-1, .project-2 , .project-3, .project-4 {
 
 
         &-text {
+          opacity: 0;
           font-size: 0.6875rem;
           line-height: 1rem;
           font-family: 'Gridnik';
@@ -602,8 +606,7 @@ body {
           z-index: 20;
 
           @include mobile {
-            font-size: 12px;
-            line-height: 12px;
+            display: none;
           }
 
           span {
@@ -660,8 +663,8 @@ body {
       .project-2 {
         z-index: 3;
         position: absolute;
-        top: 37.5vw;
-        right: 4.16666vw;
+        top: 42.5vw;
+        right: 8.33332vw;
 
         @include mobile {
           top: 45vh;
@@ -670,9 +673,22 @@ body {
       }
 
       .project-3 {
+        z-index: 2;
         position: absolute;
-        top: 81.510vw;
-        right: 16.5625vw;
+        top: 90.510vw;
+        left: 8.33332vw;
+
+        @include mobile {
+          top: 90vh;
+          right: 20vw;
+        }
+      }
+
+      .project-4 {
+        z-index: 1;
+        position: absolute;
+        top: 131.510vw;
+        right: 0vw;
 
         @include mobile {
           top: 90vh;
@@ -683,7 +699,7 @@ body {
 
     .last-container {
       position: absolute;
-      top: 277.03vw;
+      top: 327.03vw;
       width: 100vw;
       height: 32.4791vw;
       font-size: 0.6875rem;
@@ -787,7 +803,7 @@ body {
     }
   }
 
-  .a-container {
+.a-container {
     position: relative;
     width: 100vw;
     overflow-x:hidden;
@@ -896,7 +912,7 @@ body {
     }
 
     .a-title {
-      font-family: Suisse;
+      font-family: Gridnik;
       position: absolute;
       top: 76.9791vw;
       width: 53.38541vw;
@@ -912,7 +928,7 @@ body {
     }
 
     .a-content {
-      font-family: Suisse;
+      font-family: Gridnik;
       position: absolute;
       left: 46.19791vw;
       top: 95.677vw;
@@ -1026,7 +1042,6 @@ body {
 
       @include mobile {
         width: calc(100vw - 80px);
-        margin-left: 40px;
       }
 
       .line {
@@ -1038,20 +1053,25 @@ body {
         transform: scaleX(0);
         transform-origin: left;
         margin-left: 12.890625vw;
+
+        @include mobile {
+          margin-top: 5.7291vw;
+        }
       }
 
       .project-title {
         overflow: hidden;
-        padding-top: 31.25vw;
+        padding-top: 41.25vh;
         font-family: Gridnik;
         font-size: 12.5vw;
         line-height: 12.5vw;
         margin-left: 12.890625vw;
+        width: 74.21875vw;
 
         @include mobile {
-          font-size: 120px;
-          line-height: 120px;
-          padding-top: 60vh;
+          font-size: 50px;
+          line-height: 50px;
+          padding-top: 35vh;
         }
       }
 
@@ -1178,30 +1198,46 @@ html.has-scroll-dragging {
 .has-scroll-smooth [data-scroll-container] { }
 
 .c-scrollbar {
+  display: none;
   position: absolute;
-  right: 0;
-  top: 0;
-  width: 11px;
-  height: 100vh;
+  right: 4.53125vw;;
+  bottom: 50px;
+  width: 1px;
+  height: 5vw;
+  background-color: white;
   transform-origin: center right;
   transition: transform 0.3s, opacity 0.3s;
-  opacity: 0; }
-  .c-scrollbar:hover {
-    transform: scaleX(1.45); }
-  .c-scrollbar:hover, .has-scroll-scrolling .c-scrollbar, .has-scroll-dragging .c-scrollbar {
-    opacity: 1; }
+  opacity: 1;
+
+  &:before {
+    content: '';
+    width: 10px;
+    height: 1px;
+    position: absolute;
+    top: 0;
+    background-color: white;
+    transform: translateX(-100%);
+  }
+
+  &:after {
+    content: '';
+    width: 10px;
+    height: 1px;
+    position: absolute;
+    bottom: 0;
+    background-color: white;
+    transform: translateX(-100%);
+  }
+}
 
 .c-scrollbar_thumb {
   position: absolute;
   top: 0;
   right: 0;
-  background-color: black;
-  opacity: 0.5;
-  width: 7px;
-  border-radius: 10px;
-  margin: 2px;
-  cursor: -webkit-grab;
-  cursor: grab; }
-  .has-scroll-dragging .c-scrollbar_thumb {
-    cursor: -webkit-grabbing;
-    cursor: grabbing; }
+  margin-right: 5px;
+  height : 0;
+  width : 0;
+ border-top : 4px solid transparent;
+ border-bottom : 4px solid transparent;
+ border-left : 7px solid white;
+}

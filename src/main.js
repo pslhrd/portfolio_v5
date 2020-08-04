@@ -1,10 +1,9 @@
-import Smooth from 'smooth-scrolling'
-import Custom from './custom'
 import SplitText from './SplitText'
 import { ScrollToPlugin } from 'gsap/all'
 import gsap from 'gsap'
 import LocomotiveScroll from 'locomotive-scroll'
 import barba from '@barba/core'
+import barbaPrefetch from '@barba/prefetch'
 
 gsap.registerPlugin(ScrollToPlugin)
 
@@ -55,20 +54,13 @@ function aboutLaunch() {
   }
 
   tl
-  .fromTo(aNum, {y:'100%'}, {y:'0%', duration:1.3, ease:'power3.out', stagger:0.1})
-  .add(aText.play(), "-=1.9")
-  .fromTo('.a-cross', {rotation:-25, opacity:0}, {rotation:0, opacity:1, duration:2, ease:'power3.out'}, "-=1")
+  .fromTo(aNum, {y:'100%'}, {y:'0%', duration:1.6, ease:'power3.out', stagger:0.15}, "+=0.6")
+  .add(aText.play(), "-=1.8")
+  .fromTo('.a-cross', {rotation:-25, opacity:0}, {rotation:0, opacity:1, duration:2, ease:'power3.out'}, "-=0.9")
 }
 
 function aboutScroll() {
 
-  const aTitle = new SplitText(".a-title h1", {type:"lines"})
-  const aContent = new SplitText(".a-content p", {type:"lines"})
-  const title = gsap.timeline({paused: true})
-  const content = gsap.timeline({paused: true})
-
-  title.fromTo(aTitle.lines, {opacity:0, y:100}, {opacity:1,y:0, duration:1.3, stagger:0.1, ease:'power3.out'})
-  content.fromTo(aContent.lines, {opacity:0, y:30}, {opacity:1,y:0, duration:1.3, stagger:0.1, ease:'power3.out'})
 
   scroll.on('call', function(event, element, i){
 
@@ -87,10 +79,9 @@ function homeScroll() {
   let desc;
   const line = document.querySelector('.description .line span')
   const line2 = document.querySelector('.description .line2 span')
-  const appear = gsap.timeline({paused: true})
   const project = gsap.timeline({paused: true})
 
-  gsap.set('[data-scroll-call=project]', {opacity:0, rotation:2, y:'20%'})
+  gsap.set('[data-scroll-call=project]', {autoAlpha:0})
 
   function makeid(length) {
      var result           = '';
@@ -134,14 +125,10 @@ function homeScroll() {
     if (event === 'project') {
       projectAppear(i)
     }
-
-    if (event === 'internship') {
-      appear.play()
-    }
   })
 
   function projectAppear (i) {
-    gsap.to(i.el, {rotation:0,y:'0%', opacity:1, duration:1.3, ease:'power3.out'})
+    gsap.to(i.el, {autoAlpha:1, duration:1.5, ease:'power3.out'})
   }
 }
 
@@ -179,7 +166,7 @@ function homeLaunch() {
     .from('.main-project-img', {duration:2.3, ease:'expo.inOut', width:'102vw', height:'100vh', top:'-10px', left:'0'}, 2)
     .add(function(){scroll.start()}, "-=1")
     .fromTo(introText, {opacity:0}, {y:'0px',opacity:1, duration:0.2, ease:'power3.out', stagger:0.2}, "-=1.4")
-    .fromTo('.line', {scaleX:0}, {scaleX:1, duration:1.2, ease:'power4.out'}, "-=0.8")
+    .fromTo('header .line', {scaleX:0}, {scaleX:1, duration:1.2, ease:'power4.out'}, "-=0.8")
     .add(mainText.play(), "-=2")
     .fromTo('.cross', {rotation:-25, opacity:0}, {rotation:0, opacity:1, duration:2, ease:'power3.out'}, "-=1.6")
   } else {
@@ -190,7 +177,7 @@ function homeLaunch() {
     .from('.main-project-img', {duration:2.6, ease:'expo.inOut', width:'102vw', height:'70vw', top:'-10px', left:'0'}, 2)
     .add(function(){scroll.start()}, "-=1")
     .fromTo(introText, {opacity:0}, {y:'0px',opacity:1, duration:0.2, ease:'power3.out', stagger:0.2}, "-=1.4")
-    .fromTo('.line', {scaleX:0}, {scaleX:1, duration:1.2, ease:'power4.out'}, "-=0.8")
+    .fromTo('header .line', {scaleX:0}, {scaleX:1, duration:1.2, ease:'power4.out'}, "-=0.8")
     .add(mainText.play(), "-=2")
     .fromTo('.cross', {rotation:-25, opacity:0}, {rotation:0, opacity:1, duration:2, ease:'power3.out'}, "-=1.6")
   }
@@ -209,21 +196,35 @@ function projectLaunch() {
   .fromTo('.image-cover img', {scale:1.4, autoAlpha:0}, {scale:1.2, autoAlpha:1, duration:1.5, ease:'power3.inOut'}, '-=1.3')
 }
 
-function Transition() {
+function homeEnter(){
+  const mySplitText = new SplitText(".main-project-text", {type:"chars, words"}),chars = mySplitText.chars;
+  const mainText = gsap.timeline({paused: true})
+
   const tl = gsap.timeline()
-  const text = new SplitText(".transition-flex span", {type:"chars"}), letters = text.chars;
-  gsap.set('.transition', {clip:'rect(100vh 100vw 100vh 0vh)'})
-  gsap.set('.transition-flex', {rotation:-6, scale:1.2, autoAlpha:0.8})
-  gsap.set(letters[1], {y:'15%', autoAlpha:0})
+
+  for (const char of chars) {
+      const speed = 2
+      const random = gsap.utils.interpolate(0.1, 0.8, Math.random())
+      const time = Math.min((((1 / random) * 0.1 + random * 0.3) / 1.4) * speed, 2)
+      const duration = gsap.utils.interpolate(0.1, 0.35, Math.random())
+
+      mainText.from(char, { opacity:0, duration }, time);
+
+      if (Math.random() > .75) {
+          mainText.to(char, { opacity:0, duration }, time + duration);
+          mainText.from(char, { opacity:0, duration }, time + duration);
+      }
+  }
+
   tl
-  .to('.transition', {clip:'rect(0vh 100vw 100vh 0vh)', duration:1.5, ease:'expo.inOut'})
-  .to('.transition-flex', {rotation:0, scale:1, autoAlpha:1, duration:2, ease:'power3.inOut'}, '-=1.5')
-  .to(letters[1], {y:'0%', duration:1.5, autoAlpha:1, ease:'power4.inOut'}, '-=1.5')
-  .to('.transition-plane', {scaleY:1, duration:1.5, ease:'expo.inOut'}, '-=0.6')
-  .to('.transition-flex', {y:'-10%', rotation:0, duration:1.5, ease:'power3.inOut'}, '-=1.5')
+  .fromTo('.main-project-img img', {scale:1.3, autoAlpha:0}, {scale:1,autoAlpha:1, rotation:0, ease:'power3.out', duration:2})
+  .add(mainText.play(), "-=1.8")
+  .fromTo('.cross', {rotation:-25, opacity:0}, {rotation:0, opacity:1, duration:2, ease:'power3.out'}, "-=1.3")
+
 }
 
-// Transition()
+
+barba.use(barbaPrefetch)
 
 barba.init({
   debug: true,
@@ -236,6 +237,109 @@ barba.init({
     beforeEnter({ next }) {
       scroll.destroy()
       smooth(next.container)
+    },
+    leave(data) {
+      if (isMobile.any()) {
+        gsap.to(window, {duration: 2, scrollTo: 0, ease:'power3.out'});
+      }
+      return gsap.to(data.current.container, {opacity: 0,duration:1,ease:'power3.inOut'})
+    },
+    enter(data) {
+      data.current.container.style.display = 'none';
+      scroll.update()
+      return gsap.from(data.next.container, {opacity: 0,duration:1,ease:'power3.inOut'})
+    }
+  }, {
+    name: 'projects',
+    from: {namespace:['home']},
+    to: {namespace:['project']},
+    beforeEnter({ next }) {
+      const tl = gsap.timeline()
+      tl
+      .to('.transition-plane', {scaleY:1, duration:1.5, ease:'expo.inOut'}, "+=0.3")
+      .to('.transition-flex', {y:'-10%', rotation:0, duration:1.5, ease:'power3.inOut'}, '-=1.5')
+      .to('.transition', {clip:'rect(0vh 100vw 0vh 0vh)', duration:1.5, ease:'power3.inOut'}, '-=1.5')
+      .set('.transition-plane', {scaleY:0})
+      scroll.destroy()
+      smooth(next.container)
+    },
+    beforeLeave(data) {
+      const projectNumber = document.querySelector('.transition-flex span')
+      let nb = data.trigger.getAttribute('project-index')
+      projectNumber.innerHTML = nb
+      console.log(projectNumber)
+      const tl = gsap.timeline()
+      const text = new SplitText(projectNumber, {type:"chars"}), letters = text.chars;
+      gsap.set('.transition', {clip:'rect(100vh 100vw 100vh 0vh)'})
+      gsap.set('.transition-flex', {rotation:-6, scale:1.2, autoAlpha:0.8, y:'0%'})
+      gsap.set(letters[1], {y:'15%', autoAlpha:0})
+      tl
+      .to('.transition', {clip:'rect(0vh 100vw 100vh 0vh)', duration:1.5, ease:'expo.inOut'})
+      .to('.transition-flex', {rotation:0, scale:1, autoAlpha:1, duration:2, ease:'power3.inOut'}, '-=1.5')
+      .to(letters[1], {y:'0%', duration:1.5, autoAlpha:1, ease:'power4.inOut'}, '-=1.5')
+    },
+    leave(data) {
+      if (isMobile.any()) {
+        gsap.to(window, {duration: 2, scrollTo: 0, ease:'power3.out'});
+      }
+      return gsap.to(data.current.container, {opacity: 0,duration:1,ease:'power3.inOut'})
+    },
+    enter(data) {
+      data.current.container.style.display = 'none';
+      scroll.update()
+      return gsap.from(data.next.container, {opacity: 0,duration:1,ease:'power3.inOut'})
+    }
+  }, {
+    name: 'home-to-about',
+    from: {namespace:['home', 'project']},
+    to: {namespace:['about']},
+    beforeEnter({ next }) {
+      const tl = gsap.timeline()
+      tl
+      .to('.transition-plane', {scaleY:1, duration:1.5, ease:'expo.inOut'}, "+=0.3")
+      .to('.transition-flex', {y:'-10%', rotation:0, duration:1.5, ease:'power3.inOut'}, '-=1.5')
+      .to('.transition', {clip:'rect(0vh 100vw 0vh 0vh)', duration:1.5, ease:'power3.inOut'}, '-=1.5')
+      .set('.transition-plane', {scaleY:0})
+      scroll.destroy()
+      smooth(next.container)
+    },
+    beforeLeave(data) {
+      const projectNumber = document.querySelector('.transition-flex span')
+      projectNumber.innerHTML = 'AB-ME'
+      const tl = gsap.timeline()
+      const text = new SplitText(projectNumber, {type:"chars"}), letters = text.chars;
+      gsap.set('.transition', {clip:'rect(100vh 100vw 100vh 0vh)'})
+      gsap.set('.transition-flex', {rotation:-6, scale:1.2, autoAlpha:0.8, y:'0%'})
+      gsap.set(letters[1], {y:'15%', autoAlpha:0})
+      gsap.set(letters[3], {y:'-15%', autoAlpha:0})
+      tl
+      .to('.transition', {clip:'rect(0vh 100vw 100vh 0vh)', duration:1.5, ease:'expo.inOut'})
+      .to('.transition-flex', {rotation:0, scale:1, autoAlpha:1, duration:2, ease:'power3.inOut'}, '-=1.5')
+      .to(letters[1], {y:'0%', duration:1.5, autoAlpha:1, ease:'power4.inOut'}, '-=1.5')
+      .to(letters[3], {y:'0%', duration:1.5, autoAlpha:1, ease:'power4.inOut'}, '-=1.4')
+    },
+    leave(data) {
+      if (isMobile.any()) {
+        gsap.to(window, {duration: 2, scrollTo: 0, ease:'power3.out'});
+      }
+      return gsap.to(data.current.container, {opacity: 0,duration:1,ease:'power3.inOut'})
+    },
+    enter(data) {
+      data.current.container.style.display = 'none';
+      scroll.update()
+      return gsap.from(data.next.container, {opacity: 0,duration:1,ease:'power3.inOut'})
+    }
+  }, {
+    name: 'to-home',
+    to: {namespace:['home']},
+    once({ next }) {
+      smooth(next.container)
+      homeLaunch()
+    },
+    beforeEnter({ next }) {
+      scroll.destroy()
+      smooth(next.container)
+      homeEnter()
     },
     leave(data) {
       if (isMobile.any()) {

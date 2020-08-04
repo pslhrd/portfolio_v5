@@ -117,1588 +117,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"node_modules/indexof/index.js":[function(require,module,exports) {
-
-var indexOf = [].indexOf;
-
-module.exports = function(arr, obj){
-  if (indexOf) return arr.indexOf(obj);
-  for (var i = 0; i < arr.length; ++i) {
-    if (arr[i] === obj) return i;
-  }
-  return -1;
-};
-},{}],"node_modules/dom-classes/index.js":[function(require,module,exports) {
-/**
- * Module dependencies.
- */
-
-var index = require('indexof');
-
-/**
- * Whitespace regexp.
- */
-
-var whitespaceRe = /\s+/;
-
-/**
- * toString reference.
- */
-
-var toString = Object.prototype.toString;
-
-module.exports = classes;
-module.exports.add = add;
-module.exports.contains = has;
-module.exports.has = has;
-module.exports.toggle = toggle;
-module.exports.remove = remove;
-module.exports.removeMatching = removeMatching;
-
-function classes (el) {
-  if (el.classList) {
-    return el.classList;
-  }
-
-  var str = el.className.replace(/^\s+|\s+$/g, '');
-  var arr = str.split(whitespaceRe);
-  if ('' === arr[0]) arr.shift();
-  return arr;
-}
-
-function add (el, name) {
-  // classList
-  if (el.classList) {
-    el.classList.add(name);
-    return;
-  }
-
-  // fallback
-  var arr = classes(el);
-  var i = index(arr, name);
-  if (!~i) arr.push(name);
-  el.className = arr.join(' ');
-}
-
-function has (el, name) {
-  return el.classList
-    ? el.classList.contains(name)
-    : !! ~index(classes(el), name);
-}
-
-function remove (el, name) {
-  if ('[object RegExp]' == toString.call(name)) {
-    return removeMatching(el, name);
-  }
-
-  // classList
-  if (el.classList) {
-    el.classList.remove(name);
-    return;
-  }
-
-  // fallback
-  var arr = classes(el);
-  var i = index(arr, name);
-  if (~i) arr.splice(i, 1);
-  el.className = arr.join(' ');
-}
-
-function removeMatching (el, re, ref) {
-  var arr = Array.prototype.slice.call(classes(el));
-  for (var i = 0; i < arr.length; i++) {
-    if (re.test(arr[i])) {
-      remove(el, arr[i]);
-    }
-  }
-}
-
-function toggle (el, name) {
-  // classList
-  if (el.classList) {
-    return el.classList.toggle(name);
-  }
-
-  // fallback
-  if (has(el, name)) {
-    remove(el, name);
-  } else {
-    add(el, name);
-  }
-}
-
-},{"indexof":"node_modules/indexof/index.js"}],"node_modules/dom-create-element/index.js":[function(require,module,exports) {
-/*
-`dom-create-element`
-
-var create = require('dom-create-element');
-
-var el = create({
-  selector: 'div',
-  styles: 'preloader',
-  html: '<span>Text</span>'
-});
-*/
-
-module.exports = create;
-
-function create(opt) {
-
-	opt = opt || {};
-	
-	var el = document.createElement(opt.selector);
-	
-	if(opt.attr) for(var index in opt.attr)
-		opt.attr.hasOwnProperty(index) && el.setAttribute(index, opt.attr[index]);
-	
-	"a" == opt.selector && opt.link && (
-		el.href = opt.link,
-		opt.target && el.setAttribute("target", opt.target)
-	);
-
-	"img" == opt.selector && opt.src && (
-		el.src = opt.src,
-		opt.lazyload && (
-			el.style.opacity = 0,
-			el.onload = function(){
-				el.style.opacity = 1;
-			}
-		)
-	);
-
-	opt.id && (el.id = opt.id);
-	opt.styles && (el.className = opt.styles);
-
-	opt.html && (el.innerHTML = opt.html);
-	opt.children && (el.appendChild(opt.children));
-	
-	return el;
-};
-},{}],"node_modules/prefix/index.js":[function(require,module,exports) {
-// check document first so it doesn't error in node.js
-var style = typeof document != 'undefined'
-  ? document.createElement('p').style
-  : {}
-
-var prefixes = ['O', 'ms', 'Moz', 'Webkit']
-var upper = /([A-Z])/g
-var memo = {}
-
-/**
- * prefix `key`
- *
- *   prefix('transform') // => WebkitTransform
- *
- * @param {String} key
- * @return {String}
- * @api public
- */
-function prefix(key){
-  // Camel case
-  key = key.replace(/-([a-z])/g, function(_, char){
-    return char.toUpperCase()
-  })
-
-  // Without prefix
-  if (style[key] !== undefined) return key
-
-  // With prefix
-  var Key = key.charAt(0).toUpperCase() + key.slice(1)
-  var i = prefixes.length
-  while (i--) {
-    var name = prefixes[i] + Key
-    if (style[name] !== undefined) return name
-  }
-
-  return key
-}
-
-/**
- * Memoized version of `prefix`
- *
- * @param {String} key
- * @return {String}
- * @api public
- */
-function prefixMemozied(key){
-  return key in memo
-    ? memo[key]
-    : memo[key] = prefix(key)
-}
-
-/**
- * Create a dashed prefix
- *
- * @param {String} key
- * @return {String}
- * @api public
- */
-function prefixDashed(key){
-  key = prefix(key)
-  if (upper.test(key)) {
-    key = '-' + key.replace(upper, '-$1')
-    upper.lastIndex = 0
-  }
-  return key.toLowerCase()
-}
-
-module.exports = prefixMemozied
-module.exports.dash = prefixDashed
-
-},{}],"node_modules/object-assign/index.js":[function(require,module,exports) {
-/*
-object-assign
-(c) Sindre Sorhus
-@license MIT
-*/
-'use strict';
-/* eslint-disable no-unused-vars */
-
-var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-
-function toObject(val) {
-  if (val === null || val === undefined) {
-    throw new TypeError('Object.assign cannot be called with null or undefined');
-  }
-
-  return Object(val);
-}
-
-function shouldUseNative() {
-  try {
-    if (!Object.assign) {
-      return false;
-    } // Detect buggy property enumeration order in older V8 versions.
-    // https://bugs.chromium.org/p/v8/issues/detail?id=4118
-
-
-    var test1 = new String('abc'); // eslint-disable-line no-new-wrappers
-
-    test1[5] = 'de';
-
-    if (Object.getOwnPropertyNames(test1)[0] === '5') {
-      return false;
-    } // https://bugs.chromium.org/p/v8/issues/detail?id=3056
-
-
-    var test2 = {};
-
-    for (var i = 0; i < 10; i++) {
-      test2['_' + String.fromCharCode(i)] = i;
-    }
-
-    var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
-      return test2[n];
-    });
-
-    if (order2.join('') !== '0123456789') {
-      return false;
-    } // https://bugs.chromium.org/p/v8/issues/detail?id=3056
-
-
-    var test3 = {};
-    'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
-      test3[letter] = letter;
-    });
-
-    if (Object.keys(Object.assign({}, test3)).join('') !== 'abcdefghijklmnopqrst') {
-      return false;
-    }
-
-    return true;
-  } catch (err) {
-    // We don't expect any of the above to throw, but better to be safe.
-    return false;
-  }
-}
-
-module.exports = shouldUseNative() ? Object.assign : function (target, source) {
-  var from;
-  var to = toObject(target);
-  var symbols;
-
-  for (var s = 1; s < arguments.length; s++) {
-    from = Object(arguments[s]);
-
-    for (var key in from) {
-      if (hasOwnProperty.call(from, key)) {
-        to[key] = from[key];
-      }
-    }
-
-    if (getOwnPropertySymbols) {
-      symbols = getOwnPropertySymbols(from);
-
-      for (var i = 0; i < symbols.length; i++) {
-        if (propIsEnumerable.call(from, symbols[i])) {
-          to[symbols[i]] = from[symbols[i]];
-        }
-      }
-    }
-  }
-
-  return to;
-};
-},{}],"node_modules/virtual-scroll/node_modules/tiny-emitter/index.js":[function(require,module,exports) {
-function E () {
-  // Keep this empty so it's easier to inherit from
-  // (via https://github.com/lipsmack from https://github.com/scottcorgan/tiny-emitter/issues/3)
-}
-
-E.prototype = {
-  on: function (name, callback, ctx) {
-    var e = this.e || (this.e = {});
-
-    (e[name] || (e[name] = [])).push({
-      fn: callback,
-      ctx: ctx
-    });
-
-    return this;
-  },
-
-  once: function (name, callback, ctx) {
-    var self = this;
-    function listener () {
-      self.off(name, listener);
-      callback.apply(ctx, arguments);
-    };
-
-    listener._ = callback
-    return this.on(name, listener, ctx);
-  },
-
-  emit: function (name) {
-    var data = [].slice.call(arguments, 1);
-    var evtArr = ((this.e || (this.e = {}))[name] || []).slice();
-    var i = 0;
-    var len = evtArr.length;
-
-    for (i; i < len; i++) {
-      evtArr[i].fn.apply(evtArr[i].ctx, data);
-    }
-
-    return this;
-  },
-
-  off: function (name, callback) {
-    var e = this.e || (this.e = {});
-    var evts = e[name];
-    var liveEvents = [];
-
-    if (evts && callback) {
-      for (var i = 0, len = evts.length; i < len; i++) {
-        if (evts[i].fn !== callback && evts[i].fn._ !== callback)
-          liveEvents.push(evts[i]);
-      }
-    }
-
-    // Remove event from queue to prevent memory leak
-    // Suggested by https://github.com/lazd
-    // Ref: https://github.com/scottcorgan/tiny-emitter/commit/c6ebfaa9bc973b33d110a84a307742b7cf94c953#commitcomment-5024910
-
-    (liveEvents.length)
-      ? e[name] = liveEvents
-      : delete e[name];
-
-    return this;
-  }
-};
-
-module.exports = E;
-
-},{}],"node_modules/lethargy/lethargy.js":[function(require,module,exports) {
-// Generated by CoffeeScript 1.9.2
-(function() {
-  var root;
-
-  root = typeof exports !== "undefined" && exports !== null ? exports : this;
-
-  root.Lethargy = (function() {
-    function Lethargy(stability, sensitivity, tolerance, delay) {
-      this.stability = stability != null ? Math.abs(stability) : 8;
-      this.sensitivity = sensitivity != null ? 1 + Math.abs(sensitivity) : 100;
-      this.tolerance = tolerance != null ? 1 + Math.abs(tolerance) : 1.1;
-      this.delay = delay != null ? delay : 150;
-      this.lastUpDeltas = (function() {
-        var i, ref, results;
-        results = [];
-        for (i = 1, ref = this.stability * 2; 1 <= ref ? i <= ref : i >= ref; 1 <= ref ? i++ : i--) {
-          results.push(null);
-        }
-        return results;
-      }).call(this);
-      this.lastDownDeltas = (function() {
-        var i, ref, results;
-        results = [];
-        for (i = 1, ref = this.stability * 2; 1 <= ref ? i <= ref : i >= ref; 1 <= ref ? i++ : i--) {
-          results.push(null);
-        }
-        return results;
-      }).call(this);
-      this.deltasTimestamp = (function() {
-        var i, ref, results;
-        results = [];
-        for (i = 1, ref = this.stability * 2; 1 <= ref ? i <= ref : i >= ref; 1 <= ref ? i++ : i--) {
-          results.push(null);
-        }
-        return results;
-      }).call(this);
-    }
-
-    Lethargy.prototype.check = function(e) {
-      var lastDelta;
-      e = e.originalEvent || e;
-      if (e.wheelDelta != null) {
-        lastDelta = e.wheelDelta;
-      } else if (e.deltaY != null) {
-        lastDelta = e.deltaY * -40;
-      } else if ((e.detail != null) || e.detail === 0) {
-        lastDelta = e.detail * -40;
-      }
-      this.deltasTimestamp.push(Date.now());
-      this.deltasTimestamp.shift();
-      if (lastDelta > 0) {
-        this.lastUpDeltas.push(lastDelta);
-        this.lastUpDeltas.shift();
-        return this.isInertia(1);
-      } else {
-        this.lastDownDeltas.push(lastDelta);
-        this.lastDownDeltas.shift();
-        return this.isInertia(-1);
-      }
-      return false;
-    };
-
-    Lethargy.prototype.isInertia = function(direction) {
-      var lastDeltas, lastDeltasNew, lastDeltasOld, newAverage, newSum, oldAverage, oldSum;
-      lastDeltas = direction === -1 ? this.lastDownDeltas : this.lastUpDeltas;
-      if (lastDeltas[0] === null) {
-        return direction;
-      }
-      if (this.deltasTimestamp[(this.stability * 2) - 2] + this.delay > Date.now() && lastDeltas[0] === lastDeltas[(this.stability * 2) - 1]) {
-        return false;
-      }
-      lastDeltasOld = lastDeltas.slice(0, this.stability);
-      lastDeltasNew = lastDeltas.slice(this.stability, this.stability * 2);
-      oldSum = lastDeltasOld.reduce(function(t, s) {
-        return t + s;
-      });
-      newSum = lastDeltasNew.reduce(function(t, s) {
-        return t + s;
-      });
-      oldAverage = oldSum / lastDeltasOld.length;
-      newAverage = newSum / lastDeltasNew.length;
-      if (Math.abs(oldAverage) < Math.abs(newAverage * this.tolerance) && (this.sensitivity < Math.abs(newAverage))) {
-        return direction;
-      } else {
-        return false;
-      }
-    };
-
-    Lethargy.prototype.showLastUpDeltas = function() {
-      return this.lastUpDeltas;
-    };
-
-    Lethargy.prototype.showLastDownDeltas = function() {
-      return this.lastDownDeltas;
-    };
-
-    return Lethargy;
-
-  })();
-
-}).call(this);
-
-},{}],"node_modules/virtual-scroll/src/support.js":[function(require,module,exports) {
-'use strict';
-
-module.exports = (function getSupport() {
-    return {
-        hasWheelEvent: 'onwheel' in document,
-        hasMouseWheelEvent: 'onmousewheel' in document,
-        hasTouch: ('ontouchstart' in window) || window.TouchEvent || window.DocumentTouch && document instanceof DocumentTouch,
-        hasTouchWin: navigator.msMaxTouchPoints && navigator.msMaxTouchPoints > 1,
-        hasPointer: !!window.navigator.msPointerEnabled,
-        hasKeyDown: 'onkeydown' in document,
-        isFirefox: navigator.userAgent.indexOf('Firefox') > -1
-    };
-})();
-
-},{}],"node_modules/virtual-scroll/src/clone.js":[function(require,module,exports) {
-'use strict';
-
-module.exports = function(source) {
-    return JSON.parse(JSON.stringify(source));
-};
-},{}],"node_modules/bindall-standalone/index.js":[function(require,module,exports) {
-'use strict';
-
-var toString = Object.prototype.toString,
-    hasOwnProperty = Object.prototype.hasOwnProperty;
-
-module.exports = function(object) {
-    if(!object) return console.warn('bindAll requires at least one argument.');
-
-    var functions = Array.prototype.slice.call(arguments, 1);
-
-    if (functions.length === 0) {
-
-        for (var method in object) {
-            if(hasOwnProperty.call(object, method)) {
-                if(typeof object[method] == 'function' && toString.call(object[method]) == "[object Function]") {
-                    functions.push(method);
-                }
-            }
-        }
-    }
-
-    for(var i = 0; i < functions.length; i++) {
-        var f = functions[i];
-        object[f] = bind(object[f], object);
-    }
-};
-
-/*
-    Faster bind without specific-case checking. (see https://coderwall.com/p/oi3j3w).
-    bindAll is only needed for events binding so no need to make slow fixes for constructor
-    or partial application.
-*/
-function bind(func, context) {
-  return function() {
-    return func.apply(context, arguments);
-  };
-}
-},{}],"node_modules/virtual-scroll/src/index.js":[function(require,module,exports) {
-'use strict';
-
-var objectAssign = require('object-assign');
-var Emitter = require('tiny-emitter');
-var Lethargy = require('lethargy').Lethargy;
-var support = require('./support');
-var clone = require('./clone');
-var bindAll = require('bindall-standalone');
-var EVT_ID = 'virtualscroll';
-
-module.exports = VirtualScroll;
-
-var keyCodes = {
-    LEFT: 37,
-    UP: 38,
-    RIGHT: 39,
-    DOWN: 40,
-    SPACE: 32
-};
-
-function VirtualScroll(options) {
-    bindAll(this, '_onWheel', '_onMouseWheel', '_onTouchStart', '_onTouchMove', '_onKeyDown');
-
-    this.el = window;
-    if (options && options.el) {
-        this.el = options.el;
-        delete options.el;
-    }
-    this.options = objectAssign({
-        mouseMultiplier: 1,
-        touchMultiplier: 2,
-        firefoxMultiplier: 15,
-        keyStep: 120,
-        preventTouch: false,
-        unpreventTouchClass: 'vs-touchmove-allowed',
-        limitInertia: false,
-        useKeyboard: true,
-        useTouch: true
-    }, options);
-
-    if (this.options.limitInertia) this._lethargy = new Lethargy();
-
-    this._emitter = new Emitter();
-    this._event = {
-        y: 0,
-        x: 0,
-        deltaX: 0,
-        deltaY: 0
-    };
-    this.touchStartX = null;
-    this.touchStartY = null;
-    this.bodyTouchAction = null;
-
-    if (this.options.passive !== undefined) {
-        this.listenerOptions = {passive: this.options.passive};
-    }
-}
-
-VirtualScroll.prototype._notify = function(e) {
-    var evt = this._event;
-    evt.x += evt.deltaX;
-    evt.y += evt.deltaY;
-
-   this._emitter.emit(EVT_ID, {
-        x: evt.x,
-        y: evt.y,
-        deltaX: evt.deltaX,
-        deltaY: evt.deltaY,
-        originalEvent: e
-   });
-};
-
-VirtualScroll.prototype._onWheel = function(e) {
-    var options = this.options;
-    if (this._lethargy && this._lethargy.check(e) === false) return;
-    var evt = this._event;
-
-    // In Chrome and in Firefox (at least the new one)
-    evt.deltaX = e.wheelDeltaX || e.deltaX * -1;
-    evt.deltaY = e.wheelDeltaY || e.deltaY * -1;
-
-    // for our purpose deltamode = 1 means user is on a wheel mouse, not touch pad
-    // real meaning: https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent#Delta_modes
-    if(support.isFirefox && e.deltaMode == 1) {
-        evt.deltaX *= options.firefoxMultiplier;
-        evt.deltaY *= options.firefoxMultiplier;
-    }
-
-    evt.deltaX *= options.mouseMultiplier;
-    evt.deltaY *= options.mouseMultiplier;
-
-    this._notify(e);
-};
-
-VirtualScroll.prototype._onMouseWheel = function(e) {
-    if (this.options.limitInertia && this._lethargy.check(e) === false) return;
-
-    var evt = this._event;
-
-    // In Safari, IE and in Chrome if 'wheel' isn't defined
-    evt.deltaX = (e.wheelDeltaX) ? e.wheelDeltaX : 0;
-    evt.deltaY = (e.wheelDeltaY) ? e.wheelDeltaY : e.wheelDelta;
-
-    this._notify(e);
-};
-
-VirtualScroll.prototype._onTouchStart = function(e) {
-    var t = (e.targetTouches) ? e.targetTouches[0] : e;
-    this.touchStartX = t.pageX;
-    this.touchStartY = t.pageY;
-};
-
-VirtualScroll.prototype._onTouchMove = function(e) {
-    var options = this.options;
-    if(options.preventTouch
-        && !e.target.classList.contains(options.unpreventTouchClass)) {
-        e.preventDefault();
-    }
-
-    var evt = this._event;
-
-    var t = (e.targetTouches) ? e.targetTouches[0] : e;
-
-    evt.deltaX = (t.pageX - this.touchStartX) * options.touchMultiplier;
-    evt.deltaY = (t.pageY - this.touchStartY) * options.touchMultiplier;
-
-    this.touchStartX = t.pageX;
-    this.touchStartY = t.pageY;
-
-    this._notify(e);
-};
-
-VirtualScroll.prototype._onKeyDown = function(e) {
-    var evt = this._event;
-    evt.deltaX = evt.deltaY = 0;
-    var windowHeight = window.innerHeight - 40
-
-    switch(e.keyCode) {
-        case keyCodes.LEFT:
-        case keyCodes.UP:
-            evt.deltaY = this.options.keyStep;
-            break;
-
-        case keyCodes.RIGHT:
-        case keyCodes.DOWN:
-            evt.deltaY = - this.options.keyStep;
-            break;
-        case keyCodes.SPACE && e.shiftKey:
-            evt.deltaY = windowHeight;
-            break;
-        case keyCodes.SPACE:
-            evt.deltaY = - windowHeight;
-            break;
-        default:
-            return;
-    }
-
-    this._notify(e);
-};
-
-VirtualScroll.prototype._bind = function() {
-    if(support.hasWheelEvent) this.el.addEventListener('wheel', this._onWheel, this.listenerOptions);
-    if(support.hasMouseWheelEvent) this.el.addEventListener('mousewheel', this._onMouseWheel, this.listenerOptions);
-
-    if(support.hasTouch && this.options.useTouch) {
-        this.el.addEventListener('touchstart', this._onTouchStart, this.listenerOptions);
-        this.el.addEventListener('touchmove', this._onTouchMove, this.listenerOptions);
-    }
-
-    if(support.hasPointer && support.hasTouchWin) {
-        this.bodyTouchAction = document.body.style.msTouchAction;
-        document.body.style.msTouchAction = 'none';
-        this.el.addEventListener('MSPointerDown', this._onTouchStart, true);
-        this.el.addEventListener('MSPointerMove', this._onTouchMove, true);
-    }
-
-    if(support.hasKeyDown && this.options.useKeyboard) document.addEventListener('keydown', this._onKeyDown);
-};
-
-VirtualScroll.prototype._unbind = function() {
-    if(support.hasWheelEvent) this.el.removeEventListener('wheel', this._onWheel);
-    if(support.hasMouseWheelEvent) this.el.removeEventListener('mousewheel', this._onMouseWheel);
-
-    if(support.hasTouch) {
-        this.el.removeEventListener('touchstart', this._onTouchStart);
-        this.el.removeEventListener('touchmove', this._onTouchMove);
-    }
-
-    if(support.hasPointer && support.hasTouchWin) {
-        document.body.style.msTouchAction = this.bodyTouchAction;
-        this.el.removeEventListener('MSPointerDown', this._onTouchStart, true);
-        this.el.removeEventListener('MSPointerMove', this._onTouchMove, true);
-    }
-
-    if(support.hasKeyDown && this.options.useKeyboard) document.removeEventListener('keydown', this._onKeyDown);
-};
-
-VirtualScroll.prototype.on = function(cb, ctx) {
-  this._emitter.on(EVT_ID, cb, ctx);
-
-  var events = this._emitter.e;
-  if (events && events[EVT_ID] && events[EVT_ID].length === 1) this._bind();
-};
-
-VirtualScroll.prototype.off = function(cb, ctx) {
-  this._emitter.off(EVT_ID, cb, ctx);
-
-  var events = this._emitter.e;
-  if (!events[EVT_ID] || events[EVT_ID].length <= 0) this._unbind();
-};
-
-VirtualScroll.prototype.reset = function() {
-    var evt = this._event;
-    evt.x = 0;
-    evt.y = 0;
-};
-
-VirtualScroll.prototype.destroy = function() {
-    this._emitter.off();
-    this._unbind();
-};
-
-},{"object-assign":"node_modules/object-assign/index.js","tiny-emitter":"node_modules/virtual-scroll/node_modules/tiny-emitter/index.js","lethargy":"node_modules/lethargy/lethargy.js","./support":"node_modules/virtual-scroll/src/support.js","./clone":"node_modules/virtual-scroll/src/clone.js","bindall-standalone":"node_modules/bindall-standalone/index.js"}],"node_modules/synthetic-dom-events/init.json":[function(require,module,exports) {
-module.exports = {
-  "initEvent" : [
-    "type",
-    "bubbles",
-    "cancelable"
-  ],
-  "initUIEvent" : [
-    "type",
-    "bubbles",
-    "cancelable",
-    "view",
-    "detail"
-  ],
-  "initMouseEvent" : [
-    "type",
-    "bubbles",
-    "cancelable",
-    "view",
-    "detail",
-    "screenX",
-    "screenY",
-    "clientX",
-    "clientY",
-    "ctrlKey",
-    "altKey",
-    "shiftKey",
-    "metaKey",
-    "button",
-    "relatedTarget"
-  ],
-  "initMutationEvent" : [
-    "type",
-    "bubbles",
-    "cancelable",
-    "relatedNode",
-    "prevValue",
-    "newValue",
-    "attrName",
-    "attrChange"
-  ],
-  "initKeyboardEvent" : [
-    "type",
-    "bubbles",
-    "cancelable",
-    "view",
-    "ctrlKey",
-    "altKey",
-    "shiftKey",
-    "metaKey",
-    "keyCode",
-    "charCode"
-  ],
-  "initKeyEvent" : [
-    "type",
-    "bubbles",
-    "cancelable",
-    "view",
-    "ctrlKey",
-    "altKey",
-    "shiftKey",
-    "metaKey",
-    "keyCode",
-    "charCode"
-  ]
-}
-;
-},{}],"node_modules/synthetic-dom-events/types.json":[function(require,module,exports) {
-module.exports = {
-  "MouseEvent" : [
-    "click",
-    "mousedown",
-    "mouseup",
-    "mouseover",
-    "mousemove",
-    "mouseout"
-  ],
-  "KeyboardEvent" : [
-    "keydown",
-    "keyup",
-    "keypress"
-  ],
-  "MutationEvent" : [
-    "DOMSubtreeModified",
-    "DOMNodeInserted",
-    "DOMNodeRemoved",
-    "DOMNodeRemovedFromDocument",
-    "DOMNodeInsertedIntoDocument",
-    "DOMAttrModified",
-    "DOMCharacterDataModified"
-  ],
-  "HTMLEvents" : [
-    "load",
-    "unload",
-    "abort",
-    "error",
-    "select",
-    "change",
-    "submit",
-    "reset",
-    "focus",
-    "blur",
-    "resize",
-    "scroll"
-  ],
-  "UIEvent" : [
-    "DOMFocusIn",
-    "DOMFocusOut",
-    "DOMActivate"
-  ]
-}
-;
-},{}],"node_modules/synthetic-dom-events/index.js":[function(require,module,exports) {
-
-// for compression
-var win = window;
-var doc = document || {};
-var root = doc.documentElement || {};
-
-// detect if we need to use firefox KeyEvents vs KeyboardEvents
-var use_key_event = true;
-try {
-    doc.createEvent('KeyEvents');
-}
-catch (err) {
-    use_key_event = false;
-}
-
-// Workaround for https://bugs.webkit.org/show_bug.cgi?id=16735
-function check_kb(ev, opts) {
-    if (ev.ctrlKey != (opts.ctrlKey || false) ||
-        ev.altKey != (opts.altKey || false) ||
-        ev.shiftKey != (opts.shiftKey || false) ||
-        ev.metaKey != (opts.metaKey || false) ||
-        ev.keyCode != (opts.keyCode || 0) ||
-        ev.charCode != (opts.charCode || 0)) {
-
-        ev = document.createEvent('Event');
-        ev.initEvent(opts.type, opts.bubbles, opts.cancelable);
-        ev.ctrlKey  = opts.ctrlKey || false;
-        ev.altKey   = opts.altKey || false;
-        ev.shiftKey = opts.shiftKey || false;
-        ev.metaKey  = opts.metaKey || false;
-        ev.keyCode  = opts.keyCode || 0;
-        ev.charCode = opts.charCode || 0;
-    }
-
-    return ev;
-}
-
-// modern browsers, do a proper dispatchEvent()
-var modern = function(type, opts) {
-    opts = opts || {};
-
-    // which init fn do we use
-    var family = typeOf(type);
-    var init_fam = family;
-    if (family === 'KeyboardEvent' && use_key_event) {
-        family = 'KeyEvents';
-        init_fam = 'KeyEvent';
-    }
-
-    var ev = doc.createEvent(family);
-    var init_fn = 'init' + init_fam;
-    var init = typeof ev[init_fn] === 'function' ? init_fn : 'initEvent';
-
-    var sig = initSignatures[init];
-    var args = [];
-    var used = {};
-
-    opts.type = type;
-    for (var i = 0; i < sig.length; ++i) {
-        var key = sig[i];
-        var val = opts[key];
-        // if no user specified value, then use event default
-        if (val === undefined) {
-            val = ev[key];
-        }
-        used[key] = true;
-        args.push(val);
-    }
-    ev[init].apply(ev, args);
-
-    // webkit key event issue workaround
-    if (family === 'KeyboardEvent') {
-        ev = check_kb(ev, opts);
-    }
-
-    // attach remaining unused options to the object
-    for (var key in opts) {
-        if (!used[key]) {
-            ev[key] = opts[key];
-        }
-    }
-
-    return ev;
-};
-
-var legacy = function (type, opts) {
-    opts = opts || {};
-    var ev = doc.createEventObject();
-
-    ev.type = type;
-    for (var key in opts) {
-        if (opts[key] !== undefined) {
-            ev[key] = opts[key];
-        }
-    }
-
-    return ev;
-};
-
-// expose either the modern version of event generation or legacy
-// depending on what we support
-// avoids if statements in the code later
-module.exports = doc.createEvent ? modern : legacy;
-
-var initSignatures = require('./init.json');
-var types = require('./types.json');
-var typeOf = (function () {
-    var typs = {};
-    for (var key in types) {
-        var ts = types[key];
-        for (var i = 0; i < ts.length; i++) {
-            typs[ts[i]] = key;
-        }
-    }
-
-    return function (name) {
-        return typs[name] || 'Event';
-    };
-})();
-
-},{"./init.json":"node_modules/synthetic-dom-events/init.json","./types.json":"node_modules/synthetic-dom-events/types.json"}],"node_modules/dom-events/index.js":[function(require,module,exports) {
-
-var synth = require('synthetic-dom-events');
-
-var on = function(element, name, fn, capture) {
-    return element.addEventListener(name, fn, capture || false);
-};
-
-var off = function(element, name, fn, capture) {
-    return element.removeEventListener(name, fn, capture || false);
-};
-
-var once = function (element, name, fn, capture) {
-    function tmp (ev) {
-        off(element, name, tmp, capture);
-        fn(ev);
-    }
-    on(element, name, tmp, capture);
-};
-
-var emit = function(element, name, opt) {
-    var ev = synth(name, opt);
-    element.dispatchEvent(ev);
-};
-
-if (!document.addEventListener) {
-    on = function(element, name, fn) {
-        return element.attachEvent('on' + name, fn);
-    };
-}
-
-if (!document.removeEventListener) {
-    off = function(element, name, fn) {
-        return element.detachEvent('on' + name, fn);
-    };
-}
-
-if (!document.dispatchEvent) {
-    emit = function(element, name, opt) {
-        var ev = synth(name, opt);
-        return element.fireEvent('on' + ev.type, ev);
-    };
-}
-
-module.exports = {
-    on: on,
-    off: off,
-    once: once,
-    emit: emit
-};
-
-},{"synthetic-dom-events":"node_modules/synthetic-dom-events/index.js"}],"node_modules/smooth-scrolling/index.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _domClasses = _interopRequireDefault(require("dom-classes"));
-
-var _domCreateElement = _interopRequireDefault(require("dom-create-element"));
-
-var _prefix = _interopRequireDefault(require("prefix"));
-
-var _virtualScroll = _interopRequireDefault(require("virtual-scroll"));
-
-var _domEvents = _interopRequireDefault(require("dom-events"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var Smooth =
-/*#__PURE__*/
-function () {
-  function Smooth() {
-    var opt = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    _classCallCheck(this, Smooth);
-
-    this.createBound();
-    this.options = opt;
-    this.prefix = (0, _prefix.default)('transform');
-    this.rAF = undefined; // It seems that under heavy load, Firefox will still call the RAF callback even though the RAF has been canceled
-    // To prevent that we set a flag to prevent any callback to be executed when RAF is removed
-
-    this.isRAFCanceled = false;
-    var constructorName = this.constructor.name ? this.constructor.name : 'Smooth';
-    this.extends = typeof opt.extends === 'undefined' ? this.constructor !== Smooth : opt.extends;
-    this.callback = this.options.callback || null;
-    this.vars = {
-      direction: this.options.direction || 'vertical',
-      native: this.options.native || false,
-      ease: this.options.ease || 0.075,
-      preload: this.options.preload || false,
-      current: 0,
-      last: 0,
-      target: 0,
-      height: window.innerHeight,
-      width: window.innerWidth,
-      bounding: 0,
-      timer: null,
-      ticking: false
-    };
-    this.vs = this.vars.native ? null : new _virtualScroll.default({
-      limitInertia: this.options.vs && this.options.vs.limitInertia || false,
-      mouseMultiplier: this.options.vs && this.options.vs.mouseMultiplier || 1,
-      touchMultiplier: this.options.vs && this.options.vs.touchMultiplier || 1.5,
-      firefoxMultiplier: this.options.vs && this.options.vs.firefoxMultiplier || 30,
-      preventTouch: this.options.vs && this.options.vs.preventTouch || true
-    });
-    this.dom = {
-      listener: this.options.listener || document.body,
-      section: this.options.section || document.querySelector('.vs-section') || null,
-      scrollbar: this.vars.native || this.options.noscrollbar ? null : {
-        state: {
-          clicked: false,
-          x: 0
-        },
-        el: (0, _domCreateElement.default)({
-          selector: 'div',
-          styles: "vs-scrollbar vs-".concat(this.vars.direction, " vs-scrollbar-").concat(constructorName.toLowerCase())
-        }),
-        drag: {
-          el: (0, _domCreateElement.default)({
-            selector: 'div',
-            styles: 'vs-scrolldrag'
-          }),
-          delta: 0,
-          height: 50
-        }
-      }
-    };
-  }
-
-  _createClass(Smooth, [{
-    key: "createBound",
-    value: function createBound() {
-      var _this = this;
-
-      ['run', 'calc', 'debounce', 'resize', 'mouseUp', 'mouseDown', 'mouseMove', 'calcScroll', 'scrollTo'].forEach(function (fn) {
-        return _this[fn] = _this[fn].bind(_this);
-      });
-    }
-  }, {
-    key: "init",
-    value: function init() {
-      this.addClasses();
-      this.vars.preload && this.preloadImages();
-      this.vars.native ? this.addFakeScrollHeight() : !this.options.noscrollbar && this.addFakeScrollBar();
-      this.addEvents();
-      this.resize();
-    }
-  }, {
-    key: "addClasses",
-    value: function addClasses() {
-      var type = this.vars.native ? 'native' : 'virtual';
-      var direction = this.vars.direction === 'vertical' ? 'y' : 'x';
-
-      _domClasses.default.add(this.dom.listener, "is-".concat(type, "-scroll"));
-
-      _domClasses.default.add(this.dom.listener, "".concat(direction, "-scroll"));
-    }
-  }, {
-    key: "preloadImages",
-    value: function preloadImages() {
-      var _this2 = this;
-
-      var images = Array.prototype.slice.call(this.dom.listener.querySelectorAll('img'), 0);
-      images.forEach(function (image) {
-        var img = document.createElement('img');
-
-        _domEvents.default.once(img, 'load', function () {
-          images.splice(images.indexOf(image), 1);
-          images.length === 0 && _this2.resize();
-        });
-
-        img.src = image.getAttribute('src');
-      });
-    }
-  }, {
-    key: "calc",
-    value: function calc(e) {
-      var delta = this.vars.direction == 'horizontal' ? e.deltaX : e.deltaY;
-      this.vars.target += delta * -1;
-      this.clampTarget();
-    }
-  }, {
-    key: "debounce",
-    value: function debounce() {
-      var _this3 = this;
-
-      var win = this.dom.listener === document.body;
-      this.vars.target = this.vars.direction === 'vertical' ? win ? window.scrollY || window.pageYOffset : this.dom.listener.scrollTop : win ? window.scrollX || window.pageXOffset : this.dom.listener.scrollLeft;
-      clearTimeout(this.vars.timer);
-
-      if (!this.vars.ticking) {
-        this.vars.ticking = true;
-
-        _domClasses.default.add(this.dom.listener, 'is-scrolling');
-      }
-
-      this.vars.timer = setTimeout(function () {
-        _this3.vars.ticking = false;
-
-        _domClasses.default.remove(_this3.dom.listener, 'is-scrolling');
-      }, 200);
-    }
-  }, {
-    key: "run",
-    value: function run() {
-      if (this.isRAFCanceled) return;
-      this.vars.current += (this.vars.target - this.vars.current) * this.vars.ease;
-      this.vars.current < .1 && (this.vars.current = 0);
-      this.requestAnimationFrame();
-
-      if (!this.extends) {
-        this.dom.section.style[this.prefix] = this.getTransform(-this.vars.current.toFixed(2));
-      }
-
-      if (!this.vars.native && !this.options.noscrollbar) {
-        var size = this.dom.scrollbar.drag.height;
-        var bounds = this.vars.direction === 'vertical' ? this.vars.height : this.vars.width;
-        var value = Math.abs(this.vars.current) / (this.vars.bounding / (bounds - size)) + size / .5 - size;
-        var clamp = Math.max(0, Math.min(value - size, value + size));
-        this.dom.scrollbar.drag.el.style[this.prefix] = this.getTransform(clamp.toFixed(2));
-      }
-
-      if (this.callback && this.vars.current !== this.vars.last) {
-        this.callback(this.vars.current);
-      }
-
-      this.vars.last = this.vars.current;
-    }
-  }, {
-    key: "getTransform",
-    value: function getTransform(value) {
-      return this.vars.direction === 'vertical' ? "translate3d(0,".concat(value, "px,0)") : "translate3d(".concat(value, "px,0,0)");
-    }
-  }, {
-    key: "on",
-    value: function on() {
-      var requestAnimationFrame = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-
-      if (this.isRAFCanceled) {
-        this.isRAFCanceled = false;
-      }
-
-      var node = this.dom.listener === document.body ? window : this.dom.listener;
-      this.vars.native ? _domEvents.default.on(node, 'scroll', this.debounce) : this.vs && this.vs.on(this.calc);
-      requestAnimationFrame && this.requestAnimationFrame();
-    }
-  }, {
-    key: "off",
-    value: function off() {
-      var cancelAnimationFrame = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-      var node = this.dom.listener === document.body ? window : this.dom.listener;
-      this.vars.native ? _domEvents.default.off(node, 'scroll', this.debounce) : this.vs && this.vs.off(this.calc);
-      cancelAnimationFrame && this.cancelAnimationFrame();
-    }
-  }, {
-    key: "requestAnimationFrame",
-    value: function (_requestAnimationFrame) {
-      function requestAnimationFrame() {
-        return _requestAnimationFrame.apply(this, arguments);
-      }
-
-      requestAnimationFrame.toString = function () {
-        return _requestAnimationFrame.toString();
-      };
-
-      return requestAnimationFrame;
-    }(function () {
-      this.rAF = requestAnimationFrame(this.run);
-    })
-  }, {
-    key: "cancelAnimationFrame",
-    value: function (_cancelAnimationFrame) {
-      function cancelAnimationFrame() {
-        return _cancelAnimationFrame.apply(this, arguments);
-      }
-
-      cancelAnimationFrame.toString = function () {
-        return _cancelAnimationFrame.toString();
-      };
-
-      return cancelAnimationFrame;
-    }(function () {
-      this.isRAFCanceled = true;
-      cancelAnimationFrame(this.rAF);
-    })
-  }, {
-    key: "addEvents",
-    value: function addEvents() {
-      this.on();
-
-      _domEvents.default.on(window, 'resize', this.resize);
-    }
-  }, {
-    key: "removeEvents",
-    value: function removeEvents() {
-      this.off();
-
-      _domEvents.default.off(window, 'resize', this.resize);
-    }
-  }, {
-    key: "addFakeScrollBar",
-    value: function addFakeScrollBar() {
-      this.dom.listener.appendChild(this.dom.scrollbar.el);
-      this.dom.scrollbar.el.appendChild(this.dom.scrollbar.drag.el);
-
-      _domEvents.default.on(this.dom.scrollbar.el, 'click', this.calcScroll);
-
-      _domEvents.default.on(this.dom.scrollbar.el, 'mousedown', this.mouseDown);
-
-      _domEvents.default.on(document, 'mousemove', this.mouseMove);
-
-      _domEvents.default.on(document, 'mouseup', this.mouseUp);
-    }
-  }, {
-    key: "removeFakeScrollBar",
-    value: function removeFakeScrollBar() {
-      _domEvents.default.off(this.dom.scrollbar.el, 'click', this.calcScroll);
-
-      _domEvents.default.off(this.dom.scrollbar.el, 'mousedown', this.mouseDown);
-
-      _domEvents.default.off(document, 'mousemove', this.mouseMove);
-
-      _domEvents.default.off(document, 'mouseup', this.mouseUp);
-
-      this.dom.listener.removeChild(this.dom.scrollbar.el);
-    }
-  }, {
-    key: "mouseDown",
-    value: function mouseDown(e) {
-      e.preventDefault();
-      e.which == 1 && (this.dom.scrollbar.state.clicked = true);
-    }
-  }, {
-    key: "mouseUp",
-    value: function mouseUp(e) {
-      this.dom.scrollbar.state.clicked = false;
-
-      _domClasses.default.remove(this.dom.listener, 'is-dragging');
-    }
-  }, {
-    key: "mouseMove",
-    value: function mouseMove(e) {
-      this.dom.scrollbar.state.clicked && this.calcScroll(e);
-    }
-  }, {
-    key: "addFakeScrollHeight",
-    value: function addFakeScrollHeight() {
-      this.dom.scroll = (0, _domCreateElement.default)({
-        selector: 'div',
-        styles: 'vs-scroll-view'
-      });
-      this.dom.listener.appendChild(this.dom.scroll);
-    }
-  }, {
-    key: "removeFakeScrollHeight",
-    value: function removeFakeScrollHeight() {
-      this.dom.listener.removeChild(this.dom.scroll);
-    }
-  }, {
-    key: "calcScroll",
-    value: function calcScroll(e) {
-      var client = this.vars.direction == 'vertical' ? e.clientY : e.clientX;
-      var bounds = this.vars.direction == 'vertical' ? this.vars.height : this.vars.width;
-      var delta = client * (this.vars.bounding / bounds);
-
-      _domClasses.default.add(this.dom.listener, 'is-dragging');
-
-      this.vars.target = delta;
-      this.clampTarget();
-      this.dom.scrollbar && (this.dom.scrollbar.drag.delta = this.vars.target);
-    }
-  }, {
-    key: "scrollTo",
-    value: function scrollTo(offset) {
-      if (this.vars.native) {
-        this.vars.direction == 'vertical' ? window.scrollTo(0, offset) : window.scrollTo(offset, 0);
-      } else {
-        this.vars.target = offset;
-        this.clampTarget();
-      }
-    }
-  }, {
-    key: "resize",
-    value: function resize() {
-      var prop = this.vars.direction === 'vertical' ? 'height' : 'width';
-      this.vars.height = window.innerHeight;
-      this.vars.width = window.innerWidth;
-
-      if (!this.extends) {
-        var bounding = this.dom.section.getBoundingClientRect();
-        this.vars.bounding = this.vars.direction === 'vertical' ? bounding.height - (this.vars.native ? 0 : this.vars.height) : bounding.right - (this.vars.native ? 0 : this.vars.width);
-      }
-
-      if (!this.vars.native && !this.options.noscrollbar) {
-        this.dom.scrollbar.drag.height = this.vars.height * (this.vars.height / (this.vars.bounding + this.vars.height));
-        this.dom.scrollbar.drag.el.style[prop] = "".concat(this.dom.scrollbar.drag.height, "px");
-      } else if (this.vars.native) {
-        this.dom.scroll.style[prop] = "".concat(this.vars.bounding, "px");
-      }
-
-      !this.vars.native && this.clampTarget();
-    }
-  }, {
-    key: "clampTarget",
-    value: function clampTarget() {
-      this.vars.target = Math.round(Math.max(0, Math.min(this.vars.target, this.vars.bounding)));
-    }
-  }, {
-    key: "destroy",
-    value: function destroy() {
-      if (this.vars.native) {
-        _domClasses.default.remove(this.dom.listener, 'is-native-scroll');
-
-        this.removeFakeScrollHeight();
-      } else {
-        _domClasses.default.remove(this.dom.listener, 'is-virtual-scroll');
-
-        !this.options.noscrollbar && this.removeFakeScrollBar();
-      }
-
-      this.vars.direction === 'vertical' ? _domClasses.default.remove(this.dom.listener, 'y-scroll') : _domClasses.default.remove(this.dom.listener, 'x-scroll');
-      this.vars.current = 0;
-      this.vs && (this.vs.destroy(), this.vs = null);
-      this.removeEvents();
-    }
-  }]);
-
-  return Smooth;
-}();
-
-exports.default = Smooth;
-window.Smooth = Smooth;
-},{"dom-classes":"node_modules/dom-classes/index.js","dom-create-element":"node_modules/dom-create-element/index.js","prefix":"node_modules/prefix/index.js","virtual-scroll":"node_modules/virtual-scroll/src/index.js","dom-events":"node_modules/dom-events/index.js"}],"src/custom.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
-
-function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-var Parallax =
-/*#__PURE__*/
-function (_Smooth) {
-  _inherits(Parallax, _Smooth);
-
-  function Parallax(opt) {
-    var _this;
-
-    _classCallCheck(this, Parallax);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Parallax).call(this, opt));
-
-    _this.createExtraBound();
-
-    _this.resizing = false;
-    _this.cache = null;
-    _this.dom.divs = Array.prototype.slice.call(opt.divs, 0);
-    return _this;
-  }
-
-  _createClass(Parallax, [{
-    key: "createExtraBound",
-    value: function createExtraBound() {
-      var _this2 = this;
-
-      ['getCache', 'inViewport'].forEach(function (fn) {
-        return _this2[fn] = _this2[fn].bind(_this2);
-      });
-    }
-  }, {
-    key: "resize",
-    value: function resize() {
-      this.resizing = true;
-      this.getCache();
-
-      _get(_getPrototypeOf(Parallax.prototype), "resize", this).call(this);
-
-      this.resizing = false;
-    }
-  }, {
-    key: "getCache",
-    value: function getCache() {
-      var _this3 = this;
-
-      this.cache = [];
-      this.dom.divs.forEach(function (el, index) {
-        el.style.display = 'block';
-        el.style.transform = 'none';
-        var scrollY = _this3.vars.target;
-        var bounding = el.getBoundingClientRect();
-        var bounds = {
-          el: el,
-          state: true,
-          top: bounding.top + scrollY,
-          left: bounding.left,
-          center: bounding.height / 2,
-          bottom: bounding.bottom + scrollY,
-          speed: el.getAttribute('data-speed') || '-1'
-        };
-
-        if (index === 4) {
-          console.log(bounding.top, scrollY, bounds.top);
-        } // this.vars.bounding = bounding.bottom > this.vars.bounding ? bounding.bottom - window.innerHeight : this.vars.bounding;
-
-
-        _this3.cache.push(bounds);
-      }); // get bounding value based on the container (.vs-section) height
-
-      this.vars.bounding = this.dom.section.getBoundingClientRect().height - (this.vars.native ? 0 : this.vars.height);
-    }
-  }, {
-    key: "run",
-    value: function run() {
-      this.dom.divs.forEach(this.inViewport);
-      this.dom.section.style[this.prefix] = this.getTransform(this.vars.current * -1);
-
-      _get(_getPrototypeOf(Parallax.prototype), "run", this).call(this);
-    }
-  }, {
-    key: "inViewport",
-    value: function inViewport(el, index) {
-      if (!this.cache || this.resizing) return;
-      var cache = this.cache[index];
-      var current = this.vars.current;
-      var transform = (cache.top + cache.center - current) * cache.speed;
-      var top = Math.round(cache.top + transform - current);
-      var bottom = Math.round(cache.bottom + transform - current);
-      var inview = bottom > 0 && top < this.vars.height;
-      el.style.display = 'block';
-      el.style[this.prefix] = this.getTransform(transform);
-    }
-  }]);
-
-  return Parallax;
-}(Smooth);
-
-var _default = Parallax;
-exports.default = _default;
-},{}],"src/SplitText.js":[function(require,module,exports) {
+})({"src/SplitText.js":[function(require,module,exports) {
 var global = arguments[3];
 var define;
 /*!
@@ -19203,12 +17622,13 @@ var define;
 !function(t,n){"object"==typeof exports&&"undefined"!=typeof module?module.exports=n():"function"==typeof define&&define.amd?define(n):(t=t||self).barba=n()}(this,(function(){function t(t,n){for(var r=0;r<n.length;r++){var e=n[r];e.enumerable=e.enumerable||!1,e.configurable=!0,"value"in e&&(e.writable=!0),Object.defineProperty(t,e.key,e)}}function n(n,r,e){return r&&t(n.prototype,r),e&&t(n,e),n}function r(){return(r=Object.assign||function(t){for(var n=1;n<arguments.length;n++){var r=arguments[n];for(var e in r)Object.prototype.hasOwnProperty.call(r,e)&&(t[e]=r[e])}return t}).apply(this,arguments)}function e(t,n){t.prototype=Object.create(n.prototype),t.prototype.constructor=t,t.__proto__=n}function i(t){return(i=Object.setPrototypeOf?Object.getPrototypeOf:function(t){return t.__proto__||Object.getPrototypeOf(t)})(t)}function o(t,n){return(o=Object.setPrototypeOf||function(t,n){return t.__proto__=n,t})(t,n)}function u(t,n,r){return(u=function(){if("undefined"==typeof Reflect||!Reflect.construct)return!1;if(Reflect.construct.sham)return!1;if("function"==typeof Proxy)return!0;try{return Date.prototype.toString.call(Reflect.construct(Date,[],(function(){}))),!0}catch(t){return!1}}()?Reflect.construct:function(t,n,r){var e=[null];e.push.apply(e,n);var i=new(Function.bind.apply(t,e));return r&&o(i,r.prototype),i}).apply(null,arguments)}function f(t){var n="function"==typeof Map?new Map:void 0;return(f=function(t){if(null===t||-1===Function.toString.call(t).indexOf("[native code]"))return t;if("function"!=typeof t)throw new TypeError("Super expression must either be null or a function");if(void 0!==n){if(n.has(t))return n.get(t);n.set(t,r)}function r(){return u(t,arguments,i(this).constructor)}return r.prototype=Object.create(t.prototype,{constructor:{value:r,enumerable:!1,writable:!0,configurable:!0}}),o(r,t)})(t)}function s(t,n){try{var r=t()}catch(t){return n(t)}return r&&r.then?r.then(void 0,n):r}"undefined"!=typeof Symbol&&(Symbol.iterator||(Symbol.iterator=Symbol("Symbol.iterator"))),"undefined"!=typeof Symbol&&(Symbol.asyncIterator||(Symbol.asyncIterator=Symbol("Symbol.asyncIterator")));var c,a="2.9.7",h=function(){};!function(t){t[t.off=0]="off",t[t.error=1]="error",t[t.warning=2]="warning",t[t.info=3]="info",t[t.debug=4]="debug"}(c||(c={}));var v=c.off,l=function(){function t(t){this.t=t}t.getLevel=function(){return v},t.setLevel=function(t){return v=c[t]};var n=t.prototype;return n.error=function(){for(var t=arguments.length,n=new Array(t),r=0;r<t;r++)n[r]=arguments[r];this.i(console.error,c.error,n)},n.warn=function(){for(var t=arguments.length,n=new Array(t),r=0;r<t;r++)n[r]=arguments[r];this.i(console.warn,c.warning,n)},n.info=function(){for(var t=arguments.length,n=new Array(t),r=0;r<t;r++)n[r]=arguments[r];this.i(console.info,c.info,n)},n.debug=function(){for(var t=arguments.length,n=new Array(t),r=0;r<t;r++)n[r]=arguments[r];this.i(console.log,c.debug,n)},n.i=function(n,r,e){r<=t.getLevel()&&n.apply(console,["["+this.t+"] "].concat(e))},t}(),d=O,m=E,p=g,w=x,b=T,y="/",P=new RegExp(["(\\\\.)","(?:\\:(\\w+)(?:\\(((?:\\\\.|[^\\\\()])+)\\))?|\\(((?:\\\\.|[^\\\\()])+)\\))([+*?])?"].join("|"),"g");function g(t,n){for(var r,e=[],i=0,o=0,u="",f=n&&n.delimiter||y,s=n&&n.whitelist||void 0,c=!1;null!==(r=P.exec(t));){var a=r[0],h=r[1],v=r.index;if(u+=t.slice(o,v),o=v+a.length,h)u+=h[1],c=!0;else{var l="",d=r[2],m=r[3],p=r[4],w=r[5];if(!c&&u.length){var b=u.length-1,g=u[b];(!s||s.indexOf(g)>-1)&&(l=g,u=u.slice(0,b))}u&&(e.push(u),u="",c=!1);var E=m||p,x=l||f;e.push({name:d||i++,prefix:l,delimiter:x,optional:"?"===w||"*"===w,repeat:"+"===w||"*"===w,pattern:E?A(E):"[^"+k(x===f?x:x+f)+"]+?"})}}return(u||o<t.length)&&e.push(u+t.substr(o)),e}function E(t,n){return function(r,e){var i=t.exec(r);if(!i)return!1;for(var o=i[0],u=i.index,f={},s=e&&e.decode||decodeURIComponent,c=1;c<i.length;c++)if(void 0!==i[c]){var a=n[c-1];f[a.name]=a.repeat?i[c].split(a.delimiter).map((function(t){return s(t,a)})):s(i[c],a)}return{path:o,index:u,params:f}}}function x(t,n){for(var r=new Array(t.length),e=0;e<t.length;e++)"object"==typeof t[e]&&(r[e]=new RegExp("^(?:"+t[e].pattern+")$",R(n)));return function(n,e){for(var i="",o=e&&e.encode||encodeURIComponent,u=!e||!1!==e.validate,f=0;f<t.length;f++){var s=t[f];if("string"!=typeof s){var c,a=n?n[s.name]:void 0;if(Array.isArray(a)){if(!s.repeat)throw new TypeError('Expected "'+s.name+'" to not repeat, but got array');if(0===a.length){if(s.optional)continue;throw new TypeError('Expected "'+s.name+'" to not be empty')}for(var h=0;h<a.length;h++){if(c=o(a[h],s),u&&!r[f].test(c))throw new TypeError('Expected all "'+s.name+'" to match "'+s.pattern+'"');i+=(0===h?s.prefix:s.delimiter)+c}}else if("string"!=typeof a&&"number"!=typeof a&&"boolean"!=typeof a){if(!s.optional)throw new TypeError('Expected "'+s.name+'" to be '+(s.repeat?"an array":"a string"))}else{if(c=o(String(a),s),u&&!r[f].test(c))throw new TypeError('Expected "'+s.name+'" to match "'+s.pattern+'", but got "'+c+'"');i+=s.prefix+c}}else i+=s}return i}}function k(t){return t.replace(/([.+*?=^!:${}()[\]|/\\])/g,"\\$1")}function A(t){return t.replace(/([=!:$/()])/g,"\\$1")}function R(t){return t&&t.sensitive?"":"i"}function T(t,n,r){for(var e=(r=r||{}).strict,i=!1!==r.start,o=!1!==r.end,u=r.delimiter||y,f=[].concat(r.endsWith||[]).map(k).concat("$").join("|"),s=i?"^":"",c=0;c<t.length;c++){var a=t[c];if("string"==typeof a)s+=k(a);else{var h=a.repeat?"(?:"+a.pattern+")(?:"+k(a.delimiter)+"(?:"+a.pattern+"))*":a.pattern;n&&n.push(a),s+=a.optional?a.prefix?"(?:"+k(a.prefix)+"("+h+"))?":"("+h+")?":k(a.prefix)+"("+h+")"}}if(o)e||(s+="(?:"+k(u)+")?"),s+="$"===f?"$":"(?="+f+")";else{var v=t[t.length-1],l="string"==typeof v?v[v.length-1]===u:void 0===v;e||(s+="(?:"+k(u)+"(?="+f+"))?"),l||(s+="(?="+k(u)+"|"+f+")")}return new RegExp(s,R(r))}function O(t,n,r){return t instanceof RegExp?function(t,n){if(!n)return t;var r=t.source.match(/\((?!\?)/g);if(r)for(var e=0;e<r.length;e++)n.push({name:e,prefix:null,delimiter:null,optional:!1,repeat:!1,pattern:null});return t}(t,n):Array.isArray(t)?function(t,n,r){for(var e=[],i=0;i<t.length;i++)e.push(O(t[i],n,r).source);return new RegExp("(?:"+e.join("|")+")",R(r))}(t,n,r):function(t,n,r){return T(g(t,r),n,r)}(t,n,r)}d.match=function(t,n){var r=[];return E(O(t,r,n),r)},d.regexpToFunction=m,d.parse=p,d.compile=function(t,n){return x(g(t,n),n)},d.tokensToFunction=w,d.tokensToRegExp=b;var S={container:"container",history:"history",namespace:"namespace",prefix:"data-barba",prevent:"prevent",wrapper:"wrapper"},j=new(function(){function t(){this.o=S,this.u=new DOMParser}var n=t.prototype;return n.toString=function(t){return t.outerHTML},n.toDocument=function(t){return this.u.parseFromString(t,"text/html")},n.toElement=function(t){var n=document.createElement("div");return n.innerHTML=t,n},n.getHtml=function(t){return void 0===t&&(t=document),this.toString(t.documentElement)},n.getWrapper=function(t){return void 0===t&&(t=document),t.querySelector("["+this.o.prefix+'="'+this.o.wrapper+'"]')},n.getContainer=function(t){return void 0===t&&(t=document),t.querySelector("["+this.o.prefix+'="'+this.o.container+'"]')},n.removeContainer=function(t){document.body.contains(t)&&t.parentNode.removeChild(t)},n.addContainer=function(t,n){var r=this.getContainer();r?this.s(t,r):n.appendChild(t)},n.getNamespace=function(t){void 0===t&&(t=document);var n=t.querySelector("["+this.o.prefix+"-"+this.o.namespace+"]");return n?n.getAttribute(this.o.prefix+"-"+this.o.namespace):null},n.getHref=function(t){if(t.tagName&&"a"===t.tagName.toLowerCase()){if("string"==typeof t.href)return t.href;var n=t.getAttribute("href")||t.getAttribute("xlink:href");if(n)return this.resolveUrl(n.baseVal||n)}return null},n.resolveUrl=function(){for(var t=arguments.length,n=new Array(t),r=0;r<t;r++)n[r]=arguments[r];var e=n.length;if(0===e)throw new Error("resolveUrl requires at least one argument; got none.");var i=document.createElement("base");if(i.href=arguments[0],1===e)return i.href;var o=document.getElementsByTagName("head")[0];o.insertBefore(i,o.firstChild);for(var u,f=document.createElement("a"),s=1;s<e;s++)f.href=arguments[s],i.href=u=f.href;return o.removeChild(i),u},n.s=function(t,n){n.parentNode.insertBefore(t,n.nextSibling)},t}()),M=new(function(){function t(){this.h=[],this.v=-1}var e=t.prototype;return e.init=function(t,n){this.l="barba";var r={ns:n,scroll:{x:window.scrollX,y:window.scrollY},url:t};this.h.push(r),this.v=0;var e={from:this.l,index:0,states:[].concat(this.h)};window.history&&window.history.replaceState(e,"",t)},e.change=function(t,n,r){if(r&&r.state){var e=r.state,i=e.index;n=this.m(this.v-i),this.replace(e.states),this.v=i}else this.add(t,n);return n},e.add=function(t,n){var r=this.size,e=this.p(n),i={ns:"tmp",scroll:{x:window.scrollX,y:window.scrollY},url:t};this.h.push(i),this.v=r;var o={from:this.l,index:r,states:[].concat(this.h)};switch(e){case"push":window.history&&window.history.pushState(o,"",t);break;case"replace":window.history&&window.history.replaceState(o,"",t)}},e.update=function(t,n){var e=n||this.v,i=r({},this.get(e),{},t);this.set(e,i)},e.remove=function(t){t?this.h.splice(t,1):this.h.pop(),this.v--},e.clear=function(){this.h=[],this.v=-1},e.replace=function(t){this.h=t},e.get=function(t){return this.h[t]},e.set=function(t,n){return this.h[t]=n},e.p=function(t){var n="push",r=t,e=S.prefix+"-"+S.history;return r.hasAttribute&&r.hasAttribute(e)&&(n=r.getAttribute(e)),n},e.m=function(t){return Math.abs(t)>1?t>0?"forward":"back":0===t?"popstate":t>0?"back":"forward"},n(t,[{key:"current",get:function(){return this.h[this.v]}},{key:"state",get:function(){return this.h[this.h.length-1]}},{key:"previous",get:function(){return this.v<1?null:this.h[this.v-1]}},{key:"size",get:function(){return this.h.length}}]),t}()),L=function(t,n){try{var r=function(){if(!n.next.html)return Promise.resolve(t).then((function(t){var r=n.next;if(t){var e=j.toElement(t);r.namespace=j.getNamespace(e),r.container=j.getContainer(e),r.html=t,M.update({ns:r.namespace});var i=j.toDocument(t);document.title=i.title}}))}();return Promise.resolve(r&&r.then?r.then((function(){})):void 0)}catch(t){return Promise.reject(t)}},$=d,_={__proto__:null,update:L,nextTick:function(){return new Promise((function(t){window.requestAnimationFrame(t)}))},pathToRegexp:$},q=function(){return window.location.origin},B=function(t){return void 0===t&&(t=window.location.href),U(t).port},U=function(t){var n,r=t.match(/:\d+/);if(null===r)/^http/.test(t)&&(n=80),/^https/.test(t)&&(n=443);else{var e=r[0].substring(1);n=parseInt(e,10)}var i,o=t.replace(q(),""),u={},f=o.indexOf("#");f>=0&&(i=o.slice(f+1),o=o.slice(0,f));var s=o.indexOf("?");return s>=0&&(u=D(o.slice(s+1)),o=o.slice(0,s)),{hash:i,path:o,port:n,query:u}},D=function(t){return t.split("&").reduce((function(t,n){var r=n.split("=");return t[r[0]]=r[1],t}),{})},F=function(t){return void 0===t&&(t=window.location.href),t.replace(/(\/#.*|\/|#.*)$/,"")},H={__proto__:null,getHref:function(){return window.location.href},getOrigin:q,getPort:B,getPath:function(t){return void 0===t&&(t=window.location.href),U(t).path},parse:U,parseQuery:D,clean:F};function I(t,n,r){return void 0===n&&(n=2e3),new Promise((function(e,i){var o=new XMLHttpRequest;o.onreadystatechange=function(){if(o.readyState===XMLHttpRequest.DONE)if(200===o.status)e(o.responseText);else if(o.status){var n={status:o.status,statusText:o.statusText};r(t,n),i(n)}},o.ontimeout=function(){var e=new Error("Timeout error ["+n+"]");r(t,e),i(e)},o.onerror=function(){var n=new Error("Fetch error");r(t,n),i(n)},o.open("GET",t),o.timeout=n,o.setRequestHeader("Accept","text/html,application/xhtml+xml,application/xml"),o.setRequestHeader("x-barba","yes"),o.send()}))}var C=function(t){return!!t&&("object"==typeof t||"function"==typeof t)&&"function"==typeof t.then};function N(t,n){return void 0===n&&(n={}),function(){for(var r=arguments.length,e=new Array(r),i=0;i<r;i++)e[i]=arguments[i];var o=!1,u=new Promise((function(r,i){n.async=function(){return o=!0,function(t,n){t?i(t):r(n)}};var u=t.apply(n,e);o||(C(u)?u.then(r,i):r(u))}));return u}}var X=new(function(t){function n(){var n;return(n=t.call(this)||this).logger=new l("@barba/core"),n.all=["ready","page","reset","currentAdded","currentRemoved","nextAdded","nextRemoved","beforeOnce","once","afterOnce","before","beforeLeave","leave","afterLeave","beforeEnter","enter","afterEnter","after"],n.registered=new Map,n.init(),n}e(n,t);var r=n.prototype;return r.init=function(){var t=this;this.registered.clear(),this.all.forEach((function(n){t[n]||(t[n]=function(r,e){t.registered.has(n)||t.registered.set(n,new Set),t.registered.get(n).add({ctx:e||{},fn:r})})}))},r.do=function(t){for(var n=this,r=arguments.length,e=new Array(r>1?r-1:0),i=1;i<r;i++)e[i-1]=arguments[i];if(this.registered.has(t)){var o=Promise.resolve();return this.registered.get(t).forEach((function(t){o=o.then((function(){return N(t.fn,t.ctx).apply(void 0,e)}))})),o.catch((function(r){n.logger.debug("Hook error ["+t+"]"),n.logger.error(r)}))}return Promise.resolve()},r.clear=function(){var t=this;this.all.forEach((function(n){delete t[n]})),this.init()},r.help=function(){this.logger.info("Available hooks: "+this.all.join(","));var t=[];this.registered.forEach((function(n,r){return t.push(r)})),this.logger.info("Registered hooks: "+t.join(","))},n}(h)),z=function(){function t(t){if(this.P=[],"boolean"==typeof t)this.g=t;else{var n=Array.isArray(t)?t:[t];this.P=n.map((function(t){return $(t)}))}}return t.prototype.checkHref=function(t){if("boolean"==typeof this.g)return this.g;var n=U(t).path;return this.P.some((function(t){return null!==t.exec(n)}))},t}(),G=function(t){function n(n){var r;return(r=t.call(this,n)||this).k=new Map,r}e(n,t);var i=n.prototype;return i.set=function(t,n,r){return this.k.set(t,{action:r,request:n}),{action:r,request:n}},i.get=function(t){return this.k.get(t)},i.getRequest=function(t){return this.k.get(t).request},i.getAction=function(t){return this.k.get(t).action},i.has=function(t){return!this.checkHref(t)&&this.k.has(t)},i.delete=function(t){return this.k.delete(t)},i.update=function(t,n){var e=r({},this.k.get(t),{},n);return this.k.set(t,e),e},n}(z),Q=function(){return!window.history.pushState},W=function(t){return!t.el||!t.href},J=function(t){var n=t.event;return n.which>1||n.metaKey||n.ctrlKey||n.shiftKey||n.altKey},K=function(t){var n=t.el;return n.hasAttribute("target")&&"_blank"===n.target},V=function(t){var n=t.el;return void 0!==n.protocol&&window.location.protocol!==n.protocol||void 0!==n.hostname&&window.location.hostname!==n.hostname},Y=function(t){var n=t.el;return void 0!==n.port&&B()!==B(n.href)},Z=function(t){var n=t.el;return n.getAttribute&&"string"==typeof n.getAttribute("download")},tt=function(t){return t.el.hasAttribute(S.prefix+"-"+S.prevent)},nt=function(t){return Boolean(t.el.closest("["+S.prefix+"-"+S.prevent+'="all"]'))},rt=function(t){var n=t.href;return F(n)===F()&&B(n)===B()},et=function(t){function n(n){var r;return(r=t.call(this,n)||this).suite=[],r.tests=new Map,r.init(),r}e(n,t);var r=n.prototype;return r.init=function(){this.add("pushState",Q),this.add("exists",W),this.add("newTab",J),this.add("blank",K),this.add("corsDomain",V),this.add("corsPort",Y),this.add("download",Z),this.add("preventSelf",tt),this.add("preventAll",nt),this.add("sameUrl",rt,!1)},r.add=function(t,n,r){void 0===r&&(r=!0),this.tests.set(t,n),r&&this.suite.push(t)},r.run=function(t,n,r,e){return this.tests.get(t)({el:n,event:r,href:e})},r.checkLink=function(t,n,r){var e=this;return this.suite.some((function(i){return e.run(i,t,n,r)}))},n}(z),it=function(t){function n(r,e){var i;void 0===e&&(e="Barba error");for(var o=arguments.length,u=new Array(o>2?o-2:0),f=2;f<o;f++)u[f-2]=arguments[f];return(i=t.call.apply(t,[this].concat(u))||this).error=r,i.label=e,Error.captureStackTrace&&Error.captureStackTrace(function(t){if(void 0===t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return t}(i),n),i.name="BarbaError",i}return e(n,t),n}(f(Error)),ot=function(){function t(t){void 0===t&&(t=[]),this.logger=new l("@barba/core"),this.all=[],this.page=[],this.once=[],this.A=[{name:"namespace",type:"strings"},{name:"custom",type:"function"}],t&&(this.all=this.all.concat(t)),this.update()}var n=t.prototype;return n.add=function(t,n){switch(t){case"rule":this.A.splice(n.position||0,0,n.value);break;case"transition":default:this.all.push(n)}this.update()},n.resolve=function(t,n){var r=this;void 0===n&&(n={});var e=n.once?this.once:this.page;e=e.filter(n.self?function(t){return t.name&&"self"===t.name}:function(t){return!t.name||"self"!==t.name});var i=new Map,o=e.find((function(e){var o=!0,u={};return!(!n.self||"self"!==e.name)||(r.A.reverse().forEach((function(n){o&&(o=r.R(e,n,t,u),e.from&&e.to&&(o=r.R(e,n,t,u,"from")&&r.R(e,n,t,u,"to")),e.from&&!e.to&&(o=r.R(e,n,t,u,"from")),!e.from&&e.to&&(o=r.R(e,n,t,u,"to")))})),i.set(e,u),o)})),u=i.get(o),f=[];if(f.push(n.once?"once":"page"),n.self&&f.push("self"),u){var s,c=[o];Object.keys(u).length>0&&c.push(u),(s=this.logger).info.apply(s,["Transition found ["+f.join(",")+"]"].concat(c))}else this.logger.info("No transition found ["+f.join(",")+"]");return o},n.update=function(){var t=this;this.all=this.all.map((function(n){return t.T(n)})).sort((function(t,n){return t.priority-n.priority})).reverse().map((function(t){return delete t.priority,t})),this.page=this.all.filter((function(t){return void 0!==t.leave||void 0!==t.enter})),this.once=this.all.filter((function(t){return void 0!==t.once}))},n.R=function(t,n,r,e,i){var o=!0,u=!1,f=t,s=n.name,c=s,a=s,h=s,v=i?f[i]:f,l="to"===i?r.next:r.current;if(i?v&&v[s]:v[s]){switch(n.type){case"strings":default:var d=Array.isArray(v[c])?v[c]:[v[c]];l[c]&&-1!==d.indexOf(l[c])&&(u=!0),-1===d.indexOf(l[c])&&(o=!1);break;case"object":var m=Array.isArray(v[a])?v[a]:[v[a]];l[a]?(l[a].name&&-1!==m.indexOf(l[a].name)&&(u=!0),-1===m.indexOf(l[a].name)&&(o=!1)):o=!1;break;case"function":v[h](r)?u=!0:o=!1}u&&(i?(e[i]=e[i]||{},e[i][s]=f[i][s]):e[s]=f[s])}return o},n.O=function(t,n,r){var e=0;return(t[n]||t.from&&t.from[n]||t.to&&t.to[n])&&(e+=Math.pow(10,r),t.from&&t.from[n]&&(e+=1),t.to&&t.to[n]&&(e+=2)),e},n.T=function(t){var n=this;t.priority=0;var r=0;return this.A.forEach((function(e,i){r+=n.O(t,e.name,i+1)})),t.priority=r,t},t}(),ut=function(){function t(t){void 0===t&&(t=[]),this.logger=new l("@barba/core"),this.S=!1,this.store=new ot(t)}var r=t.prototype;return r.get=function(t,n){return this.store.resolve(t,n)},r.doOnce=function(t){var n=t.data,r=t.transition;try{var e=function(){i.S=!1},i=this,o=r||{};i.S=!0;var u=s((function(){return Promise.resolve(i.j("beforeOnce",n,o)).then((function(){return Promise.resolve(i.once(n,o)).then((function(){return Promise.resolve(i.j("afterOnce",n,o)).then((function(){}))}))}))}),(function(t){i.S=!1,i.logger.debug("Transition error [before/after/once]"),i.logger.error(t)}));return Promise.resolve(u&&u.then?u.then(e):e())}catch(t){return Promise.reject(t)}},r.doPage=function(t){var n=t.data,r=t.transition,e=t.page,i=t.wrapper;try{var o=function(t){if(u)return t;f.S=!1},u=!1,f=this,c=r||{},a=!0===c.sync||!1;f.S=!0;var h=s((function(){function t(){return Promise.resolve(f.j("before",n,c)).then((function(){var t=!1;function r(r){return t?r:Promise.resolve(f.remove(n)).then((function(){return Promise.resolve(f.j("after",n,c)).then((function(){}))}))}var o=function(){if(a)return s((function(){return Promise.resolve(f.add(n,i)).then((function(){return Promise.resolve(f.j("beforeLeave",n,c)).then((function(){return Promise.resolve(f.j("beforeEnter",n,c)).then((function(){return Promise.resolve(Promise.all([f.leave(n,c),f.enter(n,c)])).then((function(){return Promise.resolve(f.j("afterLeave",n,c)).then((function(){return Promise.resolve(f.j("afterEnter",n,c)).then((function(){}))}))}))}))}))}))}),(function(t){if(f.M(t))throw new it(t,"Transition error [sync]")}));var r=function(r){return t?r:s((function(){var t=function(){if(!1!==o)return Promise.resolve(f.add(n,i)).then((function(){return Promise.resolve(f.j("beforeEnter",n,c)).then((function(){return Promise.resolve(f.enter(n,c,o)).then((function(){return Promise.resolve(f.j("afterEnter",n,c)).then((function(){}))}))}))}))}();if(t&&t.then)return t.then((function(){}))}),(function(t){if(f.M(t))throw new it(t,"Transition error [before/after/enter]")}))},o=!1,u=s((function(){return Promise.resolve(f.j("beforeLeave",n,c)).then((function(){return Promise.resolve(Promise.all([f.leave(n,c),L(e,n)]).then((function(t){return t[0]}))).then((function(t){return o=t,Promise.resolve(f.j("afterLeave",n,c)).then((function(){}))}))}))}),(function(t){if(f.M(t))throw new it(t,"Transition error [before/after/leave]")}));return u&&u.then?u.then(r):r(u)}();return o&&o.then?o.then(r):r(o)}))}var r=function(){if(a)return Promise.resolve(L(e,n)).then((function(){}))}();return r&&r.then?r.then(t):t()}),(function(t){if(f.S=!1,t.name&&"BarbaError"===t.name)throw f.logger.debug(t.label),f.logger.error(t.error),t;throw f.logger.debug("Transition error [page]"),f.logger.error(t),t}));return Promise.resolve(h&&h.then?h.then(o):o(h))}catch(t){return Promise.reject(t)}},r.once=function(t,n){try{return Promise.resolve(X.do("once",t,n)).then((function(){return n.once?N(n.once,n)(t):Promise.resolve()}))}catch(t){return Promise.reject(t)}},r.leave=function(t,n){try{return Promise.resolve(X.do("leave",t,n)).then((function(){return n.leave?N(n.leave,n)(t):Promise.resolve()}))}catch(t){return Promise.reject(t)}},r.enter=function(t,n,r){try{return Promise.resolve(X.do("enter",t,n)).then((function(){return n.enter?N(n.enter,n)(t,r):Promise.resolve()}))}catch(t){return Promise.reject(t)}},r.add=function(t,n){try{return j.addContainer(t.next.container,n),X.do("nextAdded",t),Promise.resolve()}catch(t){return Promise.reject(t)}},r.remove=function(t){try{return j.removeContainer(t.current.container),X.do("currentRemoved",t),Promise.resolve()}catch(t){return Promise.reject(t)}},r.M=function(t){return t.message?!/Timeout error|Fetch error/.test(t.message):!t.status},r.j=function(t,n,r){try{return Promise.resolve(X.do(t,n,r)).then((function(){return r[t]?N(r[t],r)(n):Promise.resolve()}))}catch(t){return Promise.reject(t)}},n(t,[{key:"isRunning",get:function(){return this.S},set:function(t){this.S=t}},{key:"hasOnce",get:function(){return this.store.once.length>0}},{key:"hasSelf",get:function(){return this.store.all.some((function(t){return"self"===t.name}))}},{key:"shouldWait",get:function(){return this.store.all.some((function(t){return t.to&&!t.to.route||t.sync}))}}]),t}(),ft=function(){function t(t){var n=this;this.names=["beforeLeave","afterLeave","beforeEnter","afterEnter"],this.byNamespace=new Map,0!==t.length&&(t.forEach((function(t){n.byNamespace.set(t.namespace,t)})),this.names.forEach((function(t){X[t](n.L(t))})))}return t.prototype.L=function(t){var n=this;return function(r){var e=t.match(/enter/i)?r.next:r.current,i=n.byNamespace.get(e.namespace);return i&&i[t]?N(i[t],i)(r):Promise.resolve()}},t}();Element.prototype.matches||(Element.prototype.matches=Element.prototype.msMatchesSelector||Element.prototype.webkitMatchesSelector),Element.prototype.closest||(Element.prototype.closest=function(t){var n=this;do{if(n.matches(t))return n;n=n.parentElement||n.parentNode}while(null!==n&&1===n.nodeType);return null});var st={container:null,html:"",namespace:"",url:{hash:"",href:"",path:"",port:null,query:{}}};return new(function(){function t(){this.version=a,this.schemaPage=st,this.Logger=l,this.logger=new l("@barba/core"),this.plugins=[],this.hooks=X,this.dom=j,this.helpers=_,this.history=M,this.request=I,this.url=H}var e=t.prototype;return e.use=function(t,n){var r=this.plugins;r.indexOf(t)>-1?this.logger.warn("Plugin ["+t.name+"] already installed."):"function"==typeof t.install?(t.install(this,n),r.push(t)):this.logger.warn("Plugin ["+t.name+'] has no "install" method.')},e.init=function(t){var n=void 0===t?{}:t,e=n.transitions,i=void 0===e?[]:e,o=n.views,u=void 0===o?[]:o,f=n.schema,s=void 0===f?S:f,c=n.requestError,a=n.timeout,h=void 0===a?2e3:a,v=n.cacheIgnore,d=void 0!==v&&v,m=n.prefetchIgnore,p=void 0!==m&&m,w=n.preventRunning,b=void 0!==w&&w,y=n.prevent,P=void 0===y?null:y,g=n.debug,E=n.logLevel;if(l.setLevel(!0===(void 0!==g&&g)?"debug":void 0===E?"off":E),this.logger.info(this.version),Object.keys(s).forEach((function(t){S[t]&&(S[t]=s[t])})),this.$=c,this.timeout=h,this.cacheIgnore=d,this.prefetchIgnore=p,this.preventRunning=b,this._=this.dom.getWrapper(),!this._)throw new Error("[@barba/core] No Barba wrapper found");this._.setAttribute("aria-live","polite"),this.q();var x=this.data.current;if(!x.container)throw new Error("[@barba/core] No Barba container found");if(this.cache=new G(d),this.prevent=new et(p),this.transitions=new ut(i),this.views=new ft(u),null!==P){if("function"!=typeof P)throw new Error("[@barba/core] Prevent should be a function");this.prevent.add("preventCustom",P)}this.history.init(x.url.href,x.namespace),this.B=this.B.bind(this),this.U=this.U.bind(this),this.D=this.D.bind(this),this.F(),this.plugins.forEach((function(t){return t.init()}));var k=this.data;k.trigger="barba",k.next=k.current,k.current=r({},this.schemaPage),this.hooks.do("ready",k),this.once(k),this.q()},e.destroy=function(){this.q(),this.H(),this.history.clear(),this.hooks.clear(),this.plugins=[]},e.force=function(t){window.location.assign(t)},e.go=function(t,n,r){var e;if(void 0===n&&(n="barba"),this.transitions.isRunning)this.force(t);else if(!(e="popstate"===n?this.history.current&&this.url.getPath(this.history.current.url)===this.url.getPath(t):this.prevent.run("sameUrl",null,null,t))||this.transitions.hasSelf)return n=this.history.change(t,n,r),r&&(r.stopPropagation(),r.preventDefault()),this.page(t,n,e)},e.once=function(t){try{var n=this;return Promise.resolve(n.hooks.do("beforeEnter",t)).then((function(){function r(){return Promise.resolve(n.hooks.do("afterEnter",t)).then((function(){}))}var e=function(){if(n.transitions.hasOnce){var r=n.transitions.get(t,{once:!0});return Promise.resolve(n.transitions.doOnce({transition:r,data:t})).then((function(){}))}}();return e&&e.then?e.then(r):r()}))}catch(t){return Promise.reject(t)}},e.page=function(t,n,e){try{var i=function(){var t=o.data;return Promise.resolve(o.hooks.do("page",t)).then((function(){var n=s((function(){var n=o.transitions.get(t,{once:!1,self:e});return Promise.resolve(o.transitions.doPage({data:t,page:u,transition:n,wrapper:o._})).then((function(){o.q()}))}),(function(){0===l.getLevel()&&o.force(t.current.url.href)}));if(n&&n.then)return n.then((function(){}))}))},o=this;o.data.next.url=r({href:t},o.url.parse(t)),o.data.trigger=n;var u=o.cache.has(t)?o.cache.update(t,{action:"click"}).request:o.cache.set(t,o.request(t,o.timeout,o.onRequestError.bind(o,n)),"click").request,f=function(){if(o.transitions.shouldWait)return Promise.resolve(L(u,o.data)).then((function(){}))}();return Promise.resolve(f&&f.then?f.then(i):i())}catch(t){return Promise.reject(t)}},e.onRequestError=function(t){this.transitions.isRunning=!1;for(var n=arguments.length,r=new Array(n>1?n-1:0),e=1;e<n;e++)r[e-1]=arguments[e];var i=r[0],o=r[1],u=this.cache.getAction(i);return this.cache.delete(i),!(this.$&&!1===this.$(t,u,i,o)||("click"===u&&this.force(i),1))},e.prefetch=function(t){var n=this;this.cache.has(t)||this.cache.set(t,this.request(t,this.timeout,this.onRequestError.bind(this,"barba")).catch((function(t){n.logger.error(t)})),"prefetch")},e.F=function(){!0!==this.prefetchIgnore&&(document.addEventListener("mouseover",this.B),document.addEventListener("touchstart",this.B)),document.addEventListener("click",this.U),window.addEventListener("popstate",this.D)},e.H=function(){!0!==this.prefetchIgnore&&(document.removeEventListener("mouseover",this.B),document.removeEventListener("touchstart",this.B)),document.removeEventListener("click",this.U),window.removeEventListener("popstate",this.D)},e.B=function(t){var n=this,r=this.I(t);if(r){var e=this.dom.getHref(r);this.prevent.checkHref(e)||this.cache.has(e)||this.cache.set(e,this.request(e,this.timeout,this.onRequestError.bind(this,r)).catch((function(t){n.logger.error(t)})),"enter")}},e.U=function(t){var n=this.I(t);if(n)return this.transitions.isRunning&&this.preventRunning?(t.preventDefault(),void t.stopPropagation()):void this.go(this.dom.getHref(n),n,t)},e.D=function(t){this.go(this.url.getHref(),"popstate",t)},e.I=function(t){for(var n=t.target;n&&!this.dom.getHref(n);)n=n.parentNode;if(n&&!this.prevent.checkLink(n,t,this.dom.getHref(n)))return n},e.q=function(){var t=this.url.getHref(),n={container:this.dom.getContainer(),html:this.dom.getHtml(),namespace:this.dom.getNamespace(),url:r({href:t},this.url.parse(t))};this.C={current:n,next:r({},this.schemaPage),trigger:void 0},this.hooks.do("reset",this.data)},n(t,[{key:"data",get:function(){return this.C}},{key:"wrapper",get:function(){return this._}}]),t}())}));
 
 
+},{}],"node_modules/@barba/prefetch/dist/barba-prefetch.umd.js":[function(require,module,exports) {
+var define;
+!function(t,i){"object"==typeof exports&&"undefined"!=typeof module?module.exports=i():"function"==typeof define&&define.amd?define(i):(t=t||self).barbaPrefetch=i()}(this,function(){var t="2.1.10",i=window.requestIdleCallback||function(t){var i=Date.now();return setTimeout(function(){t({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-i))}})},1)};return new(function(){function n(){this.name="@barba/prefetch",this.version=t,this.toPrefetch=new Set}var e=n.prototype;return e.install=function(t,i){var n=void 0===i?{}:i,e=n.root,o=void 0===e?document.body:e,r=n.timeout,s=void 0===r?2e3:r;this.logger=new t.Logger(this.name),this.logger.info(this.version),this.barba=t,this.root=o,this.timeout=s},e.init=function(){var t=this;this.barba.prefetchIgnore?this.logger.warn("barba.prefetchIgnore is enabled"):this.barba.cacheIgnore?this.logger.warn("barba.cacheIgnore is enabled"):(this.observer=new IntersectionObserver(function(i){i.forEach(function(i){if(i.isIntersecting){var n=i.target,e=t.barba.dom.getHref(n);t.toPrefetch.has(e)&&(t.observer.unobserve(n),t.barba.cache.has(e)?t.barba.cache.update(e,{action:"prefetch"}):t.barba.cache.set(e,t.barba.request(e,t.barba.timeout,t.barba.onRequestError.bind(t.barba,"barba")).catch(function(i){t.logger.error(i)}),"prefetch"))}})}),this.observe(),this.barba.hooks.after(this.observe,this))},e.observe=function(){var t=this;i(function(){t.root.querySelectorAll("a").forEach(function(i){var n=i,e=t.barba.dom.getHref(n);t.barba.cache.has(e)||t.barba.prevent.checkHref(e)||t.barba.prevent.checkLink(n,{},e)||(t.observer.observe(i),t.toPrefetch.add(e))})},{timeout:this.timeout})},n}())});
+
+
 },{}],"src/main.js":[function(require,module,exports) {
 "use strict";
-
-var _smoothScrolling = _interopRequireDefault(require("smooth-scrolling"));
-
-var _custom = _interopRequireDefault(require("./custom"));
 
 var _SplitText = _interopRequireDefault(require("./SplitText"));
 
@@ -19219,6 +17639,8 @@ var _gsap = _interopRequireDefault(require("gsap"));
 var _locomotiveScroll = _interopRequireDefault(require("locomotive-scroll"));
 
 var _core = _interopRequireDefault(require("@barba/core"));
+
+var _prefetch = _interopRequireDefault(require("@barba/prefetch"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19311,10 +17733,10 @@ function aboutLaunch() {
     y: '100%'
   }, {
     y: '0%',
-    duration: 1.3,
+    duration: 1.6,
     ease: 'power3.out',
-    stagger: 0.1
-  }).add(aText.play(), "-=1.9").fromTo('.a-cross', {
+    stagger: 0.15
+  }, "+=0.6").add(aText.play(), "-=1.8").fromTo('.a-cross', {
     rotation: -25,
     opacity: 0
   }, {
@@ -19322,45 +17744,10 @@ function aboutLaunch() {
     opacity: 1,
     duration: 2,
     ease: 'power3.out'
-  }, "-=1");
+  }, "-=0.9");
 }
 
 function aboutScroll() {
-  var aTitle = new _SplitText.default(".a-title h1", {
-    type: "lines"
-  });
-  var aContent = new _SplitText.default(".a-content p", {
-    type: "lines"
-  });
-
-  var title = _gsap.default.timeline({
-    paused: true
-  });
-
-  var content = _gsap.default.timeline({
-    paused: true
-  });
-
-  title.fromTo(aTitle.lines, {
-    opacity: 0,
-    y: 100
-  }, {
-    opacity: 1,
-    y: 0,
-    duration: 1.3,
-    stagger: 0.1,
-    ease: 'power3.out'
-  });
-  content.fromTo(aContent.lines, {
-    opacity: 0,
-    y: 30
-  }, {
-    opacity: 1,
-    y: 0,
-    duration: 1.3,
-    stagger: 0.1,
-    ease: 'power3.out'
-  });
   scroll.on('call', function (event, element, i) {
     if (event === 'title') {
       title.play();
@@ -19377,18 +17764,12 @@ function homeScroll() {
   var line = document.querySelector('.description .line span');
   var line2 = document.querySelector('.description .line2 span');
 
-  var appear = _gsap.default.timeline({
-    paused: true
-  });
-
   var project = _gsap.default.timeline({
     paused: true
   });
 
   _gsap.default.set('[data-scroll-call=project]', {
-    opacity: 0,
-    rotation: 2,
-    y: '20%'
+    autoAlpha: 0
   });
 
   function makeid(length) {
@@ -19462,18 +17843,12 @@ function homeScroll() {
     if (event === 'project') {
       projectAppear(i);
     }
-
-    if (event === 'internship') {
-      appear.play();
-    }
   });
 
   function projectAppear(i) {
     _gsap.default.to(i.el, {
-      rotation: 0,
-      y: '0%',
-      opacity: 1,
-      duration: 1.3,
+      autoAlpha: 1,
+      duration: 1.5,
       ease: 'power3.out'
     });
   }
@@ -19568,7 +17943,7 @@ function homeLaunch() {
       duration: 0.2,
       ease: 'power3.out',
       stagger: 0.2
-    }, "-=1.4").fromTo('.line', {
+    }, "-=1.4").fromTo('header .line', {
       scaleX: 0
     }, {
       scaleX: 1,
@@ -19611,7 +17986,7 @@ function homeLaunch() {
       duration: 0.2,
       ease: 'power3.out',
       stagger: 0.2
-    }, "-=1.4").fromTo('.line', {
+    }, "-=1.4").fromTo('header .line', {
       scaleX: 0
     }, {
       scaleX: 1,
@@ -19675,56 +18050,85 @@ function projectLaunch() {
   }, '-=1.3');
 }
 
-function Transition() {
+function homeEnter() {
+  var mySplitText = new _SplitText.default(".main-project-text", {
+    type: "chars, words"
+  }),
+      chars = mySplitText.chars;
+
+  var mainText = _gsap.default.timeline({
+    paused: true
+  });
+
   var tl = _gsap.default.timeline();
 
-  var text = new _SplitText.default(".transition-flex span", {
-    type: "chars"
-  }),
-      letters = text.chars;
+  var _iteratorNormalCompletion4 = true;
+  var _didIteratorError4 = false;
+  var _iteratorError4 = undefined;
 
-  _gsap.default.set('.transition', {
-    clip: 'rect(100vh 100vw 100vh 0vh)'
-  });
+  try {
+    for (var _iterator4 = chars[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+      var char = _step4.value;
+      var speed = 2;
 
-  _gsap.default.set('.transition-flex', {
-    rotation: -6,
-    scale: 1.2,
-    autoAlpha: 0.8
-  });
+      var random = _gsap.default.utils.interpolate(0.1, 0.8, Math.random());
 
-  _gsap.default.set(letters[1], {
-    y: '15%',
+      var time = Math.min((1 / random * 0.1 + random * 0.3) / 1.4 * speed, 2);
+
+      var duration = _gsap.default.utils.interpolate(0.1, 0.35, Math.random());
+
+      mainText.from(char, {
+        opacity: 0,
+        duration: duration
+      }, time);
+
+      if (Math.random() > .75) {
+        mainText.to(char, {
+          opacity: 0,
+          duration: duration
+        }, time + duration);
+        mainText.from(char, {
+          opacity: 0,
+          duration: duration
+        }, time + duration);
+      }
+    }
+  } catch (err) {
+    _didIteratorError4 = true;
+    _iteratorError4 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
+        _iterator4.return();
+      }
+    } finally {
+      if (_didIteratorError4) {
+        throw _iteratorError4;
+      }
+    }
+  }
+
+  tl.fromTo('.main-project-img img', {
+    scale: 1.3,
     autoAlpha: 0
-  });
-
-  tl.to('.transition', {
-    clip: 'rect(0vh 100vw 100vh 0vh)',
-    duration: 1.5,
-    ease: 'expo.inOut'
-  }).to('.transition-flex', {
-    rotation: 0,
+  }, {
     scale: 1,
     autoAlpha: 1,
-    duration: 2,
-    ease: 'power3.inOut'
-  }, '-=1.5').to(letters[1], {
-    y: '0%',
-    duration: 1.5,
-    autoAlpha: 1,
-    ease: 'power4.inOut'
-  }, '-=1.5').to('.transition-plane', {
-    scaleY: 1,
-    duration: 1.5,
-    ease: 'expo.inOut'
-  }, '-=0.6').to('.transition-flex', {
-    y: '-10%',
     rotation: 0,
-    duration: 1.5,
-    ease: 'power3.inOut'
-  }, '-=1.5');
-} // Transition()
+    ease: 'power3.out',
+    duration: 2
+  }).add(mainText.play(), "-=1.8").fromTo('.cross', {
+    rotation: -25,
+    opacity: 0
+  }, {
+    rotation: 0,
+    opacity: 1,
+    duration: 2,
+    ease: 'power3.out'
+  }, "-=1.3");
+}
 
+_core.default.use(_prefetch.default);
 
 _core.default.init({
   debug: true,
@@ -19773,6 +18177,258 @@ _core.default.init({
     },
     beforeEnter: function beforeEnter(_ref3) {
       var next = _ref3.next;
+
+      var tl = _gsap.default.timeline();
+
+      tl.to('.transition-plane', {
+        scaleY: 1,
+        duration: 1.5,
+        ease: 'expo.inOut'
+      }, "+=0.3").to('.transition-flex', {
+        y: '-10%',
+        rotation: 0,
+        duration: 1.5,
+        ease: 'power3.inOut'
+      }, '-=1.5').to('.transition', {
+        clip: 'rect(0vh 100vw 0vh 0vh)',
+        duration: 1.5,
+        ease: 'power3.inOut'
+      }, '-=1.5').set('.transition-plane', {
+        scaleY: 0
+      });
+      scroll.destroy();
+      smooth(next.container);
+    },
+    beforeLeave: function beforeLeave(data) {
+      var projectNumber = document.querySelector('.transition-flex span');
+      var nb = data.trigger.getAttribute('project-index');
+      projectNumber.innerHTML = nb;
+      console.log(projectNumber);
+
+      var tl = _gsap.default.timeline();
+
+      var text = new _SplitText.default(projectNumber, {
+        type: "chars"
+      }),
+          letters = text.chars;
+
+      _gsap.default.set('.transition', {
+        clip: 'rect(100vh 100vw 100vh 0vh)'
+      });
+
+      _gsap.default.set('.transition-flex', {
+        rotation: -6,
+        scale: 1.2,
+        autoAlpha: 0.8,
+        y: '0%'
+      });
+
+      _gsap.default.set(letters[1], {
+        y: '15%',
+        autoAlpha: 0
+      });
+
+      tl.to('.transition', {
+        clip: 'rect(0vh 100vw 100vh 0vh)',
+        duration: 1.5,
+        ease: 'expo.inOut'
+      }).to('.transition-flex', {
+        rotation: 0,
+        scale: 1,
+        autoAlpha: 1,
+        duration: 2,
+        ease: 'power3.inOut'
+      }, '-=1.5').to(letters[1], {
+        y: '0%',
+        duration: 1.5,
+        autoAlpha: 1,
+        ease: 'power4.inOut'
+      }, '-=1.5');
+    },
+    leave: function leave(data) {
+      if (isMobile.any()) {
+        _gsap.default.to(window, {
+          duration: 2,
+          scrollTo: 0,
+          ease: 'power3.out'
+        });
+      }
+
+      return _gsap.default.to(data.current.container, {
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.inOut'
+      });
+    },
+    enter: function enter(data) {
+      data.current.container.style.display = 'none';
+      scroll.update();
+      return _gsap.default.from(data.next.container, {
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.inOut'
+      });
+    }
+  }, {
+    name: 'home-to-about',
+    from: {
+      namespace: ['home', 'project']
+    },
+    to: {
+      namespace: ['about']
+    },
+    beforeEnter: function beforeEnter(_ref4) {
+      var next = _ref4.next;
+
+      var tl = _gsap.default.timeline();
+
+      tl.to('.transition-plane', {
+        scaleY: 1,
+        duration: 1.5,
+        ease: 'expo.inOut'
+      }, "+=0.3").to('.transition-flex', {
+        y: '-10%',
+        rotation: 0,
+        duration: 1.5,
+        ease: 'power3.inOut'
+      }, '-=1.5').to('.transition', {
+        clip: 'rect(0vh 100vw 0vh 0vh)',
+        duration: 1.5,
+        ease: 'power3.inOut'
+      }, '-=1.5').set('.transition-plane', {
+        scaleY: 0
+      });
+      scroll.destroy();
+      smooth(next.container);
+    },
+    beforeLeave: function beforeLeave(data) {
+      var projectNumber = document.querySelector('.transition-flex span');
+      projectNumber.innerHTML = 'AB-ME';
+
+      var tl = _gsap.default.timeline();
+
+      var text = new _SplitText.default(projectNumber, {
+        type: "chars"
+      }),
+          letters = text.chars;
+
+      _gsap.default.set('.transition', {
+        clip: 'rect(100vh 100vw 100vh 0vh)'
+      });
+
+      _gsap.default.set('.transition-flex', {
+        rotation: -6,
+        scale: 1.2,
+        autoAlpha: 0.8,
+        y: '0%'
+      });
+
+      _gsap.default.set(letters[1], {
+        y: '15%',
+        autoAlpha: 0
+      });
+
+      _gsap.default.set(letters[3], {
+        y: '-15%',
+        autoAlpha: 0
+      });
+
+      tl.to('.transition', {
+        clip: 'rect(0vh 100vw 100vh 0vh)',
+        duration: 1.5,
+        ease: 'expo.inOut'
+      }).to('.transition-flex', {
+        rotation: 0,
+        scale: 1,
+        autoAlpha: 1,
+        duration: 2,
+        ease: 'power3.inOut'
+      }, '-=1.5').to(letters[1], {
+        y: '0%',
+        duration: 1.5,
+        autoAlpha: 1,
+        ease: 'power4.inOut'
+      }, '-=1.5').to(letters[3], {
+        y: '0%',
+        duration: 1.5,
+        autoAlpha: 1,
+        ease: 'power4.inOut'
+      }, '-=1.4');
+    },
+    leave: function leave(data) {
+      if (isMobile.any()) {
+        _gsap.default.to(window, {
+          duration: 2,
+          scrollTo: 0,
+          ease: 'power3.out'
+        });
+      }
+
+      return _gsap.default.to(data.current.container, {
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.inOut'
+      });
+    },
+    enter: function enter(data) {
+      data.current.container.style.display = 'none';
+      scroll.update();
+      return _gsap.default.from(data.next.container, {
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.inOut'
+      });
+    }
+  }, {
+    name: 'to-home',
+    to: {
+      namespace: ['home']
+    },
+    once: function once(_ref5) {
+      var next = _ref5.next;
+      smooth(next.container);
+      homeLaunch();
+    },
+    beforeEnter: function beforeEnter(_ref6) {
+      var next = _ref6.next;
+      scroll.destroy();
+      smooth(next.container);
+      homeEnter();
+    },
+    leave: function leave(data) {
+      if (isMobile.any()) {
+        _gsap.default.to(window, {
+          duration: 2,
+          scrollTo: 0,
+          ease: 'power3.out'
+        });
+      }
+
+      return _gsap.default.to(data.current.container, {
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.inOut'
+      });
+    },
+    enter: function enter(data) {
+      data.current.container.style.display = 'none';
+      scroll.update();
+      return _gsap.default.from(data.next.container, {
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.inOut'
+      });
+    }
+  }, {
+    name: 'projects',
+    from: {
+      namespace: ['home']
+    },
+    to: {
+      namespace: ['project']
+    },
+    beforeEnter: function beforeEnter(_ref7) {
+      var next = _ref7.next;
 
       var tl = _gsap.default.timeline();
 
@@ -19944,7 +18600,7 @@ function smooth(container) {
 //       const tl = gsap.timeline()
 //       tl.to('.transition', {scaleY:0, duration:1.3, ease:'power4.out', onComplete:done})
 //     }
-},{"smooth-scrolling":"node_modules/smooth-scrolling/index.js","./custom":"src/custom.js","./SplitText":"src/SplitText.js","gsap/all":"node_modules/gsap/all.js","gsap":"node_modules/gsap/index.js","locomotive-scroll":"node_modules/locomotive-scroll/dist/locomotive-scroll.esm.js","@barba/core":"node_modules/@barba/core/dist/barba.umd.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./SplitText":"src/SplitText.js","gsap/all":"node_modules/gsap/all.js","gsap":"node_modules/gsap/index.js","locomotive-scroll":"node_modules/locomotive-scroll/dist/locomotive-scroll.esm.js","@barba/core":"node_modules/@barba/core/dist/barba.umd.js","@barba/prefetch":"node_modules/@barba/prefetch/dist/barba-prefetch.umd.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -19972,7 +18628,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51595" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57352" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

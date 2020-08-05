@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import LocomotiveScroll from 'locomotive-scroll'
 import barba from '@barba/core'
 import barbaPrefetch from '@barba/prefetch'
+import Cursor from './cursor';
 
 gsap.registerPlugin(ScrollToPlugin)
 
@@ -48,8 +49,7 @@ function aboutLaunch() {
       aText.from(char, { opacity:0, duration }, time);
 
       if (Math.random() > .75) {
-          aText.to(char, { opacity:0, duration }, time + duration);
-          aText.from(char, { opacity:0, duration }, time + duration);
+          aText.fromTo(char, { opacity:0, duration }, { opacity:1, duration }, time + duration);
       }
   }
 
@@ -61,6 +61,27 @@ function aboutLaunch() {
 
 function aboutScroll() {
 
+  let img;
+  const cursor = new Cursor(document.querySelector('.cursor'))
+  const inner = document.querySelectorAll('.cursor-inner-1, .cursor-inner-2, .cursor-inner-3')
+  const wrapper = document.querySelector('.cursor-wrapper')
+  const tl = gsap.timeline()
+  const data = document.querySelectorAll('.a-data-n1, .a-data-n2, .a-data-n3')
+  console.log(data)
+
+  data.forEach(function (element, index) {
+    const tl = gsap.timeline()
+    element.addEventListener('mouseenter', () => {
+      tl
+      .set(inner[index], {display:'block'})
+      .fromTo(inner[index], {autoAlpha:0}, {scale:1, autoAlpha:1, duration:0.1})
+    })
+     element.addEventListener('mouseleave', () => {
+      tl
+      .fromTo(inner[index], {autoAlpha:1}, {autoAlpha:0, duration:0.1})
+      .set(inner[index], {display:'none'})
+    })
+  })
 
   scroll.on('call', function(event, element, i){
 
@@ -113,6 +134,39 @@ function homeScroll() {
   }
   lettersHover()
 
+  function projectHover() {
+    const projects = document.querySelectorAll('.project-1, .project-2, .project-3, .project-4') 
+
+    projects.forEach(function(element, index) {
+      const textHover = gsap.timeline({paused: true})
+      const content = element.querySelector('.project-text')
+      console.log(content)
+      const text = new SplitText(content, {type:'chars'})
+      const chars = text.chars
+
+      for (const char of chars) {
+        const speed = 2
+        const random = gsap.utils.interpolate(0.1, 0.8, Math.random())
+        const time = Math.min((((1 / random) * 0.1 + random * 0.3) / 1.4) * speed, 2)
+        const duration = gsap.utils.interpolate(0.1, 0.35, Math.random())
+
+        textHover.from(char, { opacity:0, duration }, time);
+
+      if (Math.random() > .9) {
+          textHover.fromTo(char, { opacity:0, duration }, { opacity:1, duration }, time + duration);
+      }
+      }
+      element.addEventListener('mouseenter', () => {
+        textHover.play()
+      })
+
+      element.addEventListener('mouseleave', () => {
+        textHover.reverse(1.3)
+      })
+    })
+  }
+  projectHover()
+
   const node = document.createElement('span')
   const textnode = document.createTextNode('(Currently looking for an internship.)')
   node.appendChild(textnode)
@@ -150,8 +204,7 @@ function homeLaunch() {
       mainText.from(char, { opacity:0, duration }, time);
 
       if (Math.random() > .75) {
-          mainText.to(char, { opacity:0, duration }, time + duration);
-          mainText.from(char, { opacity:0, duration }, time + duration);
+          mainText.fromTo(char, { opacity:0, duration }, { opacity:1, duration }, time + duration);
       }
   }
 
@@ -190,10 +243,21 @@ function projectLaunch() {
   const appear = gsap.timeline({paused: true})
 
   tl
-  .fromTo(words, {y:'100%'}, {y:'0%', duration:1.6, ease:'power3.out', stagger:0.15}, "+=0.8")
+  .fromTo(words, {y:'100%', autoAlpha:0}, {y:'0%',autoAlpha:1, duration:1.6, ease:'power3.out', stagger:0.15}, "+=0.8")
   .to('.line', {scaleX:1, duration:1.8, ease:'expo.inOut'}, '-=1.2')
-  .fromTo('.date, .type, .number, .infos-title, .infos-content', {y:30, opacity:0}, {y:0, opacity:1, duration:1, ease:'power3.out', stagger:0.1}, '-=1')
+  .fromTo('.date, .type, .number, .infos-title, .infos-content, .previous', {y:30, opacity:0}, {y:0, opacity:1, duration:1, ease:'power3.out', stagger:0.1}, '-=1')
   .fromTo('.image-cover img', {scale:1.4, autoAlpha:0}, {scale:1.2, autoAlpha:1, duration:1.5, ease:'power3.inOut'}, '-=1.3')
+}
+
+function projectScroll() {
+
+  const previous = document.querySelector('.p-container .previous')
+  previous.addEventListener('click', () => {
+    console.log(barba.history.previous)
+    if ('null' != barba.history.previous) {
+      barba.go(barba.history.previous.url)
+    }  
+  })
 }
 
 function homeEnter(){
@@ -211,8 +275,7 @@ function homeEnter(){
       mainText.from(char, { opacity:0, duration }, time);
 
       if (Math.random() > .75) {
-          mainText.to(char, { opacity:0, duration }, time + duration);
-          mainText.from(char, { opacity:0, duration }, time + duration);
+          mainText.fromTo(char, { opacity:0, duration }, { opacity:1, duration }, time + duration);
       }
   }
 
@@ -220,19 +283,17 @@ function homeEnter(){
   .fromTo('.main-project-img img', {scale:1.3, autoAlpha:0}, {scale:1,autoAlpha:1, rotation:0, ease:'power3.out', duration:2})
   .add(mainText.play(), "-=1.8")
   .fromTo('.cross', {rotation:-25, opacity:0}, {rotation:0, opacity:1, duration:2, ease:'power3.out'}, "-=1.3")
-
 }
 
 
 barba.use(barbaPrefetch)
 
 barba.init({
-  debug: true,
+  debug: false,
   transitions: [{
     name: 'main',
     once({ next }) {
       smooth(next.container)
-      // homeLaunch()
     },
     beforeEnter({ next }) {
       scroll.destroy()
@@ -240,7 +301,7 @@ barba.init({
     },
     leave(data) {
       if (isMobile.any()) {
-        gsap.to(window, {duration: 2, scrollTo: 0, ease:'power3.out'});
+        gsap.to(window, {duration: 1, scrollTo: 0, ease:'power3.inOut'});
       }
       return gsap.to(data.current.container, {opacity: 0,duration:1,ease:'power3.inOut'})
     },
@@ -251,7 +312,12 @@ barba.init({
     }
   }, {
     name: 'projects',
-    from: {namespace:['home']},
+    from: {
+      custom: ({ trigger }) => {
+        return trigger.classList && trigger.classList.contains('a-hide');
+      },
+      namespace:['home']
+    },
     to: {namespace:['project']},
     beforeEnter({ next }) {
       const tl = gsap.timeline()
@@ -280,7 +346,7 @@ barba.init({
     },
     leave(data) {
       if (isMobile.any()) {
-        gsap.to(window, {duration: 2, scrollTo: 0, ease:'power3.out'});
+        gsap.to(window, {duration: 1, scrollTo: 0, ease:'power3.inOut'});
       }
       return gsap.to(data.current.container, {opacity: 0,duration:1,ease:'power3.inOut'})
     },
@@ -320,7 +386,7 @@ barba.init({
     },
     leave(data) {
       if (isMobile.any()) {
-        gsap.to(window, {duration: 2, scrollTo: 0, ease:'power3.out'});
+        gsap.to(window, {duration: 1, scrollTo: 0, ease:'power3.inOut'});
       }
       return gsap.to(data.current.container, {opacity: 0,duration:1,ease:'power3.inOut'})
     },
@@ -343,7 +409,7 @@ barba.init({
     },
     leave(data) {
       if (isMobile.any()) {
-        gsap.to(window, {duration: 2, scrollTo: 0, ease:'power3.out'});
+        gsap.to(window, {duration: 0, scrollTo: 0, ease:'power3.inOut'});
       }
       return gsap.to(data.current.container, {opacity: 0,duration:1,ease:'power3.inOut'})
     },
@@ -379,11 +445,11 @@ barba.init({
       tl
       .to('.transition', {clip:'rect(0vh 100vw 100vh 0vh)', duration:1.5, ease:'expo.inOut'})
       .to('.transition-flex', {rotation:0, scale:1, autoAlpha:1, duration:2, ease:'power3.inOut'}, '-=1.5')
-      .to(letters[1], {y:'0%', duration:1.5, autoAlpha:1, ease:'power4.inOut'}, '-=1.5')
+      .to(letters[1], {y:'0%', duration:1.5, autoAlpha:1, ease:'power4.inOut'}, '-=1.3')
     },
     leave(data) {
       if (isMobile.any()) {
-        gsap.to(window, {duration: 2, scrollTo: 0, ease:'power3.out'});
+        gsap.to(window, {duration: 0, scrollTo: 0, ease:'power3.out'});
       }
       return gsap.to(data.current.container, {opacity: 0,duration:1,ease:'power3.inOut'})
     },
@@ -412,7 +478,10 @@ barba.init({
   }, {
     namespace: 'project',
     beforeEnter(){
-      projectLaunch();
+      projectLaunch()
+    },
+    afterEnter(data){
+      projectScroll()
     }
   }]
 })

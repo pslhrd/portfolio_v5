@@ -17627,7 +17627,125 @@ var define;
 !function(t,i){"object"==typeof exports&&"undefined"!=typeof module?module.exports=i():"function"==typeof define&&define.amd?define(i):(t=t||self).barbaPrefetch=i()}(this,function(){var t="2.1.10",i=window.requestIdleCallback||function(t){var i=Date.now();return setTimeout(function(){t({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-i))}})},1)};return new(function(){function n(){this.name="@barba/prefetch",this.version=t,this.toPrefetch=new Set}var e=n.prototype;return e.install=function(t,i){var n=void 0===i?{}:i,e=n.root,o=void 0===e?document.body:e,r=n.timeout,s=void 0===r?2e3:r;this.logger=new t.Logger(this.name),this.logger.info(this.version),this.barba=t,this.root=o,this.timeout=s},e.init=function(){var t=this;this.barba.prefetchIgnore?this.logger.warn("barba.prefetchIgnore is enabled"):this.barba.cacheIgnore?this.logger.warn("barba.cacheIgnore is enabled"):(this.observer=new IntersectionObserver(function(i){i.forEach(function(i){if(i.isIntersecting){var n=i.target,e=t.barba.dom.getHref(n);t.toPrefetch.has(e)&&(t.observer.unobserve(n),t.barba.cache.has(e)?t.barba.cache.update(e,{action:"prefetch"}):t.barba.cache.set(e,t.barba.request(e,t.barba.timeout,t.barba.onRequestError.bind(t.barba,"barba")).catch(function(i){t.logger.error(i)}),"prefetch"))}})}),this.observe(),this.barba.hooks.after(this.observe,this))},e.observe=function(){var t=this;i(function(){t.root.querySelectorAll("a").forEach(function(i){var n=i,e=t.barba.dom.getHref(n);t.barba.cache.has(e)||t.barba.prevent.checkHref(e)||t.barba.prevent.checkLink(n,{},e)||(t.observer.observe(i),t.toPrefetch.add(e))})},{timeout:this.timeout})},n}())});
 
 
-},{}],"src/main.js":[function(require,module,exports) {
+},{}],"src/cursor.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _gsap = _interopRequireDefault(require("gsap"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var getMousePos = function getMousePos(e) {
+  var posx = 0;
+  var posy = 0;
+  if (!e) e = window.event;
+
+  if (e.pageX || e.pageY) {
+    posx = e.pageX;
+    posy = e.pageY;
+  } else if (e.clientX || e.clientY) {
+    posx = e.clientX + body.scrollLeft + document.documentElement.scrollLeft;
+    posy = e.clientY + body.scrollTop + document.documentElement.scrollTop;
+  }
+
+  return {
+    x: posx,
+    y: posy
+  };
+};
+
+var lerp = function lerp(a, b, n) {
+  return (1 - n) * a + n * b;
+}; // Track the mouse position
+
+
+var mouse = {
+  x: 0,
+  y: 0
+};
+window.addEventListener('mousemove', function (ev) {
+  return mouse = getMousePos(ev);
+});
+
+var Cursor =
+/*#__PURE__*/
+function () {
+  function Cursor(el) {
+    var _this = this;
+
+    _classCallCheck(this, Cursor);
+
+    this.DOM = {
+      el: el
+    };
+    this.DOM.el.style.opacity = 0;
+    this.bounds = this.DOM.el.getBoundingClientRect();
+    this.renderedStyles = {
+      tx: {
+        previous: 0,
+        current: 0,
+        amt: 0.2
+      },
+      ty: {
+        previous: 0,
+        current: 0,
+        amt: 0.2
+      }
+    };
+
+    this.onMouseMoveEv = function () {
+      _this.renderedStyles.tx.previous = _this.renderedStyles.tx.current = mouse.x - _this.bounds.width / 2;
+      _this.renderedStyles.ty.previous = _this.renderedStyles.ty.previous = mouse.y - _this.bounds.height / 2;
+
+      _gsap.default.to(_this.DOM.el, {
+        duration: 0.9,
+        ease: 'Power3.easeOut',
+        opacity: 1
+      });
+
+      requestAnimationFrame(function () {
+        return _this.render();
+      });
+      window.removeEventListener('mousemove', _this.onMouseMoveEv);
+    };
+
+    window.addEventListener('mousemove', this.onMouseMoveEv);
+  }
+
+  _createClass(Cursor, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      this.renderedStyles['tx'].current = mouse.x - this.bounds.width / 2;
+      this.renderedStyles['ty'].current = mouse.y - this.bounds.height / 2;
+
+      for (var key in this.renderedStyles) {
+        this.renderedStyles[key].previous = lerp(this.renderedStyles[key].previous, this.renderedStyles[key].current, this.renderedStyles[key].amt);
+      }
+
+      this.DOM.el.style.transform = "translateX(".concat(this.renderedStyles['tx'].previous, "px) translateY(").concat(this.renderedStyles['ty'].previous, "px)");
+      requestAnimationFrame(function () {
+        return _this2.render();
+      });
+    }
+  }]);
+
+  return Cursor;
+}();
+
+exports.default = Cursor;
+},{"gsap":"node_modules/gsap/index.js"}],"src/main.js":[function(require,module,exports) {
 "use strict";
 
 var _SplitText = _interopRequireDefault(require("./SplitText"));
@@ -17641,6 +17759,8 @@ var _locomotiveScroll = _interopRequireDefault(require("locomotive-scroll"));
 var _core = _interopRequireDefault(require("@barba/core"));
 
 var _prefetch = _interopRequireDefault(require("@barba/prefetch"));
+
+var _cursor = _interopRequireDefault(require("./cursor"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -17704,12 +17824,11 @@ function aboutLaunch() {
       }, time);
 
       if (Math.random() > .75) {
-        aText.to(char, {
+        aText.fromTo(char, {
           opacity: 0,
           duration: duration
-        }, time + duration);
-        aText.from(char, {
-          opacity: 0,
+        }, {
+          opacity: 1,
           duration: duration
         }, time + duration);
       }
@@ -17748,6 +17867,40 @@ function aboutLaunch() {
 }
 
 function aboutScroll() {
+  var img;
+  var cursor = new _cursor.default(document.querySelector('.cursor'));
+  var inner = document.querySelectorAll('.cursor-inner-1, .cursor-inner-2, .cursor-inner-3');
+  var wrapper = document.querySelector('.cursor-wrapper');
+
+  var tl = _gsap.default.timeline();
+
+  var data = document.querySelectorAll('.a-data-n1, .a-data-n2, .a-data-n3');
+  console.log(data);
+  data.forEach(function (element, index) {
+    var tl = _gsap.default.timeline();
+
+    element.addEventListener('mouseenter', function () {
+      tl.set(inner[index], {
+        display: 'block'
+      }).fromTo(inner[index], {
+        autoAlpha: 0
+      }, {
+        scale: 1,
+        autoAlpha: 1,
+        duration: 0.1
+      });
+    });
+    element.addEventListener('mouseleave', function () {
+      tl.fromTo(inner[index], {
+        autoAlpha: 1
+      }, {
+        autoAlpha: 0,
+        duration: 0.1
+      }).set(inner[index], {
+        display: 'none'
+      });
+    });
+  });
   scroll.on('call', function (event, element, i) {
     if (event === 'title') {
       title.play();
@@ -17834,6 +17987,75 @@ function homeScroll() {
   }
 
   lettersHover();
+
+  function projectHover() {
+    var projects = document.querySelectorAll('.project-1, .project-2, .project-3, .project-4');
+    projects.forEach(function (element, index) {
+      var textHover = _gsap.default.timeline({
+        paused: true
+      });
+
+      var content = element.querySelector('.project-text');
+      console.log(content);
+      var text = new _SplitText.default(content, {
+        type: 'chars'
+      });
+      var chars = text.chars;
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
+
+      try {
+        for (var _iterator3 = chars[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var char = _step3.value;
+          var speed = 2;
+
+          var random = _gsap.default.utils.interpolate(0.1, 0.8, Math.random());
+
+          var time = Math.min((1 / random * 0.1 + random * 0.3) / 1.4 * speed, 2);
+
+          var duration = _gsap.default.utils.interpolate(0.1, 0.35, Math.random());
+
+          textHover.from(char, {
+            opacity: 0,
+            duration: duration
+          }, time);
+
+          if (Math.random() > .9) {
+            textHover.fromTo(char, {
+              opacity: 0,
+              duration: duration
+            }, {
+              opacity: 1,
+              duration: duration
+            }, time + duration);
+          }
+        }
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
+            _iterator3.return();
+          }
+        } finally {
+          if (_didIteratorError3) {
+            throw _iteratorError3;
+          }
+        }
+      }
+
+      element.addEventListener('mouseenter', function () {
+        textHover.play();
+      });
+      element.addEventListener('mouseleave', function () {
+        textHover.reverse(1.3);
+      });
+    });
+  }
+
+  projectHover();
   var node = document.createElement('span');
   var textnode = document.createTextNode('(Currently looking for an internship.)');
   node.appendChild(textnode);
@@ -17865,13 +18087,13 @@ function homeLaunch() {
   });
 
   scroll.stop();
-  var _iteratorNormalCompletion3 = true;
-  var _didIteratorError3 = false;
-  var _iteratorError3 = undefined;
+  var _iteratorNormalCompletion4 = true;
+  var _didIteratorError4 = false;
+  var _iteratorError4 = undefined;
 
   try {
-    for (var _iterator3 = chars[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-      var char = _step3.value;
+    for (var _iterator4 = chars[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+      var char = _step4.value;
       var speed = 2;
 
       var random = _gsap.default.utils.interpolate(0.1, 0.8, Math.random());
@@ -17886,27 +18108,26 @@ function homeLaunch() {
       }, time);
 
       if (Math.random() > .75) {
-        mainText.to(char, {
+        mainText.fromTo(char, {
           opacity: 0,
           duration: duration
-        }, time + duration);
-        mainText.from(char, {
-          opacity: 0,
+        }, {
+          opacity: 1,
           duration: duration
         }, time + duration);
       }
     }
   } catch (err) {
-    _didIteratorError3 = true;
-    _iteratorError3 = err;
+    _didIteratorError4 = true;
+    _iteratorError4 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
-        _iterator3.return();
+      if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
+        _iterator4.return();
       }
     } finally {
-      if (_didIteratorError3) {
-        throw _iteratorError3;
+      if (_didIteratorError4) {
+        throw _iteratorError4;
       }
     }
   }
@@ -18020,9 +18241,11 @@ function projectLaunch() {
   });
 
   tl.fromTo(words, {
-    y: '100%'
+    y: '100%',
+    autoAlpha: 0
   }, {
     y: '0%',
+    autoAlpha: 1,
     duration: 1.6,
     ease: 'power3.out',
     stagger: 0.15
@@ -18030,7 +18253,7 @@ function projectLaunch() {
     scaleX: 1,
     duration: 1.8,
     ease: 'expo.inOut'
-  }, '-=1.2').fromTo('.date, .type, .number, .infos-title, .infos-content', {
+  }, '-=1.2').fromTo('.date, .type, .number, .infos-title, .infos-content, .previous', {
     y: 30,
     opacity: 0
   }, {
@@ -18050,6 +18273,17 @@ function projectLaunch() {
   }, '-=1.3');
 }
 
+function projectScroll() {
+  var previous = document.querySelector('.p-container .previous');
+  previous.addEventListener('click', function () {
+    console.log(_core.default.history.previous);
+
+    if ('null' != _core.default.history.previous) {
+      _core.default.go(_core.default.history.previous.url);
+    }
+  });
+}
+
 function homeEnter() {
   var mySplitText = new _SplitText.default(".main-project-text", {
     type: "chars, words"
@@ -18062,13 +18296,13 @@ function homeEnter() {
 
   var tl = _gsap.default.timeline();
 
-  var _iteratorNormalCompletion4 = true;
-  var _didIteratorError4 = false;
-  var _iteratorError4 = undefined;
+  var _iteratorNormalCompletion5 = true;
+  var _didIteratorError5 = false;
+  var _iteratorError5 = undefined;
 
   try {
-    for (var _iterator4 = chars[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-      var char = _step4.value;
+    for (var _iterator5 = chars[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+      var char = _step5.value;
       var speed = 2;
 
       var random = _gsap.default.utils.interpolate(0.1, 0.8, Math.random());
@@ -18083,27 +18317,26 @@ function homeEnter() {
       }, time);
 
       if (Math.random() > .75) {
-        mainText.to(char, {
+        mainText.fromTo(char, {
           opacity: 0,
           duration: duration
-        }, time + duration);
-        mainText.from(char, {
-          opacity: 0,
+        }, {
+          opacity: 1,
           duration: duration
         }, time + duration);
       }
     }
   } catch (err) {
-    _didIteratorError4 = true;
-    _iteratorError4 = err;
+    _didIteratorError5 = true;
+    _iteratorError5 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
-        _iterator4.return();
+      if (!_iteratorNormalCompletion5 && _iterator5.return != null) {
+        _iterator5.return();
       }
     } finally {
-      if (_didIteratorError4) {
-        throw _iteratorError4;
+      if (_didIteratorError5) {
+        throw _iteratorError5;
       }
     }
   }
@@ -18131,12 +18364,12 @@ function homeEnter() {
 _core.default.use(_prefetch.default);
 
 _core.default.init({
-  debug: true,
+  debug: false,
   transitions: [{
     name: 'main',
     once: function once(_ref) {
       var next = _ref.next;
-      smooth(next.container); // homeLaunch()
+      smooth(next.container);
     },
     beforeEnter: function beforeEnter(_ref2) {
       var next = _ref2.next;
@@ -18146,9 +18379,9 @@ _core.default.init({
     leave: function leave(data) {
       if (isMobile.any()) {
         _gsap.default.to(window, {
-          duration: 2,
+          duration: 1,
           scrollTo: 0,
-          ease: 'power3.out'
+          ease: 'power3.inOut'
         });
       }
 
@@ -18170,13 +18403,17 @@ _core.default.init({
   }, {
     name: 'projects',
     from: {
+      custom: function custom(_ref3) {
+        var trigger = _ref3.trigger;
+        return trigger.classList && trigger.classList.contains('a-hide');
+      },
       namespace: ['home']
     },
     to: {
       namespace: ['project']
     },
-    beforeEnter: function beforeEnter(_ref3) {
-      var next = _ref3.next;
+    beforeEnter: function beforeEnter(_ref4) {
+      var next = _ref4.next;
 
       var tl = _gsap.default.timeline();
 
@@ -18248,9 +18485,9 @@ _core.default.init({
     leave: function leave(data) {
       if (isMobile.any()) {
         _gsap.default.to(window, {
-          duration: 2,
+          duration: 1,
           scrollTo: 0,
-          ease: 'power3.out'
+          ease: 'power3.inOut'
         });
       }
 
@@ -18277,8 +18514,8 @@ _core.default.init({
     to: {
       namespace: ['about']
     },
-    beforeEnter: function beforeEnter(_ref4) {
-      var next = _ref4.next;
+    beforeEnter: function beforeEnter(_ref5) {
+      var next = _ref5.next;
 
       var tl = _gsap.default.timeline();
 
@@ -18358,9 +18595,9 @@ _core.default.init({
     leave: function leave(data) {
       if (isMobile.any()) {
         _gsap.default.to(window, {
-          duration: 2,
+          duration: 1,
           scrollTo: 0,
-          ease: 'power3.out'
+          ease: 'power3.inOut'
         });
       }
 
@@ -18384,13 +18621,13 @@ _core.default.init({
     to: {
       namespace: ['home']
     },
-    once: function once(_ref5) {
-      var next = _ref5.next;
+    once: function once(_ref6) {
+      var next = _ref6.next;
       smooth(next.container);
       homeLaunch();
     },
-    beforeEnter: function beforeEnter(_ref6) {
-      var next = _ref6.next;
+    beforeEnter: function beforeEnter(_ref7) {
+      var next = _ref7.next;
       scroll.destroy();
       smooth(next.container);
       homeEnter();
@@ -18398,9 +18635,9 @@ _core.default.init({
     leave: function leave(data) {
       if (isMobile.any()) {
         _gsap.default.to(window, {
-          duration: 2,
+          duration: 0,
           scrollTo: 0,
-          ease: 'power3.out'
+          ease: 'power3.inOut'
         });
       }
 
@@ -18427,8 +18664,8 @@ _core.default.init({
     to: {
       namespace: ['project']
     },
-    beforeEnter: function beforeEnter(_ref7) {
-      var next = _ref7.next;
+    beforeEnter: function beforeEnter(_ref8) {
+      var next = _ref8.next;
 
       var tl = _gsap.default.timeline();
 
@@ -18495,12 +18732,12 @@ _core.default.init({
         duration: 1.5,
         autoAlpha: 1,
         ease: 'power4.inOut'
-      }, '-=1.5');
+      }, '-=1.3');
     },
     leave: function leave(data) {
       if (isMobile.any()) {
         _gsap.default.to(window, {
-          duration: 2,
+          duration: 0,
           scrollTo: 0,
           ease: 'power3.out'
         });
@@ -18540,6 +18777,9 @@ _core.default.init({
     namespace: 'project',
     beforeEnter: function beforeEnter() {
       projectLaunch();
+    },
+    afterEnter: function afterEnter(data) {
+      projectScroll();
     }
   }]
 });
@@ -18600,7 +18840,7 @@ function smooth(container) {
 //       const tl = gsap.timeline()
 //       tl.to('.transition', {scaleY:0, duration:1.3, ease:'power4.out', onComplete:done})
 //     }
-},{"./SplitText":"src/SplitText.js","gsap/all":"node_modules/gsap/all.js","gsap":"node_modules/gsap/index.js","locomotive-scroll":"node_modules/locomotive-scroll/dist/locomotive-scroll.esm.js","@barba/core":"node_modules/@barba/core/dist/barba.umd.js","@barba/prefetch":"node_modules/@barba/prefetch/dist/barba-prefetch.umd.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./SplitText":"src/SplitText.js","gsap/all":"node_modules/gsap/all.js","gsap":"node_modules/gsap/index.js","locomotive-scroll":"node_modules/locomotive-scroll/dist/locomotive-scroll.esm.js","@barba/core":"node_modules/@barba/core/dist/barba.umd.js","@barba/prefetch":"node_modules/@barba/prefetch/dist/barba-prefetch.umd.js","./cursor":"src/cursor.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -18628,7 +18868,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57352" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60043" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

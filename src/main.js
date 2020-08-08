@@ -4,7 +4,8 @@ import gsap from 'gsap'
 import LocomotiveScroll from 'locomotive-scroll'
 import barba from '@barba/core'
 import barbaPrefetch from '@barba/prefetch'
-import Cursor from './cursor';
+import Cursor from './cursor'
+import imagesLoaded from 'imagesloaded'
 
 gsap.registerPlugin(ScrollToPlugin)
 
@@ -406,12 +407,30 @@ barba.init({
     to: {namespace:['home']},
     once({ next }) {
       smooth(next.container)
-      homeLaunch()
+      const body = document.querySelector('body')
+      const preloader = document.querySelector('.preloader')
+      const imgLoad = imagesLoaded(body)
+
+      imgLoad.on( 'progress', function( instance, image ) {
+        var result = image.isLoaded ? 'loaded' : 'broken';
+        preloader.style.display = 'block'
+        body.style.cursor = 'wait'
+        console.log( 'image is ' + result + ' for ' + image.img.src );
+      })
+
+      imgLoad.on( 'done', function( instance ) {
+        preloader.style.display = 'none'
+        body.style.cursor = 'default'
+        console.log( imgLoad.images.length + ' images loaded' );
+        homeLaunch()
+      })
     },
     beforeEnter({ next }) {
       scroll.destroy()
       smooth(next.container)
+
       homeEnter()
+      
     },
     leave(data) {
       return gsap.to(data.current.container, {opacity: 0,duration:1,ease:'power3.inOut'})

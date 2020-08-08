@@ -54,7 +54,7 @@ function aboutLaunch() {
   }
 
   tl
-  .fromTo(aNum, {y:'100%'}, {y:'0%', duration:1.6, ease:'power3.out', stagger:0.15}, "+=0.6")
+  .fromTo(aNum, {y:'100%', autoAlpha:0}, {autoAlpha:1, y:'0%', duration:1.6, ease:'power3.out', stagger:0.15}, "+=0.6")
   .add(aText.play(), "-=1.8")
   .fromTo('.a-cross', {rotation:-25, opacity:0}, {rotation:0, opacity:1, duration:2, ease:'power3.out'}, "-=0.9")
 }
@@ -251,6 +251,22 @@ function projectLaunch() {
 
 function projectScroll() {
 
+  gsap.set('[data-scroll-call="appear"], [data-scroll-call="video"]', {scale:1.2, opacity:0})
+
+  scroll.on('call', function(event, element, i){
+
+    if (event === 'appear') {
+      console.log(i)
+      gsap.to(i.el, {scale:1, opacity:1, duration:1.5, ease:'power3.out'})
+    }
+
+    if (event === 'video') {
+      i.el.play()
+      gsap.to(i.el, {scale:1, opacity:1, duration:1.5, ease:'power3.out'})
+    }
+  })
+
+
   const previous = document.querySelector('.p-container .previous')
   previous.addEventListener('click', () => {
     console.log(barba.history.previous)
@@ -289,20 +305,17 @@ function homeEnter(){
 barba.use(barbaPrefetch)
 
 barba.init({
-  debug: false,
+  debug: true,
   transitions: [{
     name: 'main',
     once({ next }) {
       smooth(next.container)
     },
     beforeEnter({ next }) {
-      scroll.destroy()
       smooth(next.container)
+      scroll.destroy()
     },
     leave(data) {
-      if (isMobile.any()) {
-        gsap.to(window, {duration: 1, scrollTo: 0, ease:'power3.inOut'});
-      }
       return gsap.to(data.current.container, {opacity: 0,duration:1,ease:'power3.inOut'})
     },
     enter(data) {
@@ -316,9 +329,8 @@ barba.init({
       custom: ({ trigger }) => {
         return trigger.classList && trigger.classList.contains('a-hide');
       },
-      namespace:['home']
+      namespace:['project']
     },
-    to: {namespace:['project']},
     beforeEnter({ next }) {
       const tl = gsap.timeline()
       tl
@@ -345,9 +357,6 @@ barba.init({
       .to(letters[1], {y:'0%', duration:1.5, autoAlpha:1, ease:'power4.inOut'}, '-=1.5')
     },
     leave(data) {
-      if (isMobile.any()) {
-        gsap.to(window, {duration: 1, scrollTo: 0, ease:'power3.inOut'});
-      }
       return gsap.to(data.current.container, {opacity: 0,duration:1,ease:'power3.inOut'})
     },
     enter(data) {
@@ -385,9 +394,6 @@ barba.init({
       .to(letters[3], {y:'0%', duration:1.5, autoAlpha:1, ease:'power4.inOut'}, '-=1.4')
     },
     leave(data) {
-      if (isMobile.any()) {
-        gsap.to(window, {duration: 1, scrollTo: 0, ease:'power3.inOut'});
-      }
       return gsap.to(data.current.container, {opacity: 0,duration:1,ease:'power3.inOut'})
     },
     enter(data) {
@@ -408,9 +414,6 @@ barba.init({
       homeEnter()
     },
     leave(data) {
-      if (isMobile.any()) {
-        gsap.to(window, {duration: 0, scrollTo: 0, ease:'power3.inOut'});
-      }
       return gsap.to(data.current.container, {opacity: 0,duration:1,ease:'power3.inOut'})
     },
     enter(data) {
@@ -422,6 +425,9 @@ barba.init({
     name: 'projects',
     from: {namespace:['home']},
     to: {namespace:['project']},
+    once({ next }) {
+      smooth(next.container)
+    },
     beforeEnter({ next }) {
       const tl = gsap.timeline()
       tl
@@ -448,9 +454,6 @@ barba.init({
       .to(letters[1], {y:'0%', duration:1.5, autoAlpha:1, ease:'power4.inOut'}, '-=1.3')
     },
     leave(data) {
-      if (isMobile.any()) {
-        gsap.to(window, {duration: 0, scrollTo: 0, ease:'power3.out'});
-      }
       return gsap.to(data.current.container, {opacity: 0,duration:1,ease:'power3.inOut'})
     },
     enter(data) {

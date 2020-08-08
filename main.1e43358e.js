@@ -2445,9 +2445,7 @@ var GSCache = function GSCache(target, harness) {
 
 exports.GSCache = GSCache;
 
-var Animation =
-/*#__PURE__*/
-function () {
+var Animation = /*#__PURE__*/function () {
   function Animation(vars, time) {
     var parent = vars.parent || _globalTimeline;
     this.vars = vars;
@@ -2806,9 +2804,7 @@ _setDefaults(Animation.prototype, {
  */
 
 
-var Timeline =
-/*#__PURE__*/
-function (_Animation) {
+var Timeline = /*#__PURE__*/function (_Animation) {
   _inheritsLoose(Timeline, _Animation);
 
   function Timeline(vars, time) {
@@ -3830,9 +3826,7 @@ _initTween = function _initTween(tween, time) {
 
 exports._checkPlugin = _checkPlugin;
 
-var Tween =
-/*#__PURE__*/
-function (_Animation2) {
+var Tween = /*#__PURE__*/function (_Animation2) {
   _inheritsLoose(Tween, _Animation2);
 
   function Tween(targets, vars, time, skipInherit) {
@@ -4391,9 +4385,7 @@ exports._sortPropTweensByPriority = _sortPropTweensByPriority;
 exports._renderComplexString = _renderComplexString;
 exports._getSetter = _getSetter;
 
-var PropTween =
-/*#__PURE__*/
-function () {
+var PropTween = /*#__PURE__*/function () {
   function PropTween(next, target, prop, start, change, renderer, data, setter, priority) {
     this.t = target;
     this.s = start;
@@ -6438,9 +6430,7 @@ _divTemps = [],
   return m;
 };
 
-var Matrix2D =
-/*#__PURE__*/
-function () {
+var Matrix2D = /*#__PURE__*/function () {
   function Matrix2D(a, b, c, d, e, f) {
     if (a === void 0) {
       a = 1;
@@ -7461,9 +7451,7 @@ ScrollProxy = function ScrollProxy(element, vars) {
   }
 };
 
-var EventDispatcher =
-/*#__PURE__*/
-function () {
+var EventDispatcher = /*#__PURE__*/function () {
   function EventDispatcher(target) {
     this._listeners = {};
     this.target = target || this;
@@ -7501,9 +7489,7 @@ function () {
   return EventDispatcher;
 }();
 
-var Draggable =
-/*#__PURE__*/
-function (_EventDispatcher) {
+var Draggable = /*#__PURE__*/function (_EventDispatcher) {
   _inheritsLoose(Draggable, _EventDispatcher);
 
   function Draggable(target, vars) {
@@ -13286,9 +13272,7 @@ _getTweenCreator = function _getTweenCreator(scroller, direction) {
 
 _horizontal.op = _vertical;
 
-var ScrollTrigger =
-/*#__PURE__*/
-function () {
+var ScrollTrigger = /*#__PURE__*/function () {
   function ScrollTrigger(vars, animation) {
     _coreInitted || ScrollTrigger.register(gsap) || console.warn("Please gsap.registerPlugin(ScrollTrigger)");
     this.init(vars, animation);
@@ -15236,9 +15220,7 @@ var defaults = {
   scrollFromAnywhere: false
 };
 
-var _default =
-/*#__PURE__*/
-function () {
+var _default = /*#__PURE__*/function () {
   function _default() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
@@ -15839,9 +15821,7 @@ var smoothscroll = createCommonjsModule(function (module, exports) {
 });
 var smoothscroll_1 = smoothscroll.polyfill;
 
-var _default$1 =
-/*#__PURE__*/
-function (_Core) {
+var _default$1 = /*#__PURE__*/function (_Core) {
   _inherits(_default, _Core);
 
   function _default() {
@@ -16795,9 +16775,7 @@ var keyCodes$1 = {
   END: 35
 };
 
-var _default$2 =
-/*#__PURE__*/
-function (_Core) {
+var _default$2 = /*#__PURE__*/function (_Core) {
   _inherits(_default, _Core);
 
   function _default() {
@@ -17533,9 +17511,7 @@ function (_Core) {
   return _default;
 }(_default);
 
-var _default$3 =
-/*#__PURE__*/
-function () {
+var _default$3 = /*#__PURE__*/function () {
   function _default() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
@@ -17677,9 +17653,7 @@ window.addEventListener('mousemove', function (ev) {
   return mouse = getMousePos(ev);
 });
 
-var Cursor =
-/*#__PURE__*/
-function () {
+var Cursor = /*#__PURE__*/function () {
   function Cursor(el) {
     var _this = this;
 
@@ -17764,6 +17738,12 @@ var _cursor = _interopRequireDefault(require("./cursor"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 _gsap.default.registerPlugin(_all.ScrollToPlugin);
 
 var isMobile = {
@@ -17803,12 +17783,12 @@ function aboutLaunch() {
     type: "chars"
   }),
       aNum = aData.chars;
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
+
+  var _iterator = _createForOfIteratorHelper(aChars),
+      _step;
 
   try {
-    for (var _iterator = aChars[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
       var char = _step.value;
       var speed = 2;
 
@@ -17834,23 +17814,16 @@ function aboutLaunch() {
       }
     }
   } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
+    _iterator.e(err);
   } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return != null) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
+    _iterator.f();
   }
 
   tl.fromTo(aNum, {
-    y: '100%'
+    y: '100%',
+    autoAlpha: 0
   }, {
+    autoAlpha: 1,
     y: '0%',
     duration: 1.6,
     ease: 'power3.out',
@@ -17945,9 +17918,9 @@ function homeScroll() {
       type: "chars, words"
     });
     var letters = desc.chars;
-    var _iteratorNormalCompletion2 = true;
-    var _didIteratorError2 = false;
-    var _iteratorError2 = undefined;
+
+    var _iterator2 = _createForOfIteratorHelper(letters),
+        _step2;
 
     try {
       var _loop = function _loop() {
@@ -17967,22 +17940,13 @@ function homeScroll() {
         });
       };
 
-      for (var _iterator2 = letters[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+      for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
         _loop();
       }
     } catch (err) {
-      _didIteratorError2 = true;
-      _iteratorError2 = err;
+      _iterator2.e(err);
     } finally {
-      try {
-        if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-          _iterator2.return();
-        }
-      } finally {
-        if (_didIteratorError2) {
-          throw _iteratorError2;
-        }
-      }
+      _iterator2.f();
     }
   }
 
@@ -18001,12 +17965,12 @@ function homeScroll() {
         type: 'chars'
       });
       var chars = text.chars;
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
+
+      var _iterator3 = _createForOfIteratorHelper(chars),
+          _step3;
 
       try {
-        for (var _iterator3 = chars[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
           var char = _step3.value;
           var speed = 2;
 
@@ -18032,18 +17996,9 @@ function homeScroll() {
           }
         }
       } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
+        _iterator3.e(err);
       } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
-            _iterator3.return();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
+        _iterator3.f();
       }
 
       element.addEventListener('mouseenter', function () {
@@ -18087,12 +18042,12 @@ function homeLaunch() {
   });
 
   scroll.stop();
-  var _iteratorNormalCompletion4 = true;
-  var _didIteratorError4 = false;
-  var _iteratorError4 = undefined;
+
+  var _iterator4 = _createForOfIteratorHelper(chars),
+      _step4;
 
   try {
-    for (var _iterator4 = chars[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+    for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
       var char = _step4.value;
       var speed = 2;
 
@@ -18118,18 +18073,9 @@ function homeLaunch() {
       }
     }
   } catch (err) {
-    _didIteratorError4 = true;
-    _iteratorError4 = err;
+    _iterator4.e(err);
   } finally {
-    try {
-      if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
-        _iterator4.return();
-      }
-    } finally {
-      if (_didIteratorError4) {
-        throw _iteratorError4;
-      }
-    }
+    _iterator4.f();
   }
 
   var tl = _gsap.default.timeline();
@@ -18274,6 +18220,34 @@ function projectLaunch() {
 }
 
 function projectScroll() {
+  _gsap.default.set('[data-scroll-call="appear"], [data-scroll-call="video"]', {
+    scale: 1.2,
+    opacity: 0
+  });
+
+  scroll.on('call', function (event, element, i) {
+    if (event === 'appear') {
+      console.log(i);
+
+      _gsap.default.to(i.el, {
+        scale: 1,
+        opacity: 1,
+        duration: 1.5,
+        ease: 'power3.out'
+      });
+    }
+
+    if (event === 'video') {
+      i.el.play();
+
+      _gsap.default.to(i.el, {
+        scale: 1,
+        opacity: 1,
+        duration: 1.5,
+        ease: 'power3.out'
+      });
+    }
+  });
   var previous = document.querySelector('.p-container .previous');
   previous.addEventListener('click', function () {
     console.log(_core.default.history.previous);
@@ -18296,12 +18270,11 @@ function homeEnter() {
 
   var tl = _gsap.default.timeline();
 
-  var _iteratorNormalCompletion5 = true;
-  var _didIteratorError5 = false;
-  var _iteratorError5 = undefined;
+  var _iterator5 = _createForOfIteratorHelper(chars),
+      _step5;
 
   try {
-    for (var _iterator5 = chars[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+    for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
       var char = _step5.value;
       var speed = 2;
 
@@ -18327,18 +18300,9 @@ function homeEnter() {
       }
     }
   } catch (err) {
-    _didIteratorError5 = true;
-    _iteratorError5 = err;
+    _iterator5.e(err);
   } finally {
-    try {
-      if (!_iteratorNormalCompletion5 && _iterator5.return != null) {
-        _iterator5.return();
-      }
-    } finally {
-      if (_didIteratorError5) {
-        throw _iteratorError5;
-      }
-    }
+    _iterator5.f();
   }
 
   tl.fromTo('.main-project-img img', {
@@ -18364,7 +18328,7 @@ function homeEnter() {
 _core.default.use(_prefetch.default);
 
 _core.default.init({
-  debug: false,
+  debug: true,
   transitions: [{
     name: 'main',
     once: function once(_ref) {
@@ -18373,18 +18337,10 @@ _core.default.init({
     },
     beforeEnter: function beforeEnter(_ref2) {
       var next = _ref2.next;
-      scroll.destroy();
       smooth(next.container);
+      scroll.destroy();
     },
     leave: function leave(data) {
-      if (isMobile.any()) {
-        _gsap.default.to(window, {
-          duration: 1,
-          scrollTo: 0,
-          ease: 'power3.inOut'
-        });
-      }
-
       return _gsap.default.to(data.current.container, {
         opacity: 0,
         duration: 1,
@@ -18407,9 +18363,6 @@ _core.default.init({
         var trigger = _ref3.trigger;
         return trigger.classList && trigger.classList.contains('a-hide');
       },
-      namespace: ['home']
-    },
-    to: {
       namespace: ['project']
     },
     beforeEnter: function beforeEnter(_ref4) {
@@ -18483,14 +18436,6 @@ _core.default.init({
       }, '-=1.5');
     },
     leave: function leave(data) {
-      if (isMobile.any()) {
-        _gsap.default.to(window, {
-          duration: 1,
-          scrollTo: 0,
-          ease: 'power3.inOut'
-        });
-      }
-
       return _gsap.default.to(data.current.container, {
         opacity: 0,
         duration: 1,
@@ -18593,14 +18538,6 @@ _core.default.init({
       }, '-=1.4');
     },
     leave: function leave(data) {
-      if (isMobile.any()) {
-        _gsap.default.to(window, {
-          duration: 1,
-          scrollTo: 0,
-          ease: 'power3.inOut'
-        });
-      }
-
       return _gsap.default.to(data.current.container, {
         opacity: 0,
         duration: 1,
@@ -18633,14 +18570,6 @@ _core.default.init({
       homeEnter();
     },
     leave: function leave(data) {
-      if (isMobile.any()) {
-        _gsap.default.to(window, {
-          duration: 0,
-          scrollTo: 0,
-          ease: 'power3.inOut'
-        });
-      }
-
       return _gsap.default.to(data.current.container, {
         opacity: 0,
         duration: 1,
@@ -18664,8 +18593,12 @@ _core.default.init({
     to: {
       namespace: ['project']
     },
-    beforeEnter: function beforeEnter(_ref8) {
+    once: function once(_ref8) {
       var next = _ref8.next;
+      smooth(next.container);
+    },
+    beforeEnter: function beforeEnter(_ref9) {
+      var next = _ref9.next;
 
       var tl = _gsap.default.timeline();
 
@@ -18735,14 +18668,6 @@ _core.default.init({
       }, '-=1.3');
     },
     leave: function leave(data) {
-      if (isMobile.any()) {
-        _gsap.default.to(window, {
-          duration: 0,
-          scrollTo: 0,
-          ease: 'power3.out'
-        });
-      }
-
       return _gsap.default.to(data.current.container, {
         opacity: 0,
         duration: 1,
@@ -18868,7 +18793,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60043" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61011" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

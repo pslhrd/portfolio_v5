@@ -721,6 +721,12 @@ body .cursor {
   height: 500px;
   width: 500px;
 }
+@media (max-width: 1440px) {
+  body .cursor {
+    height: 400px;
+    width: 400px;
+  }
+}
 @media (max-width: 900px) {
   body .cursor {
     display: none;
@@ -733,6 +739,12 @@ body .cursor-wrapper {
   transform-origin: center center;
   overflow: hidden;
 }
+@media (max-width: 1440px) {
+  body .cursor-wrapper {
+    height: 400px;
+    width: 400px;
+  }
+}
 body .cursor-inner-1 {
   position: absolute;
   display: none;
@@ -741,6 +753,12 @@ body .cursor-inner-1 {
   background-image: url("/irishman.ebc1618f.jpg");
   background-position: center center;
   background-size: cover;
+}
+@media (max-width: 1440px) {
+  body .cursor-inner-1 {
+    height: 400px;
+    width: 400px;
+  }
 }
 body .cursor-inner-2 {
   position: absolute;
@@ -751,6 +769,12 @@ body .cursor-inner-2 {
   background-position: center center;
   background-size: cover;
 }
+@media (max-width: 1440px) {
+  body .cursor-inner-2 {
+    height: 400px;
+    width: 400px;
+  }
+}
 body .cursor-inner-3 {
   position: absolute;
   display: none;
@@ -759,6 +783,12 @@ body .cursor-inner-3 {
   background-image: url("/sean.f2f7f4e9.jpg");
   background-position: center center;
   background-size: cover;
+}
+@media (max-width: 1440px) {
+  body .cursor-inner-3 {
+    height: 400px;
+    width: 400px;
+  }
 }
 body .a-container {
   position: relative;
@@ -794,6 +824,11 @@ body .a-container .a-intro {
   body .a-container .a-intro {
     top: 140vh;
     width: 35vw;
+  }
+}
+@media (max-width: 1440px) {
+  body .a-container .a-intro {
+    width: 15vw;
   }
 }
 body .a-container .a-intro p {
@@ -990,11 +1025,24 @@ body .p-container .project-content {
   }
 }
 body .p-container .project-content-img {
+  overflow: hidden;
   width: 100%;
   height: auto;
   margin-bottom: 2.03125vw;
 }
 body .p-container .project-content img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+body .p-container .project-content-video {
+  overflow: hidden;
+  width: 100%;
+  height: auto;
+  margin-bottom: 2.03125vw;
+}
+body .p-container .project-content video {
+  object-fit: cover;
   width: 100%;
   height: 100%;
 }
@@ -1140,6 +1188,56 @@ body .p-container .project-header .project-infos .number {
 }
 body .p-container .project-header .project-infos .number span {
   display: block;
+}
+body .p-container .project-description {
+  margin-left: 12.890625vw;
+  margin-bottom: 5.7291vw;
+  margin-top: 5.7291vw;
+  width: 74.21875vw;
+  display: flex;
+}
+body .p-container .project-description .labels {
+  font-size: 12px;
+  line-height: 12px;
+  margin-bottom: calc(2rem + 5px);
+}
+body .p-container .project-description .project-text {
+  width: 28.38541vw;
+}
+body .p-container .project-description .project-text p {
+  margin-top: 2rem;
+  font-size: 26px;
+  line-height: 34px;
+}
+body .p-container .project-description .project-roles {
+  margin-left: 9.11458vw;
+  width: 7.552vw;
+  font-size: 14px;
+  line-height: 18px;
+}
+body .p-container .project-description .project-roles span {
+  display: block;
+}
+body .p-container .project-description .project-softwares {
+  margin-left: 4.94791vw;
+  width: 7.552vw;
+  font-size: 14px;
+  line-height: 18px;
+}
+body .p-container .project-description .project-softwares span {
+  display: block;
+}
+body .p-container .project-description .project-links {
+  margin-left: 4.94791vw;
+  width: 7.552vw;
+  font-size: 14px;
+  line-height: 18px;
+}
+body .p-container .project-description .project-links span {
+  display: block;
+}
+body .p-container .project-description .project-links a {
+  display: inline-block;
 }
 
 html.has-scroll-smooth {

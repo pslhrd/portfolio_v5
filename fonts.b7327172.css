@@ -1,63 +1,11 @@
 @font-face {
-  font-family: 'NB';
-  src: url('/nb-regular.a15ad37c.ttf') format('truetype')
-}
-
-@font-face {
-  font-family: 'NB Bold';
-  src: url('/nb-bold.b25348e7.ttf') format('truetype')
-}
-
-@font-face {
-	font-family: 'Suisse';
-	src: url('/SuisseIntl-Regular.a3b65621.otf') format('OpenType')
-}
-
-@font-face {
-	font-family: 'Suisse Light';
-	src: url('/SuisseIntl-Light.866ecbe7.otf') format('OpenType')
-}
-
-@font-face {
-	font-family: 'Suisse Thin';
-	src: url('/SuisseIntl-Thin.f67ad8c0.otf') format('OpenType')
-}
-
-@font-face {
-	font-family: 'Suisse Mono';
-	src: url('/SuisseIntlMono-Regular.bee32c62.otf') format('OpenType')
-}
-
-@font-face {
-	font-family: 'Suisse Mono Thin';
-	src: url('/SuisseIntlMono-Thin.8d2708d9.otf') format('OpenType')
-}
-
-
-@font-face {
-	font-family: 'Apercu';
-	src: url('/apercu.3a04fe83.otf') format('OpenType')
-}
-
-@font-face {
 	font-family: 'Gridnik';
-	src: url('/FoundryGridnik-Regular.daa4899b.otf') format('OpenType')
+	src: url('/FoundryGridnik-Regular.2e3e548e.woff') format('WOFF')
 }
 
 @font-face {
 	font-family: 'Gridnik Medium';
-	src: url('/FoundryGridnik-Medium.99d4d3ea.otf') format('OpenType')
-}
-
-
-@font-face {
-	font-family: 'Ampersand';
-	src: url('/Ampersand.d72715a5.woff') format('WOFF')
-}
-
-@font-face {
-	font-family: 'Phemister';
-	src: url('/FHPhemister-Regular.34d1089f.otf') format('WOFF')
+	src: url('/FoundryGridnik-Medium.5c35a355.woff') format('WOFF')
 }
 
 /*# sourceMappingURL=/fonts.b7327172.css.map */

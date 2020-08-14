@@ -7,3 +7,8 @@
 	font-family: 'Gridnik Medium';
 	src: url('./FoundryGridnik-Medium.woff') format('WOFF')
 }
+
+@font-face {
+	font-family: 'Suisse Mono Thin';
+	src: url('./SuisseIntlMono-Thin.woff') format('WOFF')
+}

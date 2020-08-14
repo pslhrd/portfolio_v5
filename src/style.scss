@@ -22,7 +22,11 @@ $c-fg: var(--c-fg);
 }
 
 @mixin laptop {
-  @media (max-width: 1440px) { @content; }
+  @media (max-width: 1440px) and (min-width: 900px) { @content; }
+}
+
+@mixin lowHeight {
+  @media (max-height: 667px) { @content; }
 }
 
 $ease-out: cubic-bezier(.80,0,.20,1);
@@ -643,12 +647,8 @@ body {
         &:hover {
           cursor: pointer;
 
-          a::after {
-            transform: scaleX(1);
-          }
-
           img {
-            transform: scale(1.1) rotate(3deg);
+            // transform: scale(1.1) rotate(3deg);
           }
         }
 
@@ -1031,7 +1031,7 @@ body {
       @include mobile {
         width: calc(100vw - 80px);
         left: 40px;
-        top: 200vh;
+        top: 207.5vh;
         font-size: 20px;
       }
     }
@@ -1137,24 +1137,50 @@ body {
 
     .project-content {
       margin-top: 5.7291vw;
-      padding-top: 5.7291vw;
-      padding-bottom: 5.7291vw;
-      margin-bottom: 5.7291vw;
+      // padding-top: 5.7291vw;
+      // padding-bottom: 5.7291vw;
+      // margin-bottom: 5.7291vw;
       width: 100vw;
-      background-color: white;
 
       @include mobile {
         margin-top: 60px;
-        width: calc(100vw - 80px);
-        margin-left: 40px;
+      }
+
+      .bg {
+        width: 100vw;
+        padding-top: 5.7291vw;
+        padding-bottom: 5.7291vw;
+        height: 110vh;
+        background-color: white;
+
+        video {
+          margin-left: 12.890625vw;
+          width: 74.21875vw;
+        }
+
+        img {
+          margin-left: 12.890625vw;
+          width: 74.21875vw;
+        }
+      }
+
+      .med {
+        width: 74.21875vw;
+        margin-left: 12.890625vw;
+        margin-top: 5.7291vw;
+        margin-bottom: 5.7291vw;
+
+        @include mobile {
+          width: calc(100vw - 80px);
+          margin-left: 40px;
+          margin-top: 40px;
+          margin-bottom: 40px;
+        }
       }
 
       &-img {
         overflow: hidden;
         height: auto;
-        width: 74.21875vw;
-        margin-left: 12.890625vw;
-        margin-bottom: 2.03125vw;
       }
 
       img {
@@ -1165,10 +1191,7 @@ body {
 
       &-video {
         overflow: hidden;
-        width: 74.21875vw;
-        margin-left: 12.890625vw;
         height: auto;
-        margin-bottom: 2.03125vw;
       }
 
       video {
@@ -1181,7 +1204,7 @@ body {
     .project-header {
 
       @include mobile {
-        width: calc(100vw - 80px);
+        width: 100vw;
       }
 
       .line {
@@ -1195,7 +1218,9 @@ body {
         margin-left: 12.890625vw;
 
         @include mobile {
+          width: calc(100vw - 80px);
           margin-top: 5.7291vw;
+          margin-left: 40px;
         }
       }
 
@@ -1212,6 +1237,8 @@ body {
           font-size: 50px;
           line-height: 50px;
           padding-top: 35vh;
+          margin-left: 40px;
+          width: calc(100vw - 80px);
         }
       }
 
@@ -1240,7 +1267,10 @@ body {
         width: 74.21875vw;
 
         @include mobile {
+          width: calc(100vw - 80px);
+          margin-left: 40px;
           flex-direction: column;
+          margin-bottom: 80px;
         }
 
         .date {
@@ -1263,7 +1293,6 @@ body {
           @include mobile {
             width: 80vw;
             margin-left: 0;
-
           }
 
           &-title {
@@ -1271,30 +1300,6 @@ body {
 
             @include mobile {
               margin-bottom: 15px;
-            }
-          }
-
-          &-content {
-            font-family: Suisse;
-            font-size: 40px;
-            line-height: 56px;
-
-            @include mobile {
-              font-size: 30px;
-              line-height: 45px;
-            }
-          }
-
-          &-extra {
-            margin-top: 2.03125vw;
-            width: 20.052vw;
-            font-family: Suisse;
-            font-size: 0.875rem;
-            line-height: 1.5rem;
-
-            @include mobile {
-              margin-top: 15px;
-              width: 100%;
             }
           }
         }
@@ -1317,7 +1322,6 @@ body {
           @include mobile {
             width: 80vw;
             margin-left: 0;
-            margin-bottom: 80px;
           }
 
           span {
@@ -1334,19 +1338,38 @@ body {
       width: 74.21875vw;
       display: flex;
 
+      @include mobile {
+        flex-direction: column;
+        width: calc(100vw - 80px);
+        margin-left: 40px;
+        margin-top: 80px;
+      }
+
       .labels {
         font-size: 12px;
         line-height: 12px;
-        margin-bottom: calc(2rem + 5px)
+        margin-bottom: calc(2rem + 5px);
+
+        @include mobile {
+          margin-bottom: 15px;
+        }
       }
 
       .project-text {
         width: 28.38541vw;
 
+        @include mobile {
+          width: 100%;
+        }
+
         p {
           margin-top: 2rem;
           font-size: 26px;
           line-height: 34px;
+
+          @include mobile {
+            margin-top: 30px;
+          }
         }
       }
 
@@ -1355,6 +1378,12 @@ body {
         width: 7.552vw;
         font-size: 14px;
         line-height: 18px;
+
+        @include mobile {
+          margin-left: 0;
+          margin-top: 30px;
+          width: 100%;
+        }
 
         span {
           display: block;
@@ -1367,6 +1396,12 @@ body {
         font-size: 14px;
         line-height: 18px;
 
+        @include mobile {
+          margin-left: 0;
+          margin-top: 30px;
+          width: 100%;
+        }
+
         span {
           display: block;
         }
@@ -1378,12 +1413,21 @@ body {
         font-size: 14px;
         line-height: 18px;
 
+        @include mobile {
+          margin-left: 0;
+          margin-top: 30px;
+          width: 100%;
+        }
+
         span {
           display: block;
         }
 
         a {
           display: inline-block;
+          @include mobile {
+            text-decoration: underline;
+          }
         }
       }
     }

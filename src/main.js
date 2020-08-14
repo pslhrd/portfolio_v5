@@ -30,6 +30,12 @@ const isMobile = {
     }
 }
 
+function scrollMobile() {
+  if (isMobile.any()) {
+    gsap.to(window, {scrollTo: 0, duration:0.1})
+  }
+}
+
 let scroll;
 
 function aboutLaunch() {
@@ -97,6 +103,20 @@ function aboutScroll() {
 }
 
 function homeScroll() {
+
+  const as = document.querySelectorAll('a')
+
+  for (const a of as) {
+    a.addEventListener('mouseenter', () => {
+      gsap.set(a, {transformOrigin:'right'})
+    })
+
+    a.addEventListener('mouseleave', () => {
+      console.log('leave')
+      gsap.set(a, {transformOrigin:'left'})
+    })
+  }
+
 
   let desc;
   const line = document.querySelector('.description .line span')
@@ -252,7 +272,7 @@ function projectLaunch() {
 
 function projectScroll() {
 
-  gsap.set('[data-scroll-call="appear"], [data-scroll-call="video"]', {scale:1.2, opacity:0})
+  gsap.set('[data-scroll-call]', {scale:1.2, opacity:0})
 
   scroll.on('call', function(event, element, i){
 
@@ -311,12 +331,32 @@ barba.init({
     name: 'main',
     once({ next }) {
       smooth(next.container)
+      const body = document.querySelector('body')
+      const preloader = document.querySelector('.preloader')
+      const imgLoad = imagesLoaded(body)
+
+      imgLoad.on( 'progress', function( instance, image ) {
+        var result = image.isLoaded ? 'loaded' : 'broken';
+        preloader.style.display = 'block'
+        body.style.cursor = 'wait'
+        console.log( 'image is ' + result + ' for ' + image.img.src );
+      })
+
+      imgLoad.on( 'done', function( instance ) {
+        preloader.style.display = 'none'
+        body.style.cursor = 'default'
+        console.log( imgLoad.images.length + ' images loaded' );
+      })
     },
     beforeEnter({ next }) {
       smooth(next.container)
       scroll.destroy()
+      scrolLMobile()
     },
     leave(data) {
+      if (isMobile.any()) {
+        gsap.set(window, {scrollTo: 0})
+      }
       return gsap.to(data.current.container, {opacity: 0,duration:1,ease:'power3.inOut'})
     },
     enter(data) {
@@ -375,6 +415,7 @@ barba.init({
       .to('.transition-plane', {scaleY:1, duration:1.5, ease:'expo.inOut'}, "+=0.3")
       .to('.transition-flex', {y:'-10%', rotation:0, duration:1.5, ease:'power3.inOut'}, '-=1.5')
       .to('.transition', {clip:'rect(0vh 100vw 0vh 0vh)', duration:1.5, ease:'power3.inOut'}, '-=1.5')
+      .add(scrollMobile())
       .set('.transition-plane', {scaleY:0})
       scroll.destroy()
       smooth(next.container)
@@ -428,7 +469,7 @@ barba.init({
     beforeEnter({ next }) {
       scroll.destroy()
       smooth(next.container)
-
+      scrollMobile()
       homeEnter()
       
     },
@@ -453,6 +494,7 @@ barba.init({
       .to('.transition-plane', {scaleY:1, duration:1.5, ease:'expo.inOut'}, "+=0.3")
       .to('.transition-flex', {y:'-10%', rotation:0, duration:1.5, ease:'power3.inOut'}, '-=1.5')
       .to('.transition', {clip:'rect(0vh 100vw 0vh 0vh)', duration:1.5, ease:'power3.inOut'}, '-=1.5')
+      .add(scrollMobile())
       .set('.transition-plane', {scaleY:0})
       scroll.destroy()
       smooth(next.container)
@@ -512,7 +554,7 @@ function smooth(container) {
   scroll = new LocomotiveScroll({
     el: container.querySelector('[data-scroll-container]'),
     smooth: true,
-    smoothMobile: false
+    smoothMobile: false,
   });
 }
 

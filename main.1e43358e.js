@@ -18264,6 +18264,16 @@ var isMobile = {
     return isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows();
   }
 };
+
+function scrollMobile() {
+  if (isMobile.any()) {
+    _gsap.default.to(window, {
+      scrollTo: 0,
+      duration: 0.1
+    });
+  }
+}
+
 var scroll;
 
 function aboutLaunch() {
@@ -18384,16 +18394,42 @@ function aboutScroll() {
 }
 
 function homeScroll() {
+  var as = document.querySelectorAll('a');
+
+  var _iterator2 = _createForOfIteratorHelper(as),
+      _step2;
+
+  try {
+    var _loop2 = function _loop2() {
+      var a = _step2.value;
+      a.addEventListener('mouseenter', function () {
+        _gsap.default.set(a, {
+          transformOrigin: 'right'
+        });
+      });
+      a.addEventListener('mouseleave', function () {
+        console.log('leave');
+
+        _gsap.default.set(a, {
+          transformOrigin: 'left'
+        });
+      });
+    };
+
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      _loop2();
+    }
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
+  }
+
   var desc;
   var line = document.querySelector('.description .line span');
-  var line2 = document.querySelector('.description .line2 span');
 
   var project = _gsap.default.timeline({
     paused: true
-  });
-
-  _gsap.default.set('[data-scroll-call=project]', {
-    autoAlpha: 0
   });
 
   function makeid(length) {
@@ -18409,7 +18445,6 @@ function homeScroll() {
   }
 
   line.innerHTML = makeid(250);
-  line2.innerHTML = makeid(250);
 
   function lettersHover() {
     desc = new _SplitText.default(".description-text", {
@@ -18417,12 +18452,12 @@ function homeScroll() {
     });
     var letters = desc.chars;
 
-    var _iterator2 = _createForOfIteratorHelper(letters),
-        _step2;
+    var _iterator3 = _createForOfIteratorHelper(letters),
+        _step3;
 
     try {
       var _loop = function _loop() {
-        var letter = _step2.value;
+        var letter = _step3.value;
 
         var tl = _gsap.default.timeline();
 
@@ -18438,20 +18473,20 @@ function homeScroll() {
         });
       };
 
-      for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
         _loop();
       }
     } catch (err) {
-      _iterator2.e(err);
+      _iterator3.e(err);
     } finally {
-      _iterator2.f();
+      _iterator3.f();
     }
   }
 
   lettersHover();
 
   function projectHover() {
-    var projects = document.querySelectorAll('.project-1, .project-2, .project-3, .project-4');
+    var projects = document.querySelectorAll('.project');
     projects.forEach(function (element, index) {
       var textHover = _gsap.default.timeline({
         paused: true
@@ -18464,12 +18499,12 @@ function homeScroll() {
       });
       var chars = text.chars;
 
-      var _iterator3 = _createForOfIteratorHelper(chars),
-          _step3;
+      var _iterator4 = _createForOfIteratorHelper(chars),
+          _step4;
 
       try {
-        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-          var char = _step3.value;
+        for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+          var char = _step4.value;
           var speed = 2;
 
           var random = _gsap.default.utils.interpolate(0.1, 0.8, Math.random());
@@ -18494,9 +18529,9 @@ function homeScroll() {
           }
         }
       } catch (err) {
-        _iterator3.e(err);
+        _iterator4.e(err);
       } finally {
-        _iterator3.f();
+        _iterator4.f();
       }
 
       element.addEventListener('mouseenter', function () {
@@ -18541,12 +18576,12 @@ function homeLaunch() {
 
   scroll.stop();
 
-  var _iterator4 = _createForOfIteratorHelper(chars),
-      _step4;
+  var _iterator5 = _createForOfIteratorHelper(chars),
+      _step5;
 
   try {
-    for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
-      var char = _step4.value;
+    for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+      var char = _step5.value;
       var speed = 2;
 
       var random = _gsap.default.utils.interpolate(0.1, 0.8, Math.random());
@@ -18571,9 +18606,9 @@ function homeLaunch() {
       }
     }
   } catch (err) {
-    _iterator4.e(err);
+    _iterator5.e(err);
   } finally {
-    _iterator4.f();
+    _iterator5.f();
   }
 
   var tl = _gsap.default.timeline();
@@ -18718,7 +18753,7 @@ function projectLaunch() {
 }
 
 function projectScroll() {
-  _gsap.default.set('[data-scroll-call="appear"], [data-scroll-call="video"]', {
+  _gsap.default.set('[data-scroll-call]', {
     scale: 1.2,
     opacity: 0
   });
@@ -18768,12 +18803,12 @@ function homeEnter() {
 
   var tl = _gsap.default.timeline();
 
-  var _iterator5 = _createForOfIteratorHelper(chars),
-      _step5;
+  var _iterator6 = _createForOfIteratorHelper(chars),
+      _step6;
 
   try {
-    for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
-      var char = _step5.value;
+    for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
+      var char = _step6.value;
       var speed = 2;
 
       var random = _gsap.default.utils.interpolate(0.1, 0.8, Math.random());
@@ -18798,9 +18833,9 @@ function homeEnter() {
       }
     }
   } catch (err) {
-    _iterator5.e(err);
+    _iterator6.e(err);
   } finally {
-    _iterator5.f();
+    _iterator6.f();
   }
 
   tl.fromTo('.main-project-img img', {
@@ -18832,13 +18867,34 @@ _core.default.init({
     once: function once(_ref) {
       var next = _ref.next;
       smooth(next.container);
+      var body = document.querySelector('body');
+      var preloader = document.querySelector('.preloader');
+      var imgLoad = (0, _imagesloaded.default)(body);
+      imgLoad.on('progress', function (instance, image) {
+        var result = image.isLoaded ? 'loaded' : 'broken';
+        preloader.style.display = 'block';
+        body.style.cursor = 'wait';
+        console.log('image is ' + result + ' for ' + image.img.src);
+      });
+      imgLoad.on('done', function (instance) {
+        preloader.style.display = 'none';
+        body.style.cursor = 'default';
+        console.log(imgLoad.images.length + ' images loaded');
+      });
     },
     beforeEnter: function beforeEnter(_ref2) {
       var next = _ref2.next;
       smooth(next.container);
       scroll.destroy();
+      scrolLMobile();
     },
     leave: function leave(data) {
+      if (isMobile.any()) {
+        _gsap.default.set(window, {
+          scrollTo: 0
+        });
+      }
+
       return _gsap.default.to(data.current.container, {
         opacity: 0,
         duration: 1,
@@ -18975,7 +19031,7 @@ _core.default.init({
         clip: 'rect(0vh 100vw 0vh 0vh)',
         duration: 1.5,
         ease: 'power3.inOut'
-      }, '-=1.5').set('.transition-plane', {
+      }, '-=1.5').add(scrollMobile()).set('.transition-plane', {
         scaleY: 0
       });
       scroll.destroy();
@@ -19079,6 +19135,7 @@ _core.default.init({
       var next = _ref7.next;
       scroll.destroy();
       smooth(next.container);
+      scrollMobile();
       homeEnter();
     },
     leave: function leave(data) {
@@ -19127,7 +19184,7 @@ _core.default.init({
         clip: 'rect(0vh 100vw 0vh 0vh)',
         duration: 1.5,
         ease: 'power3.inOut'
-      }, '-=1.5').set('.transition-plane', {
+      }, '-=1.5').add(scrollMobile()).set('.transition-plane', {
         scaleY: 0
       });
       scroll.destroy();
@@ -19305,7 +19362,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53140" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56166" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

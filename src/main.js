@@ -120,10 +120,8 @@ function homeScroll() {
 
   let desc;
   const line = document.querySelector('.description .line span')
-  const line2 = document.querySelector('.description .line2 span')
   const project = gsap.timeline({paused: true})
 
-  gsap.set('[data-scroll-call=project]', {autoAlpha:0})
 
   function makeid(length) {
      var result           = '';
@@ -136,7 +134,6 @@ function homeScroll() {
   }
 
   line.innerHTML = makeid(250)
-  line2.innerHTML = makeid(250)
 
 
   function lettersHover(){
@@ -156,7 +153,7 @@ function homeScroll() {
   lettersHover()
 
   function projectHover() {
-    const projects = document.querySelectorAll('.project-1, .project-2, .project-3, .project-4') 
+    const projects = document.querySelectorAll('.project') 
 
     projects.forEach(function(element, index) {
       const textHover = gsap.timeline({paused: true})

@@ -29,7 +29,9 @@ $c-fg: var(--c-fg);
   @media (max-height: 667px) { @content; }
 }
 
-$ease-out: cubic-bezier(.80,0,.20,1);
+$ease-out: cubic-bezier(.165,.84,.44,1);
+$size: 12px;
+$border: #262626;
 
 .dark-mode {
   --c-bg: #{$c-set-fg};
@@ -152,14 +154,39 @@ body {
       margin-top: 3px;
       height: 1px;
       width: 100%;
-      transform: scaleX(0);
+      opacity: 0;
+      transform: scaleX(1);
       transform-origin: left;
       background-color: currentColor;
-      transition: transform .6s $ease-out;
     }
 
     &:hover::after {
-      transform: scaleX(1);
+      animation: opacity 0.6s $ease-out forwards;
+    }
+
+    @keyframes opacity {
+      0% {
+        opacity: 0;
+      }
+      1% {
+        opacity: 1;
+      }
+      10% {
+        opacity: 1;
+      }
+      11% {
+        opacity: 0;
+      }
+      19% {
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.2;
+      }
+      100% {
+        opacity: 1;
+      }
+
     }
 
     &:focus {
@@ -185,7 +212,7 @@ body {
     z-index: 100;
     font-family: 'Gridnik';
     text-transform: uppercase;
-    font-size: 0.6875rem;
+    font-size: $size;
     margin-top: 50px;
     mix-blend-mode: difference;
 
@@ -234,7 +261,7 @@ body {
       right: 0;
       margin-right: 4.583vw;
       transform-origin: left;
-      margin-top: 7px;
+      margin-top: 5px;
       width: 25px;
       height: 1px;
       transform: scaleX(1);
@@ -249,7 +276,7 @@ body {
     width: 100vw;
     bottom: 0;
     z-index: 100;
-    font-size: 0.6875rem;
+    font-size: $size;
     padding-bottom: 50px;
     mix-blend-mode: difference;
     display: flex;
@@ -365,10 +392,14 @@ body {
     .footer-wrapper {
       position: relative;
       width: 100%;
-      height: 359.4791vw;
+      height: 300vw;
 
       @include mobile {
-        height: 440vh;
+        height: 490vh;
+      }
+
+      @include lowHeight {
+        height: 550vh;
       }
     }
     .main-project {
@@ -377,7 +408,7 @@ body {
       height: max-content;
 
       &-text {
-        font-size: 0.6875rem;
+        font-size: $size;
         line-height: 1rem;
         font-family: 'Gridnik';
         position: absolute;
@@ -515,8 +546,8 @@ body {
         }
 
       &-text {
-        font-size: 12.5vw;
-        line-height: 12.5vw;
+        font-size: 11vw;
+        line-height: 11.5vw;
         height: 100%;
         text-transform: uppercase;
         position: relative;
@@ -526,6 +557,15 @@ body {
         @include mobile {
           font-size: 60px;
           line-height: 60px;
+
+          &:before {
+            content: '';
+            position: absolute;
+            top: -25px;
+            height: 1px;
+            width: 100%;
+            background-color: white;
+          }
         }
 
         span {
@@ -548,7 +588,7 @@ body {
           transform: translateX(108%);
           top: 0;
           right: 0;
-          font-size: 0.6875rem;
+          font-size: $size;
           line-height: 1.4;
           font-family: 'Gridnik';
           width: 9.71875vw;
@@ -566,32 +606,374 @@ body {
     }
 
     .projects {
-      margin-left: 12.8645vw;
-      width: 74.21875vw;
-      height: 130.46875vw;
+      width: 100vw;
+      height: 107.239vw;
       position: absolute;
-      top: 146.5625vw;
+      top: 141.5625vw;
+      border-top: solid 1px $border;
+      border-bottom: solid 1px $border;
 
       @include mobile {
         top: 220vh;
-        width: calc(100vw - 80px);
-        margin-left: 40px;
+        width: 100vw;
+        height: auto;
+      }
+
+      @include lowHeight {
+        top: 230vh;
+        width: 100vw;
+        height: auto;
+      }
+
+      .grid {
+
+        width: 100%;
+        height: 100%;
+
+        @include mobile {
+          width: 100%;
+        }
+
+        .project, .archive {
+
+          position: relative;
+
+          &-img {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+          }
+        }
+
+        .project {
+
+          &-text {
+            font-size: $size;
+            line-height: 1rem;
+            font-family: 'Gridnik';
+            mix-blend-mode: difference;
+            position: absolute;
+            bottom: 4vw;
+            left: 4vw;
+            z-index: 20;
+            pointer-events: none;
+
+            @include mobile {
+              display: none;
+            }
+
+            span {
+              display: block;
+            }
+          }
+
+          a {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        .archive {
+
+          &:hover {
+            img {
+              transform: scale(1.1) rotate(3deg);
+            }
+          }
+          
+          &-text {
+            font-size: $size;
+            line-height: 1rem;
+            font-family: 'Gridnik';
+            mix-blend-mode: difference;
+            position: absolute;
+            left: 0;
+            top: -2vw;
+            z-index: 20;
+            pointer-events: none;
+
+            @include mobile {
+              top: -20px;
+            }
+
+            span {
+              display: block;
+            }
+          }
+
+          a {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        &-l1 {
+          width: 100%;
+          height: 32%;
+          display: flex;
+
+          @include mobile {
+            height: auto;
+            border-bottom: 1px solid $border;
+          }
+
+          .white-space {
+            width: 21.25%;
+            height: 100%;
+
+            @include mobile {
+              display: none;
+            }
+          }
+
+          .content {
+            width: 78.75%;
+            height: 100%;
+            border-bottom: 1px solid $border;
+            border-left: 1px solid $border;
+
+            @include mobile {
+              width: calc(100% - 80px);
+              margin-left: 40px;
+              margin-top: 40px;
+              margin-bottom: 40px;
+              border: none;
+            }
+
+            .project {
+              width: 36.71875vw;
+              height: 100%;
+              position: relative;
+
+              @include mobile {
+                width: 100%;
+              }
+
+              &:before {
+                content: '02';
+                font-size: $size;
+                position: absolute;
+                top: 4vw;
+                transform: translateX(100%);
+                right: -4vw;
+                text-align: left;
+
+                @include mobile {
+                  top: 0;
+                }
+              }
+
+              &:after {
+                content: '(INITIAL)';
+                font-size: $size;
+                position: absolute;
+                bottom: 4vw;
+                right: -4vw;
+                transform: translateX(100%);
+                text-align: right;
+
+                @include mobile {
+                  display: none;
+                }
+              }
+
+              img {
+                object-position: top;
+              }
+            }
+          }
+        }
+
+        &-l2 {
+          width: 100%;
+          height: 34%;
+          display: flex;
+
+          @include mobile {
+            height: auto;
+            border-bottom: 1px solid $border;
+          }
+
+          .white-space {
+            width: 21.25%;
+            height: 100%;
+            border-bottom: 1px solid $border;
+
+            @include mobile {
+              display: none;
+            }
+          }
+
+          .data {
+            float: left;
+            font-size: $size;
+            position: relative;
+            height: 100%;
+            width: 40%;
+
+            @include mobile {
+              display: none;
+            }
+
+            &-l1 {
+              position: absolute;
+              display: block;
+              top: 4vw;
+              left: 4vw;
+            }
+
+            &-l2 {
+              position: absolute;
+              display: block;
+              bottom: 4vw;
+              left: 4vw;
+            }
+          }
+
+          .content {
+            width: 78.75%;
+            height: 100%;
+            border-bottom: 1px solid $border;
+            border-left: 1px solid $border;
+
+            @include mobile {
+              width: calc(100% - 80px);
+              margin-left: 40px;
+              margin-top: 40px;
+              margin-bottom: 40px;
+              border: none;
+            }
+
+            .project {
+              float: right;
+              width: 28.802vw;
+              height: 100%;
+              position: relative;
+
+              @include mobile {
+                width: 100%;
+              }
+
+              &:before {
+                content: '03';
+                font-size: $size;
+                position: absolute;
+                top: 4vw;
+                transform: translateX(-100%);
+                left: -4vw;
+                text-align: left;
+
+                @include mobile {
+                  top: 0;
+                }
+              }
+            }
+          }
+        }
+
+        &-l3 {
+          width: 100%;
+          height: 34%;
+
+          .content {
+            width: 100%;
+            height: 100%;
+
+            @include mobile {
+              width: calc(100% - 80px);
+              margin-left: 40px;
+              margin-top: 40px;
+              margin-bottom: 40px;
+              border: none;
+            }
+
+            position: relative;
+
+            .project {
+              display: inline-block;
+              width: 37.08vw;
+              height: 100%;
+
+              @include mobile {
+                width: 100%;
+                height: auto;
+              }
+
+              &:before {
+                content: '04';
+                font-size: $size;
+                position: absolute;
+                top: 4vw;
+                transform: translateX(100%);
+                right: -4vw;
+                text-align: left;
+
+                @include mobile {
+                  top: 0;
+                }
+              }
+
+              &:after {
+                content: 'R011';
+                font-size: $size;
+                position: absolute;
+                bottom: 4vw;
+                right: -4vw;
+                transform: translateX(100%);
+                text-align: right;
+
+                @include mobile {
+                  display: none;
+                }
+              }
+
+              img {
+                object-position: top;
+              }
+            }
+
+            .archive {
+              position: absolute;
+              right: 0;
+              bottom: 0;
+              width: 24.21875vw;
+              height: 50%;
+              margin-right: 8.80vw;
+              
+              @include mobile {
+                position: relative;
+                width: 50%;
+                height: 50%;
+                margin-top: 40px;
+              }
+
+              img {
+                transition: transform 0.6s $ease-out;
+              }
+            }
+          }
+        }
       }
 
 
       .cross {
         position: absolute;
         z-index: 90;
-        top: 27.2395vw;
-        right: 6.1458vw;
+        top: 15.2395vw;
+        left: 8.1458vw;
         width: 100px;
         height: 100px;
         transform-origin: top center;
         transform-style: preserve-3d;
 
         @include mobile {
-          width: 40px;
-          height: 40px;
+          display: none;
         }
 
         &:before {
@@ -613,124 +995,23 @@ body {
           transform-style: preserve-3d;
         }
       }
-
-      .project-1, .project-2 , .project-3, .project-4 {
-
-
-        .project-text {
-          font-size: 0.6875rem;
-          line-height: 1rem;
-          font-family: 'Gridnik';
-          mix-blend-mode: difference;
-          position: absolute;
-          bottom: 4.1666vw;
-          left: 4.1666vw;
-          z-index: 20;
-
-          @include mobile {
-            display: none;
-          }
-
-          span {
-            display: block;
-          }
-        }
-
-        width: 36.71875vw;
-        height: 48.9583vw;
-
-        @include mobile {
-          width: 60vw;
-          height: 50vh;
-        }
-
-        &:hover {
-          cursor: pointer;
-
-          img {
-            // transform: scale(1.1) rotate(3deg);
-          }
-        }
-
-        .project-img {
-
-          width: 36.71875vw;
-          height: 48.9583vw;
-          overflow: hidden;
-          position: relative;
-          z-index: 10;
-
-          @include mobile {
-            width: 100%;
-            height: 100%;
-          }
-
-          img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 1.2s $ease-out;
-          }
-        }
-      }
-
-      .project-1 {
-        position: absolute;
-        left: 0;
-        top: 0;
-        z-index: 4;
-        @include mobile {
-          z-index: 4;
-        }
-      }
-
-      .project-2 {
-        z-index: 3;
-        position: absolute;
-        top: 42.5vw;
-        right: 8.33332vw;
-
-        @include mobile {
-          top: 45vh;
-          right: 0;
-        }
-      }
-
-      .project-3 {
-        z-index: 2;
-        position: absolute;
-        top: 90.510vw;
-        left: 8.33332vw;
-
-        @include mobile {
-          top: 80vh;
-          right: 20vw;
-        }
-      }
-
-      .project-4 {
-        z-index: 1;
-        position: absolute;
-        top: 131.510vw;
-        right: 0vw;
-
-        @include mobile {
-          top: 125vh;
-        }
-      }
     }
 
     .last-container {
       position: absolute;
-      top: 327.03vw;
+      top: 263.03vw;
       width: 100vw;
       height: 32.4791vw;
-      font-size: 0.6875rem;
+      font-size: $size;
       line-height: 1rem;
       font-family: 'Gridnik';
 
       @include mobile {
-        top: 400vh;
+        top: 450vh;
+      }
+
+      @include lowHeight {
+        top: 500vh;
       }
 
       .cross {
@@ -779,49 +1060,6 @@ body {
         top: 15.6875vw;
         width: 7.552vw;
         display: block;
-      }
-    }
-  }
-
-  .grid-w {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 500vh;
-    justify-content: center;
-    pointer-events: none;
-    opacity: .15;
-
-    .grid {
-      height: 100%;
-
-      div {
-        position: relative;
-        float: left;
-        width: 4.165vw;
-        height: 100%;
-
-        &:before {
-          content: "";
-          position: absolute;
-          top: 0;
-          width: 0.390625vw;
-          left: 0;
-          height: 100%;
-          background: #980000;
-        }
-
-        &:after {
-          content: "";
-          position: absolute;
-          top: 0;
-          width: 0.390625vw;
-          right: 0;
-          height: 100%;
-          background: #980000;
-        }
       }
     }
   }
@@ -923,7 +1161,7 @@ body {
     }
 
     .a-intro {
-      font-size: 12px;
+      font-size: $size;
       line-height: 16px;
       font-family: 'Gridnik';
       position: absolute;
@@ -1042,7 +1280,7 @@ body {
       left: 46.19791vw;
       top: 95.677vw;
       width: 20.052vw;
-      font-size: 12px;
+      font-size: $size;
       line-height: 16px;
 
       @include mobile {
@@ -1259,7 +1497,7 @@ body {
       .project-infos {
         position: relative;
         display: flex;
-        font-size: 12px;
+        font-size: $size;
         line-height: 12px;
         font-family: 'Gridnik';
         margin-left: 12.890625vw;
@@ -1346,7 +1584,7 @@ body {
       }
 
       .labels {
-        font-size: 12px;
+        font-size: $size;
         line-height: 12px;
         margin-bottom: calc(2rem + 5px);
 
@@ -1376,7 +1614,7 @@ body {
       .project-roles {
         margin-left: 9.11458vw;
         width: 7.552vw;
-        font-size: 14px;
+        font-size: $size;
         line-height: 18px;
 
         @include mobile {
@@ -1393,7 +1631,7 @@ body {
       .project-softwares {
         margin-left: 4.94791vw;
         width: 7.552vw;
-        font-size: 14px;
+        font-size: $size;
         line-height: 18px;
 
         @include mobile {
@@ -1410,7 +1648,7 @@ body {
       .project-links {
         margin-left: 4.94791vw;
         width: 7.552vw;
-        font-size: 14px;
+        font-size: $size;
         line-height: 18px;
 
         @include mobile {

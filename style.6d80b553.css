@@ -111,7 +111,7 @@ body a:after,
 body button.is-a:after {
   content: "";
   display: block;
-  margin-top: 3px;
+  margin-top: 1px;
   height: 1px;
   width: 100%;
   opacity: 0;
@@ -322,7 +322,7 @@ body .transition span {
   margin-top: 6vw;
   font-size: 50vw;
   color: black;
-  font-family: Gridnik Medium;
+  font-family: "Gridnik Medium";
 }
 body .i-container {
   position: relative;
@@ -445,7 +445,7 @@ body .i-container .description .line {
   pointer-events: none;
   font-family: Suisse Mono Thin;
   letter-spacing: -0.15362vw;
-  margin-bottom: 2.6041vw;
+  margin-bottom: 2.1041vw;
   font-size: 0.7346vw;
   width: 74.21875vw;
   overflow: hidden;
@@ -486,11 +486,11 @@ body .i-container .description .line2 span {
 }
 body .i-container .description-text {
   font-size: 11vw;
-  line-height: 11.5vw;
+  line-height: 11vw;
   height: 100%;
   text-transform: uppercase;
   position: relative;
-  font-family: Gridnik Medium;
+  font-family: "Gridnik Medium";
   cursor: default;
 }
 @media (max-width: 900px) {
@@ -1069,7 +1069,7 @@ body .a-container .footer-wrapper {
 body .a-container .a-intro {
   font-size: 12px;
   line-height: 16px;
-  font-family: "Gridnik";
+  font-family: Suisse;
   position: absolute;
   width: 9.77vw;
   left: 35.8645vw;
@@ -1159,30 +1159,54 @@ body .a-container .a-cross2:after {
   transform-style: preserve-3d;
 }
 body .a-container .a-title {
-  font-family: Gridnik;
+  font-family: Suisse;
   position: absolute;
   top: 76.9791vw;
   width: 53.38541vw;
   left: 12.86458vw;
-  font-size: 1.5625vw;
-  line-height: 1;
+  font-size: 25px;
+}
+body .a-container .a-title a {
+  text-transform: none;
+  text-decoration: underline;
+}
+body .a-container .a-title a:hover {
+  text-decoration: none;
+}
+body .a-container .a-title a:after {
+  display: none;
+}
+body .a-container .a-title h1 {
+  font-size: 2.083vw;
+  font-weight: 400;
+  line-height: 1.15;
+}
+@media (max-width: 900px) {
+  body .a-container .a-title h1 {
+    font-size: 25px;
+  }
 }
 @media (max-width: 900px) {
   body .a-container .a-title {
     width: calc(100vw - 80px);
     left: 40px;
-    top: 207.5vh;
+    top: 200.5vh;
     font-size: 20px;
   }
 }
+@media (max-height: 667px) {
+  body .a-container .a-title {
+    top: 190.5vh;
+  }
+}
 body .a-container .a-content {
-  font-family: Gridnik;
+  font-family: Suisse;
   position: absolute;
   left: 46.19791vw;
   top: 95.677vw;
   width: 20.052vw;
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 14px;
+  line-height: 1.4;
 }
 @media (max-width: 900px) {
   body .a-container .a-content {
@@ -1194,11 +1218,12 @@ body .a-container .a-content {
   }
 }
 body .a-container .a-content p {
+  margin-top: 1rem;
   width: 100%;
 }
 body .a-container .a-data {
   font-size: 15.625vw;
-  font-family: Gridnik Medium;
+  font-family: "Gridnik Medium";
   line-height: 15.625vw;
 }
 @media (max-width: 900px) {
@@ -1347,7 +1372,7 @@ body .p-container .project-header .line {
 body .p-container .project-header .project-title {
   overflow: hidden;
   padding-top: 41.25vh;
-  font-family: Gridnik;
+  font-family: "Gridnik";
   font-size: 12.5vw;
   line-height: 12.5vw;
   margin-left: 12.890625vw;
@@ -1448,11 +1473,12 @@ body .p-container .project-header .project-infos .number span {
   display: block;
 }
 body .p-container .project-description {
-  margin-left: 12.890625vw;
-  margin-bottom: 5.7291vw;
-  margin-top: 5.7291vw;
-  width: 74.21875vw;
+  padding-left: 12.890625vw;
+  padding-bottom: 5.7291vw;
+  padding-top: 5.7291vw;
+  width: 100vw;
   display: flex;
+  border-bottom: solid 1px #262626;
 }
 @media (max-width: 900px) {
   body .p-container .project-description {
@@ -1463,6 +1489,7 @@ body .p-container .project-description {
   }
 }
 body .p-container .project-description .labels {
+  font-family: "Gridnik" !important;
   font-size: 12px;
   line-height: 12px;
   margin-bottom: calc(2rem + 5px);
@@ -1481,6 +1508,7 @@ body .p-container .project-description .project-text {
   }
 }
 body .p-container .project-description .project-text p {
+  font-family: Suisse;
   margin-top: 2rem;
   font-size: 26px;
   line-height: 34px;
@@ -1504,6 +1532,7 @@ body .p-container .project-description .project-roles {
   }
 }
 body .p-container .project-description .project-roles span {
+  font-family: Suisse;
   display: block;
 }
 body .p-container .project-description .project-softwares {
@@ -1520,6 +1549,7 @@ body .p-container .project-description .project-softwares {
   }
 }
 body .p-container .project-description .project-softwares span {
+  font-family: Suisse;
   display: block;
 }
 body .p-container .project-description .project-links {
@@ -1539,6 +1569,7 @@ body .p-container .project-description .project-links span {
   display: block;
 }
 body .p-container .project-description .project-links a {
+  font-family: Suisse;
   display: inline-block;
 }
 @media (max-width: 900px) {

@@ -17603,123 +17603,7 @@ var define;
 !function(t,i){"object"==typeof exports&&"undefined"!=typeof module?module.exports=i():"function"==typeof define&&define.amd?define(i):(t=t||self).barbaPrefetch=i()}(this,function(){var t="2.1.10",i=window.requestIdleCallback||function(t){var i=Date.now();return setTimeout(function(){t({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-i))}})},1)};return new(function(){function n(){this.name="@barba/prefetch",this.version=t,this.toPrefetch=new Set}var e=n.prototype;return e.install=function(t,i){var n=void 0===i?{}:i,e=n.root,o=void 0===e?document.body:e,r=n.timeout,s=void 0===r?2e3:r;this.logger=new t.Logger(this.name),this.logger.info(this.version),this.barba=t,this.root=o,this.timeout=s},e.init=function(){var t=this;this.barba.prefetchIgnore?this.logger.warn("barba.prefetchIgnore is enabled"):this.barba.cacheIgnore?this.logger.warn("barba.cacheIgnore is enabled"):(this.observer=new IntersectionObserver(function(i){i.forEach(function(i){if(i.isIntersecting){var n=i.target,e=t.barba.dom.getHref(n);t.toPrefetch.has(e)&&(t.observer.unobserve(n),t.barba.cache.has(e)?t.barba.cache.update(e,{action:"prefetch"}):t.barba.cache.set(e,t.barba.request(e,t.barba.timeout,t.barba.onRequestError.bind(t.barba,"barba")).catch(function(i){t.logger.error(i)}),"prefetch"))}})}),this.observe(),this.barba.hooks.after(this.observe,this))},e.observe=function(){var t=this;i(function(){t.root.querySelectorAll("a").forEach(function(i){var n=i,e=t.barba.dom.getHref(n);t.barba.cache.has(e)||t.barba.prevent.checkHref(e)||t.barba.prevent.checkLink(n,{},e)||(t.observer.observe(i),t.toPrefetch.add(e))})},{timeout:this.timeout})},n}())});
 
 
-},{}],"src/cursor.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _gsap = _interopRequireDefault(require("gsap"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var getMousePos = function getMousePos(e) {
-  var posx = 0;
-  var posy = 0;
-  if (!e) e = window.event;
-
-  if (e.pageX || e.pageY) {
-    posx = e.pageX;
-    posy = e.pageY;
-  } else if (e.clientX || e.clientY) {
-    posx = e.clientX + body.scrollLeft + document.documentElement.scrollLeft;
-    posy = e.clientY + body.scrollTop + document.documentElement.scrollTop;
-  }
-
-  return {
-    x: posx,
-    y: posy
-  };
-};
-
-var lerp = function lerp(a, b, n) {
-  return (1 - n) * a + n * b;
-}; // Track the mouse position
-
-
-var mouse = {
-  x: 0,
-  y: 0
-};
-window.addEventListener('mousemove', function (ev) {
-  return mouse = getMousePos(ev);
-});
-
-var Cursor = /*#__PURE__*/function () {
-  function Cursor(el) {
-    var _this = this;
-
-    _classCallCheck(this, Cursor);
-
-    this.DOM = {
-      el: el
-    };
-    this.DOM.el.style.opacity = 0;
-    this.bounds = this.DOM.el.getBoundingClientRect();
-    this.renderedStyles = {
-      tx: {
-        previous: 0,
-        current: 0,
-        amt: 0.2
-      },
-      ty: {
-        previous: 0,
-        current: 0,
-        amt: 0.2
-      }
-    };
-
-    this.onMouseMoveEv = function () {
-      _this.renderedStyles.tx.previous = _this.renderedStyles.tx.current = mouse.x - _this.bounds.width / 2;
-      _this.renderedStyles.ty.previous = _this.renderedStyles.ty.previous = mouse.y - _this.bounds.height / 2;
-
-      _gsap.default.to(_this.DOM.el, {
-        duration: 0.9,
-        ease: 'Power3.easeOut',
-        opacity: 1
-      });
-
-      requestAnimationFrame(function () {
-        return _this.render();
-      });
-      window.removeEventListener('mousemove', _this.onMouseMoveEv);
-    };
-
-    window.addEventListener('mousemove', this.onMouseMoveEv);
-  }
-
-  _createClass(Cursor, [{
-    key: "render",
-    value: function render() {
-      var _this2 = this;
-
-      this.renderedStyles['tx'].current = mouse.x - this.bounds.width / 2;
-      this.renderedStyles['ty'].current = mouse.y - this.bounds.height / 2;
-
-      for (var key in this.renderedStyles) {
-        this.renderedStyles[key].previous = lerp(this.renderedStyles[key].previous, this.renderedStyles[key].current, this.renderedStyles[key].amt);
-      }
-
-      this.DOM.el.style.transform = "translateX(".concat(this.renderedStyles['tx'].previous, "px) translateY(").concat(this.renderedStyles['ty'].previous, "px)");
-      requestAnimationFrame(function () {
-        return _this2.render();
-      });
-    }
-  }]);
-
-  return Cursor;
-}();
-
-exports.default = Cursor;
-},{"gsap":"node_modules/gsap/index.js"}],"node_modules/ev-emitter/ev-emitter.js":[function(require,module,exports) {
+},{}],"node_modules/ev-emitter/ev-emitter.js":[function(require,module,exports) {
 var define;
 var global = arguments[3];
 /**
@@ -18230,8 +18114,6 @@ var _core = _interopRequireDefault(require("@barba/core"));
 
 var _prefetch = _interopRequireDefault(require("@barba/prefetch"));
 
-var _cursor = _interopRequireDefault(require("./cursor"));
-
 var _imagesloaded = _interopRequireDefault(require("imagesloaded"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -18244,6 +18126,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 _gsap.default.registerPlugin(_all.ScrollToPlugin);
 
+var projectImgs;
+var projectTexts;
+var projectNumber;
+var nextProject;
 var isMobile = {
   Android: function Android() {
     return navigator.userAgent.match(/Android/i);
@@ -18264,6 +18150,12 @@ var isMobile = {
     return isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows();
   }
 };
+
+if (isMobile.any() === null) {
+  console.log('Not Mobile');
+} else {
+  console.log(isMobile.any());
+}
 
 function scrollMobile() {
   if (isMobile.any()) {
@@ -18349,37 +18241,20 @@ function aboutLaunch() {
 
 function aboutScroll() {
   var img;
-  var cursor = new _cursor.default(document.querySelector('.cursor'));
   var inner = document.querySelectorAll('.cursor-inner-1, .cursor-inner-2, .cursor-inner-3');
   var wrapper = document.querySelector('.cursor-wrapper');
 
   var tl = _gsap.default.timeline();
 
   var data = document.querySelectorAll('.a-data-n1, .a-data-n2, .a-data-n3');
-  console.log(data);
   data.forEach(function (element, index) {
     var tl = _gsap.default.timeline();
 
     element.addEventListener('mouseenter', function () {
-      tl.set(inner[index], {
-        display: 'block'
-      }).fromTo(inner[index], {
-        autoAlpha: 0
-      }, {
-        scale: 1,
-        autoAlpha: 1,
-        duration: 0.1
-      });
+      inner[index].style.display = 'block';
     });
     element.addEventListener('mouseleave', function () {
-      tl.fromTo(inner[index], {
-        autoAlpha: 1
-      }, {
-        autoAlpha: 0,
-        duration: 0.1
-      }).set(inner[index], {
-        display: 'none'
-      });
+      inner[index].style.display = 'none';
     });
   });
   scroll.on('call', function (event, element, i) {
@@ -18408,8 +18283,6 @@ function homeScroll() {
         });
       });
       a.addEventListener('mouseleave', function () {
-        console.log('leave');
-
         _gsap.default.set(a, {
           transformOrigin: 'left'
         });
@@ -18493,7 +18366,6 @@ function homeScroll() {
       });
 
       var content = element.querySelector('.project-text');
-      console.log(content);
       var text = new _SplitText.default(content, {
         type: 'chars'
       });
@@ -18664,8 +18536,7 @@ function homeLaunch() {
     }).from('.main-project-img img', {
       duration: 4,
       ease: 'power3.out',
-      scale: 1.15,
-      rotation: 2
+      scale: 1.15
     }).from('.main-project-img img', {
       duration: 4,
       ease: 'power1.out',
@@ -18733,7 +18604,7 @@ function projectLaunch() {
     scaleX: 1,
     duration: 1.8,
     ease: 'expo.inOut'
-  }, '-=1.2').fromTo('.date, .type, .number, .infos-title, .infos-content, .previous', {
+  }, '-=1.2').fromTo('.date, .type, .number, .infos-title, .infos-content', {
     y: 30,
     opacity: 0
   }, {
@@ -18754,42 +18625,136 @@ function projectLaunch() {
 }
 
 function projectScroll() {
-  _gsap.default.set('[data-scroll-call]', {
-    scale: 1.2,
-    opacity: 0
+  // gsap.set('[data-scroll-call="appear"]', {scale:1.2, opacity:0})
+  var textHover = _gsap.default.timeline({
+    paused: true
   });
 
-  scroll.on('call', function (event, element, i) {
-    if (event === 'appear') {
-      console.log(i);
-
-      _gsap.default.to(i.el, {
-        scale: 1,
-        opacity: 1,
-        duration: 1.5,
-        ease: 'power3.out'
-      });
-    }
-
-    if (event === 'video') {
-      i.el.play();
-
-      _gsap.default.to(i.el, {
-        scale: 1,
-        opacity: 1,
-        duration: 1.5,
-        ease: 'power3.out'
-      });
-    }
+  var mainTL = _gsap.default.timeline({
+    paused: true
   });
-  var previous = document.querySelector('.p-container .previous');
-  previous.addEventListener('click', function () {
-    console.log(_core.default.history.previous);
 
-    if ('null' != _core.default.history.previous) {
-      _core.default.go(_core.default.history.previous.url);
+  var _iterator6 = _createForOfIteratorHelper(projectNumber.chars),
+      _step6;
+
+  try {
+    for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
+      var char = _step6.value;
+      var speed = 2;
+
+      var random = _gsap.default.utils.interpolate(0.1, 0.8, Math.random());
+
+      var time = Math.min((1 / random * 0.1 + random * 0.3) / 1.4 * speed, 2);
+
+      var duration = _gsap.default.utils.interpolate(0.1, 0.35, Math.random());
+
+      textHover.to(char, {
+        opacity: 0,
+        duration: duration
+      }, time);
+
+      if (Math.random() > .9) {
+        textHover.fromTo(char, {
+          opacity: 1,
+          duration: duration
+        }, {
+          opacity: 0,
+          duration: duration
+        }, time + duration);
+      }
     }
+  } catch (err) {
+    _iterator6.e(err);
+  } finally {
+    _iterator6.f();
+  }
+
+  mainTL.add(textHover).to(textHover, {
+    duration: 2,
+    progress: 1.2,
+    ease: 'power3.in'
   });
+  nextProject.addEventListener('mouseenter', function () {
+    // textHover.reverse(1.5)
+    mainTL.reverse(0);
+  });
+  nextProject.addEventListener('mouseleave', function () {});
+
+  if (isMobile.any() === null) {
+    var _iterator7 = _createForOfIteratorHelper(projectImgs),
+        _step7;
+
+    try {
+      for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
+        var img = _step7.value;
+
+        _gsap.default.set(img, {
+          scale: 1.1,
+          opacity: 0
+        });
+      }
+    } catch (err) {
+      _iterator7.e(err);
+    } finally {
+      _iterator7.f();
+    }
+
+    var _iterator8 = _createForOfIteratorHelper(projectTexts),
+        _step8;
+
+    try {
+      for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
+        var text = _step8.value;
+        var splitText = new _SplitText.default(text, {
+          type: "lines",
+          linesClass: "lines"
+        });
+
+        _gsap.default.set(splitText.lines, {
+          y: '70%',
+          opacity: 0
+        });
+      }
+    } catch (err) {
+      _iterator8.e(err);
+    } finally {
+      _iterator8.f();
+    }
+
+    scroll.on('call', function (event, element, i) {
+      if (event === 'appear') {
+        _gsap.default.to(i.el, {
+          scale: 1,
+          opacity: 1,
+          duration: 2,
+          ease: 'power3.out'
+        });
+      }
+
+      if (event === 'video') {
+        i.el.play();
+
+        _gsap.default.to(i.el, {
+          scale: 1,
+          opacity: 1,
+          duration: 1.5,
+          ease: 'power3.out'
+        });
+      }
+
+      if (event === 'text') {
+        var text = i.el.querySelectorAll('.lines');
+
+        _gsap.default.to(text, {
+          y: '0%',
+          opacity: 1,
+          duration: 1.5,
+          stagger: 0.1,
+          ease: 'power3.out'
+        });
+      }
+    });
+  }
 }
 
 function homeEnter() {
@@ -18804,12 +18769,12 @@ function homeEnter() {
 
   var tl = _gsap.default.timeline();
 
-  var _iterator6 = _createForOfIteratorHelper(chars),
-      _step6;
+  var _iterator9 = _createForOfIteratorHelper(chars),
+      _step9;
 
   try {
-    for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
-      var char = _step6.value;
+    for (_iterator9.s(); !(_step9 = _iterator9.n()).done;) {
+      var char = _step9.value;
       var speed = 2;
 
       var random = _gsap.default.utils.interpolate(0.1, 0.8, Math.random());
@@ -18834,9 +18799,9 @@ function homeEnter() {
       }
     }
   } catch (err) {
-    _iterator6.e(err);
+    _iterator9.e(err);
   } finally {
-    _iterator6.f();
+    _iterator9.f();
   }
 
   tl.fromTo('.main-project-img img', {
@@ -18874,20 +18839,18 @@ _core.default.init({
       imgLoad.on('progress', function (instance, image) {
         var result = image.isLoaded ? 'loaded' : 'broken';
         preloader.style.display = 'block';
-        body.style.cursor = 'wait';
-        console.log('image is ' + result + ' for ' + image.img.src);
+        body.style.cursor = 'wait'; // console.log( 'image is ' + result + ' for ' + image.img.src );
       });
       imgLoad.on('done', function (instance) {
         preloader.style.display = 'none';
-        body.style.cursor = 'default';
-        console.log(imgLoad.images.length + ' images loaded');
+        body.style.cursor = 'default'; // console.log( imgLoad.images.length + ' images loaded' );
       });
     },
     beforeEnter: function beforeEnter(_ref2) {
       var next = _ref2.next;
       smooth(next.container);
       scroll.destroy();
-      scrolLMobile();
+      scrollMobile();
     },
     leave: function leave(data) {
       if (isMobile.any()) {
@@ -18948,7 +18911,6 @@ _core.default.init({
       var projectNumber = document.querySelector('.transition-flex span');
       var nb = data.trigger.getAttribute('project-index');
       projectNumber.innerHTML = nb;
-      console.log(projectNumber);
 
       var tl = _gsap.default.timeline();
 
@@ -19123,12 +19085,10 @@ _core.default.init({
         var result = image.isLoaded ? 'loaded' : 'broken';
         preloader.style.display = 'block';
         body.style.cursor = 'wait';
-        console.log('image is ' + result + ' for ' + image.img.src);
       });
       imgLoad.on('done', function (instance) {
         preloader.style.display = 'none';
         body.style.cursor = 'default';
-        console.log(imgLoad.images.length + ' images loaded');
         homeLaunch();
       });
     },
@@ -19195,7 +19155,6 @@ _core.default.init({
       var projectNumber = document.querySelector('.transition-flex span');
       var nb = data.trigger.getAttribute('project-index');
       projectNumber.innerHTML = nb;
-      console.log(projectNumber);
 
       var tl = _gsap.default.timeline();
 
@@ -19273,7 +19232,21 @@ _core.default.init({
     beforeEnter: function beforeEnter() {
       projectLaunch();
     },
-    afterEnter: function afterEnter(data) {
+    afterEnter: function afterEnter(_ref10) {
+      var next = _ref10.next;
+      nextProject = next.container.querySelector('.next-project');
+      projectNumber = new _SplitText.default(nextProject, {
+        type: "chars, words"
+      });
+      var node = document.createElement('span');
+      var data = nextProject.getAttribute('data-project');
+      var textnode = document.createTextNode(data);
+      node.appendChild(textnode);
+      node.classList.add('number');
+      projectNumber.words[0].appendChild(node);
+      projectImgs = next.container.querySelectorAll('[data-scroll-call="appear"]');
+      projectTexts = next.container.querySelectorAll('[data-scroll-call="text"]');
+      console.log(projectImgs, projectTexts);
       projectScroll();
     }
   }]
@@ -19335,7 +19308,7 @@ function smooth(container) {
 //       const tl = gsap.timeline()
 //       tl.to('.transition', {scaleY:0, duration:1.3, ease:'power4.out', onComplete:done})
 //     }
-},{"./SplitText":"src/SplitText.js","gsap/all":"node_modules/gsap/all.js","gsap":"node_modules/gsap/index.js","locomotive-scroll":"node_modules/locomotive-scroll/dist/locomotive-scroll.esm.js","@barba/core":"node_modules/@barba/core/dist/barba.umd.js","@barba/prefetch":"node_modules/@barba/prefetch/dist/barba-prefetch.umd.js","./cursor":"src/cursor.js","imagesloaded":"node_modules/imagesloaded/imagesloaded.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./SplitText":"src/SplitText.js","gsap/all":"node_modules/gsap/all.js","gsap":"node_modules/gsap/index.js","locomotive-scroll":"node_modules/locomotive-scroll/dist/locomotive-scroll.esm.js","@barba/core":"node_modules/@barba/core/dist/barba.umd.js","@barba/prefetch":"node_modules/@barba/prefetch/dist/barba-prefetch.umd.js","imagesloaded":"node_modules/imagesloaded/imagesloaded.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -19363,7 +19336,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51779" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50177" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

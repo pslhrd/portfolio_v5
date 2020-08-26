@@ -18827,7 +18827,7 @@ function homeEnter() {
 _core.default.use(_prefetch.default);
 
 _core.default.init({
-  debug: true,
+  debug: false,
   transitions: [{
     name: 'main',
     once: function once(_ref) {
@@ -19252,6 +19252,10 @@ _core.default.init({
   }]
 });
 
+_core.default.hooks.enter(function () {
+  scrollMobile();
+});
+
 function smooth(container) {
   scroll = new _locomotiveScroll.default({
     el: container.querySelector('[data-scroll-container]'),
@@ -19336,7 +19340,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50177" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50273" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

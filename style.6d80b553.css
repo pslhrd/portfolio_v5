@@ -1367,22 +1367,24 @@ body .p-container .project-songs {
 body .p-container .project-songs:hover .song-index, body .p-container .project-songs:hover .song-title, body .p-container .project-songs:hover .song-duration, body .p-container .project-songs:hover .song-play {
   opacity: 0.4;
 }
-body .p-container .project-songs .song:nth-child(1) {
+body .p-container .project-songs a:nth-child(1) {
   margin-top: 15px;
   border-top: 1px solid #1D1D1D;
 }
-body .p-container .project-songs .song {
+body .p-container .project-songs a {
   padding-top: 15px;
   padding-bottom: 15px;
   width: 100%;
   border-bottom: 1px solid #1D1D1D;
-  display: flex;
 }
-body .p-container .project-songs .song:hover {
+body .p-container .project-songs a:hover {
   cursor: pointer;
 }
-body .p-container .project-songs .song:hover .song-index, body .p-container .project-songs .song:hover .song-title, body .p-container .project-songs .song:hover .song-duration, body .p-container .project-songs .song:hover .song-play {
+body .p-container .project-songs a:hover .song-index, body .p-container .project-songs a:hover .song-title, body .p-container .project-songs a:hover .song-duration, body .p-container .project-songs a:hover .song-play {
   opacity: 1 !important;
+}
+body .p-container .project-songs .song {
+  display: flex;
 }
 body .p-container .project-songs .song-index {
   width: 16.8421%;
@@ -1534,9 +1536,23 @@ body .p-container .project-content .med {
 @media (max-width: 900px) {
   body .p-container .project-content .med {
     width: 100vw;
-    height: auto;
     margin-left: 0;
     height: 50vh;
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+}
+body .p-container .project-content .full {
+  height: fit-content;
+  width: 74.21875vw;
+  margin-left: 12.890625vw;
+  margin-top: 5.7291vw;
+  margin-bottom: 5.7291vw;
+}
+@media (max-width: 900px) {
+  body .p-container .project-content .full {
+    width: 100vw;
+    margin-left: 0;
     margin-top: 40px;
     margin-bottom: 40px;
   }
@@ -1723,6 +1739,28 @@ body .p-container .project-description {
   width: 100vw;
   display: flex;
   border-bottom: solid 1px #1D1D1D;
+}
+body .p-container .project-description a {
+  text-transform: none;
+}
+body .p-container .project-description a:hover {
+  text-decoration: none;
+}
+body .p-container .project-description a:after {
+  content: "";
+  display: block;
+  margin-top: 0px;
+  height: 1px;
+  width: 100%;
+  opacity: 1;
+  transform: scaleX(1);
+  transform-origin: left;
+  background-color: currentColor;
+}
+@media (max-width: 900px) {
+  body .p-container .project-description a:after {
+    display: none;
+  }
 }
 @media (max-width: 900px) {
   body .p-container .project-description {

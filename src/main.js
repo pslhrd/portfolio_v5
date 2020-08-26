@@ -4,10 +4,15 @@ import gsap from 'gsap'
 import LocomotiveScroll from 'locomotive-scroll'
 import barba from '@barba/core'
 import barbaPrefetch from '@barba/prefetch'
-import Cursor from './cursor'
+// import Cursor from './cursor'
 import imagesLoaded from 'imagesloaded'
 
 gsap.registerPlugin(ScrollToPlugin)
+
+let projectImgs;
+let projectTexts;
+let projectNumber;
+let nextProject;
 
 const isMobile = {
     Android: function() {
@@ -28,6 +33,12 @@ const isMobile = {
     any: function() {
         return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
     }
+}
+
+if (isMobile.any() === null) {
+  console.log('Not Mobile')
+} else {
+  console.log(isMobile.any())
 }
 
 function scrollMobile() {
@@ -69,24 +80,19 @@ function aboutLaunch() {
 function aboutScroll() {
 
   let img;
-  const cursor = new Cursor(document.querySelector('.cursor'))
   const inner = document.querySelectorAll('.cursor-inner-1, .cursor-inner-2, .cursor-inner-3')
   const wrapper = document.querySelector('.cursor-wrapper')
   const tl = gsap.timeline()
   const data = document.querySelectorAll('.a-data-n1, .a-data-n2, .a-data-n3')
-  console.log(data)
+
 
   data.forEach(function (element, index) {
     const tl = gsap.timeline()
     element.addEventListener('mouseenter', () => {
-      tl
-      .set(inner[index], {display:'block'})
-      .fromTo(inner[index], {autoAlpha:0}, {scale:1, autoAlpha:1, duration:0.1})
+      inner[index].style.display = 'block';
     })
      element.addEventListener('mouseleave', () => {
-      tl
-      .fromTo(inner[index], {autoAlpha:1}, {autoAlpha:0, duration:0.1})
-      .set(inner[index], {display:'none'})
+      inner[index].style.display = 'none';
     })
   })
 
@@ -112,7 +118,6 @@ function homeScroll() {
     })
 
     a.addEventListener('mouseleave', () => {
-      console.log('leave')
       gsap.set(a, {transformOrigin:'left'})
     })
   }
@@ -158,7 +163,6 @@ function homeScroll() {
     projects.forEach(function(element, index) {
       const textHover = gsap.timeline({paused: true})
       const content = element.querySelector('.project-text')
-      console.log(content)
       const text = new SplitText(content, {type:'chars'})
       const chars = text.chars
 
@@ -263,35 +267,69 @@ function projectLaunch() {
   tl
   .fromTo(words, {y:'100%', autoAlpha:0}, {y:'0%',autoAlpha:1, duration:1.6, ease:'power3.out', stagger:0.15}, "+=0.8")
   .to('.line', {scaleX:1, duration:1.8, ease:'expo.inOut'}, '-=1.2')
-  .fromTo('.date, .type, .number, .infos-title, .infos-content, .previous', {y:30, opacity:0}, {y:0, opacity:1, duration:1, ease:'power3.out', stagger:0.1}, '-=1')
+  .fromTo('.date, .type, .number, .infos-title, .infos-content', {y:30, opacity:0}, {y:0, opacity:1, duration:1, ease:'power3.out', stagger:0.1}, '-=1')
   .fromTo('.image-cover img', {scale:1.4, autoAlpha:0}, {scale:1.2, autoAlpha:1, duration:1.5, ease:'power3.inOut'}, '-=1.3')
 }
 
 function projectScroll() {
+  // gsap.set('[data-scroll-call="appear"]', {scale:1.2, opacity:0})
 
-  gsap.set('[data-scroll-call]', {scale:1.2, opacity:0})
+  const textHover = gsap.timeline({paused: true})
+  const mainTL = gsap.timeline({paused: true})
 
-  scroll.on('call', function(event, element, i){
+  for (const char of projectNumber.chars) {
+    const speed = 2
+    const random = gsap.utils.interpolate(0.1, 0.8, Math.random())
+    const time = Math.min((((1 / random) * 0.1 + random * 0.3) / 1.4) * speed, 2)
+    const duration = gsap.utils.interpolate(0.1, 0.35, Math.random())
 
-    if (event === 'appear') {
-      console.log(i)
-      gsap.to(i.el, {scale:1, opacity:1, duration:1.5, ease:'power3.out'})
+    textHover.to(char, { opacity:0, duration }, time);
+
+    if (Math.random() > .9) {
+        textHover.fromTo(char, { opacity:1, duration }, { opacity:0, duration }, time + duration);
     }
+  }
 
-    if (event === 'video') {
-      i.el.play()
-      gsap.to(i.el, {scale:1, opacity:1, duration:1.5, ease:'power3.out'})
-    }
+  mainTL
+    .add(textHover)
+    .to(textHover, {duration:2, progress: 1.2, ease:'power3.in'})
+
+  nextProject.addEventListener('mouseenter', () => {
+    // textHover.reverse(1.5)
+    mainTL.reverse(0)
   })
 
-
-  const previous = document.querySelector('.p-container .previous')
-  previous.addEventListener('click', () => {
-    console.log(barba.history.previous)
-    if ('null' != barba.history.previous) {
-      barba.go(barba.history.previous.url)
-    }  
+  nextProject.addEventListener('mouseleave', () => {
   })
+
+  if (isMobile.any() === null) {
+   
+    for (const img of projectImgs) {
+      gsap.set(img, {scale:1.1, opacity:0})
+    }
+
+    for (const text of projectTexts) {
+      let splitText = new SplitText(text, {type:"lines", linesClass:"lines"});
+      gsap.set(splitText.lines, {y:'70%', opacity:0})
+    }
+
+    scroll.on('call', function(event, element, i){
+
+      if (event === 'appear') { 
+        gsap.to(i.el, {scale:1, opacity:1, duration:2, ease:'power3.out'})
+      }
+
+      if (event === 'video') {
+        i.el.play()
+        gsap.to(i.el, {scale:1, opacity:1, duration:1.5, ease:'power3.out'})
+      }
+
+      if (event === 'text') {
+        const text = i.el.querySelectorAll('.lines')
+        gsap.to(text, {y:'0%', opacity:1, duration:1.5, stagger:0.1, ease:'power3.out'})
+      }
+    })
+  }
 }
 
 function homeEnter(){
@@ -319,11 +357,10 @@ function homeEnter(){
   .fromTo('.cross', {rotation:-25, opacity:0}, {rotation:0, opacity:1, duration:2, ease:'power3.out'}, "-=1.3")
 }
 
-
 barba.use(barbaPrefetch)
 
 barba.init({
-  debug: true,
+  debug: false,
   transitions: [{
     name: 'main',
     once({ next }) {
@@ -336,19 +373,19 @@ barba.init({
         var result = image.isLoaded ? 'loaded' : 'broken';
         preloader.style.display = 'block'
         body.style.cursor = 'wait'
-        console.log( 'image is ' + result + ' for ' + image.img.src );
+        // console.log( 'image is ' + result + ' for ' + image.img.src );
       })
 
       imgLoad.on( 'done', function( instance ) {
         preloader.style.display = 'none'
         body.style.cursor = 'default'
-        console.log( imgLoad.images.length + ' images loaded' );
+        // console.log( imgLoad.images.length + ' images loaded' );
       })
     },
     beforeEnter({ next }) {
       smooth(next.container)
       scroll.destroy()
-      scrolLMobile()
+      scrollMobile()
     },
     leave(data) {
       if (isMobile.any()) {
@@ -383,7 +420,6 @@ barba.init({
       const projectNumber = document.querySelector('.transition-flex span')
       let nb = data.trigger.getAttribute('project-index')
       projectNumber.innerHTML = nb
-      console.log(projectNumber)
       const tl = gsap.timeline()
       const text = new SplitText(projectNumber, {type:"chars"}), letters = text.chars;
       gsap.set('.transition', {clip:'rect(100vh 100vw 100vh 0vh)'})
@@ -453,13 +489,11 @@ barba.init({
         var result = image.isLoaded ? 'loaded' : 'broken';
         preloader.style.display = 'block'
         body.style.cursor = 'wait'
-        console.log( 'image is ' + result + ' for ' + image.img.src );
       })
 
       imgLoad.on( 'done', function( instance ) {
         preloader.style.display = 'none'
         body.style.cursor = 'default'
-        console.log( imgLoad.images.length + ' images loaded' );
         homeLaunch()
       })
     },
@@ -500,7 +534,6 @@ barba.init({
       const projectNumber = document.querySelector('.transition-flex span')
       let nb = data.trigger.getAttribute('project-index')
       projectNumber.innerHTML = nb
-      console.log(projectNumber)
       const tl = gsap.timeline()
       const text = new SplitText(projectNumber, {type:"chars"}), letters = text.chars;
       gsap.set('.transition', {clip:'rect(100vh 100vw 100vh 0vh)'})
@@ -541,11 +574,27 @@ barba.init({
     beforeEnter(){
       projectLaunch()
     },
-    afterEnter(data){
+    afterEnter({next}){
+    nextProject = next.container.querySelector('.next-project')
+    projectNumber = new SplitText(nextProject, {type:"chars, words"})
+    const node = document.createElement('span')
+    const data = nextProject.getAttribute('data-project')
+    const textnode = document.createTextNode(data)
+    node.appendChild(textnode)
+    node.classList.add('number')
+    projectNumber.words[0].appendChild(node)
+  
+    projectImgs = next.container.querySelectorAll('[data-scroll-call="appear"]')
+    projectTexts = next.container.querySelectorAll('[data-scroll-call="text"]')
+    console.log(projectImgs,projectTexts)
       projectScroll()
     }
   }]
 })
+
+barba.hooks.enter(() => {
+  scrollMobile()
+});
 
 function smooth(container) {
   scroll = new LocomotiveScroll({

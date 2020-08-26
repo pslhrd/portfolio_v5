@@ -31,7 +31,10 @@ $c-fg: var(--c-fg);
 
 $ease-out: cubic-bezier(.165,.84,.44,1);
 $size: 12px;
-$border: #262626;
+$border: #1D1D1D;
+
+$font-main: 'Gridnik';
+$font-med: 'Gridnik Medium';
 
 .dark-mode {
   --c-bg: #{$c-set-fg};
@@ -47,7 +50,7 @@ $border: #262626;
 body {
   width: 100vw;
   margin: 0;
-  font-family: 'Gridnik', sans-serif;
+  font-family: $font-main, sans-serif;
   font-kerning: none;
   background-color: $c-bg;
   color: $c-fg;
@@ -151,7 +154,7 @@ body {
     &:after {
       content: '';
       display: block;
-      margin-top: 3px;
+      margin-top: 1px;
       height: 1px;
       width: 100%;
       opacity: 0;
@@ -210,7 +213,7 @@ body {
     width: 100vw;
     position: fixed;
     z-index: 100;
-    font-family: 'Gridnik';
+    font-family: $font-main;
     text-transform: uppercase;
     font-size: $size;
     margin-top: 50px;
@@ -284,6 +287,8 @@ body {
 
     @include mobile {
       padding-bottom: 40px;
+      padding-top: 40px;
+      border-top: 1px solid $border;
     }
 
     .logo {
@@ -375,7 +380,7 @@ body {
       margin-top: 6vw;
       font-size: 50vw;
       color: black;
-      font-family: Gridnik Medium;
+      font-family: $font-med;
     }
 
   }
@@ -410,7 +415,7 @@ body {
       &-text {
         font-size: $size;
         line-height: 1rem;
-        font-family: 'Gridnik';
+        font-family: $font-main;
         position: absolute;
         left: 17.03125vw;
         top: 22.1875vw;
@@ -503,7 +508,7 @@ body {
           pointer-events: none;
           font-family: Suisse Mono Thin;
           letter-spacing: -0.15362vw;
-          margin-bottom: 2.6041vw;
+          margin-bottom: 2.1041vw;
           font-size: 0.7346vw;
           width: 74.21875vw;
           overflow: hidden;
@@ -547,11 +552,11 @@ body {
 
       &-text {
         font-size: 11vw;
-        line-height: 11.5vw;
+        line-height: 11vw;
         height: 100%;
         text-transform: uppercase;
         position: relative;
-        font-family: Gridnik Medium;
+        font-family: $font-med;
         cursor: default;
 
         @include mobile {
@@ -590,7 +595,7 @@ body {
           right: 0;
           font-size: $size;
           line-height: 1.4;
-          font-family: 'Gridnik';
+          font-family: $font-main;
           width: 9.71875vw;
 
           @include mobile {
@@ -647,16 +652,23 @@ body {
               width: 100%;
               height: 100%;
               object-fit: cover;
+              transition: transform 0.6s $ease-out;
             }
           }
         }
 
         .project {
 
+          &:hover {
+            img {
+              transform: scale(1.1) rotate(3deg);
+            }
+          }
+
           &-text {
             font-size: $size;
             line-height: 1rem;
-            font-family: 'Gridnik';
+            font-family: $font-main;
             mix-blend-mode: difference;
             position: absolute;
             bottom: 4vw;
@@ -690,7 +702,7 @@ body {
           &-text {
             font-size: $size;
             line-height: 1rem;
-            font-family: 'Gridnik';
+            font-family: $font-main;
             mix-blend-mode: difference;
             position: absolute;
             left: 0;
@@ -952,10 +964,6 @@ body {
                 height: 50%;
                 margin-top: 40px;
               }
-
-              img {
-                transition: transform 0.6s $ease-out;
-              }
             }
           }
         }
@@ -1004,7 +1012,7 @@ body {
       height: 32.4791vw;
       font-size: $size;
       line-height: 1rem;
-      font-family: 'Gridnik';
+      font-family: $font-main;
 
       @include mobile {
         top: 450vh;
@@ -1065,73 +1073,81 @@ body {
   }
 
     .cursor {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
-      height: 500px;
-      width: 500px;
-
-      @include laptop {
-        height: 400px;
-        width: 400px;
-      }
-
+      width: 100vw;
+      height: 100vw;
+      pointer-events: none;
       @include mobile {
         display: none;
       }
       
 
       &-wrapper {
-        position: absolute;
-        height: 500px;
-        width: 500px;
-        transform-origin: center center;
+        pointer-events: none;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         overflow: hidden;
-
-        @include laptop {
-          height: 400px;
-          width: 400px;
-        }
       }
 
       &-inner-1 {
-        position: absolute;
         display: none;
         height: 500px;
         width: 500px;
-        background-image: url('/src/assets/images/irishman.jpg');
         background-position: center center;
         background-size: cover;
-
-        @include laptop {
-          height: 400px;
-          width: 400px;
-        }
       }
 
       &-inner-2 {
-        position: absolute;
+        position: relative;
         display: none;
         height: 500px;
         width: 500px;
-        background-image: url('/src/assets/images/ame.jpg');
+        background-image: url('/src/assets/images/91M.gif');
         background-position: center center;
         background-size: cover;
 
-        @include laptop {
-          height: 400px;
-          width: 400px;
+        &:after {
+          content: 'Minutes uploaded on SoundCloud';
+          text-transform: uppercase;
+          display: block;
+          position: absolute;
+          width: auto;
+          height: auto;
+          bottom: -1vw;
+          left: 0;
+          font-family: Gridnik;
+          font-size: 10px;
+          line-height: 10px;
         }
       }
 
       &-inner-3 {
-        position: absolute;
+        position: relative;
         display: none;
         height: 500px;
         width: 500px;
-        background-image: url('/src/assets/images/sean.jpg');
+        background-image: url('/src/assets/images/sean_2.jpg');
         background-position: center center;
         background-size: cover;
+
+        &:after {
+          content: 'INTO SEAN LEON - THE CITY I & II';
+          text-transform: uppercase;
+          display: block;
+          position: absolute;
+          width: auto;
+          height: auto;
+          bottom: -1vw;
+          left: 0;
+          font-family: Gridnik;
+          font-size: 10px;
+          line-height: 10px;
+        }
 
         @include laptop {
           height: 400px;
@@ -1152,18 +1168,22 @@ body {
     .footer-wrapper {
       position: relative;
       width: 100%;
-      height: 120.8541vw;
+      height: 140.8541vw;
 
       @include mobile {
         width: 100vw;
         height: 300vh;
+      }
+
+      @include lowHeight {
+        height: 310vh;
       }
     }
 
     .a-intro {
       font-size: $size;
       line-height: 16px;
-      font-family: 'Gridnik';
+      font-family: Suisse;
       position: absolute;
       width: 9.77vw;
       left: 35.8645vw;
@@ -1225,7 +1245,7 @@ body {
       position: absolute;
       z-index: 90;
       left: 25.3645vw;
-      top: 108.645vw;
+      top: 118.645vw;
       width: 100px;
       height: 100px;
       transform-origin: top center;
@@ -1258,47 +1278,86 @@ body {
     }
 
     .a-title {
-      font-family: Gridnik;
+      font-family: Suisse;
       position: absolute;
       top: 76.9791vw;
-      width: 53.38541vw;
+      width: 49.21875vw;;
       left: 12.86458vw;
-      font-size: 1.5625vw;
-      line-height: 1;
+      font-size: 25px;
+
+      a {
+        text-transform: none;
+
+        &:hover {
+          text-decoration: none;
+        }
+
+        &:after {
+          content: '';
+          display: block;
+          margin-top: 0px;
+          height: 1px;
+          width: 100%;
+          opacity: 1;
+          transform: scaleX(1);
+          transform-origin: left;
+          background-color: currentColor;
+        }
+      }
+      
+
+      h1 {
+        font-weight: 400;
+        font-size: 3.125vw;
+        line-height: 1.25;
+
+        @include mobile {
+          font-size: 35px;
+        }
+      }
 
       @include mobile {
         width: calc(100vw - 80px);
         left: 40px;
-        top: 207.5vh;
+        top: 200.5vh;
         font-size: 20px;
+      }
+
+      @include lowHeight {
+        top: 190.5vh;
       }
     }
 
     .a-content {
-      font-family: Gridnik;
+      font-family: Suisse;
       position: absolute;
       left: 46.19791vw;
-      top: 95.677vw;
+      top: 107.677vw;
       width: 20.052vw;
-      font-size: $size;
+      font-size: 12px;
       line-height: 16px;
 
       @include mobile {
         width: calc(100vw - 80px);
         left: 40px;
-        top: 250vh;
+        top: 255vh;
         font-size: 14px;
         line-height: 20px;
       }
 
+      @include lowHeight {
+        top: 257vh;
+      }
+
       p {
+        margin-top: 1rem;
         width: 100%;
       }
     }
 
     .a-data {
       font-size: 15.625vw;
-      font-family: Gridnik Medium;
+      font-family: $font-med;
       line-height: 15.625vw;
 
       @include mobile {
@@ -1373,15 +1432,203 @@ body {
     position: relative;
     width: 100vw;
 
+    .next-project {
+      margin-left: 12.890625vw;
+      width: 74.21875vw;
+      margin-bottom: 5.7291vw;
+
+      .number {
+        margin-top: 22px;
+        position: absolute;
+        transform: translateX(108%);
+        top: 0;
+        right: 0;
+        font-size: $size;
+        line-height: 1.4;
+        font-family: $font-main;
+        width: 9.71875vw;
+
+        @include mobile {
+          display: none;
+        }
+
+        @include medium {
+          margin-top: 5px;
+          width: 20vw;
+        }
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+      span {
+        display: block;
+        font-size: 12.5vw;
+        line-height: 12.5vw;
+      }
+    }
+
+
+    .project-songs {
+      margin-top: 5.7291vw;
+      margin-left: 12.890625vw;
+      width: 74.21875vw;
+      text-transform: uppercase;
+      font-size: 12px;
+      line-height: 12px;
+
+      @include mobile {
+        margin-top: 40px;
+        width: calc(100vw - 80px);
+        margin-left: 40px;
+      }
+
+      &:hover {
+        .song-index, .song-title, .song-duration, .song-play {
+          opacity: .4;
+        }
+      }
+
+      a:nth-child(1) {
+        margin-top: 15px;
+        border-top: 1px solid $border;
+      }
+
+      a {
+        padding-top: 15px;
+        padding-bottom: 15px;
+        width: 100%;
+        border-bottom: 1px solid $border;
+
+        &:hover {
+          cursor: pointer;
+          .song-index, .song-title, .song-duration, .song-play {
+            opacity: 1 !important;
+          }
+        }
+      }
+
+      .song {
+        display: flex;
+
+        &-index {
+          width: 16.8421%;
+          @include mobile {
+            width: 20%;
+          }
+        }
+
+        &-title {
+          width: 22.45614%;
+          @include mobile {
+            width: 50%;
+          }
+        }
+
+        &-duration {
+          width: 55.0877%;
+          @include mobile {
+            display: none;
+          }
+        }
+
+        &-play {
+          width: 5.614%;
+          text-align: right;
+          @include mobile {
+            width: 30%;
+          }
+        }
+      }
+    }
+
     .project-content {
       margin-top: 5.7291vw;
       // padding-top: 5.7291vw;
       // padding-bottom: 5.7291vw;
       // margin-bottom: 5.7291vw;
       width: 100vw;
+      height: auto;
+
+      .cross {
+        top: 80%;
+        right: 7%;
+      }
+
+      .cross {
+        position: absolute;
+        z-index: 90;
+        width: 100px;
+        height: 100px;
+        transform-origin: top center;
+        transform-style: preserve-3d;
+        mix-blend-mode: difference;
+
+        @include mobile {
+          width: 40px;
+          height: 40px;
+        }
+
+        &:before {
+          content: "";
+          display: block;
+          width: 100%;
+          height: 1px;
+          background-color: $c-fg;
+          transform-style: preserve-3d;
+        }
+
+        &:after {
+          content: "";
+          display: block;
+          transform: rotate(90deg);
+          width: 100%;
+          height: 1px;
+          background-color: $c-fg;
+          transform-style: preserve-3d;
+        }
+      }
 
       @include mobile {
-        margin-top: 60px;
+        margin-top: 40px;
+      }
+
+      .lines {
+        white-space: nowrap; 
+      }
+
+      .underline {
+        position: relative;
+        display: inline-block;
+        &:after {
+          content: '';
+          display: block;
+          position: absolute;
+          width: 100%;
+          height: 1px;
+          background-color: white;
+          bottom: 0;
+        }
+      }
+
+      &-text {
+        padding-top: 5.7291vw;
+        padding-bottom: 5.7291vw;
+        width: 49.21875vw;
+        margin-left: 25.390625vw;
+        font-family: Suisse;
+        font-size: 3.125vw;
+        line-height: 1.25;
+
+        @include mobile {
+          padding-top: 40px;
+          padding-bottom: 40px;
+          margin-left: 40px;
+          margin-bottom: 40px;
+          width: calc(100vw - 80px);
+          font-size: 26px;
+          line-height: 34px;
+        }
       }
 
       .bg {
@@ -1402,11 +1649,54 @@ body {
         }
       }
 
+      .big {
+        width: 100vw;
+        height: 110vh;
+        margin-top: 5.7291vw;
+        margin-bottom: 5.7291vw;
+        overflow: hidden;
+        img {
+          transform: scale(1.1);
+        }
+      }
+
       .med {
         width: 74.21875vw;
         margin-left: 12.890625vw;
         margin-top: 5.7291vw;
         margin-bottom: 5.7291vw;
+        height: 41.77vw;
+
+        @include mobile {
+          width: 100vw;
+          margin-left: 0;
+          height: 50vh;
+          margin-top: 40px;
+          margin-bottom: 40px;
+        }
+      }
+
+      .full {
+        height: fit-content;
+        width: 74.21875vw;
+        margin-left: 12.890625vw;
+        margin-top: 5.7291vw;
+        margin-bottom: 5.7291vw;
+
+        @include mobile {
+          width: 100vw;
+          margin-left: 0;
+          margin-top: 40px;
+          margin-bottom: 40px;
+        }
+      }
+
+      .small {
+        width: 49.166vw;
+        margin-left: 25.417vw;
+        margin-top: 5.7291vw;
+        margin-bottom: 5.7291vw;
+        height: auto;
 
         @include mobile {
           width: calc(100vw - 80px);
@@ -1417,8 +1707,25 @@ body {
       }
 
       &-img {
+        position: relative;
         overflow: hidden;
         height: auto;
+
+        span {
+          position: absolute;
+          bottom: 2vw;
+          left: 2vw;
+          display: block;
+          margin-top: 5px;
+          text-transform: uppercase;
+          font-family: Gridnik;
+          font-size: 12px;
+          line-height: 12px;
+
+          @include mobile {
+            display: none;
+          }
+        }
       }
 
       img {
@@ -1465,7 +1772,7 @@ body {
       .project-title {
         overflow: hidden;
         padding-top: 41.25vh;
-        font-family: Gridnik;
+        font-family: $font-main;
         font-size: 12.5vw;
         line-height: 12.5vw;
         margin-left: 12.890625vw;
@@ -1499,7 +1806,7 @@ body {
         display: flex;
         font-size: $size;
         line-height: 12px;
-        font-family: 'Gridnik';
+        font-family: $font-main;
         margin-left: 12.890625vw;
         margin-bottom: 5.7291vw;
         width: 74.21875vw;
@@ -1570,20 +1877,46 @@ body {
     }
 
     .project-description {
-      margin-left: 12.890625vw;
-      margin-bottom: 5.7291vw;
-      margin-top: 5.7291vw;
-      width: 74.21875vw;
+      padding-left: 12.890625vw;
+      padding-bottom: 5.7291vw;
+      padding-top: 5.7291vw;
+      width: 100vw;
       display: flex;
+      border-bottom: solid 1px $border;
+
+
+      a {
+        text-transform: none;
+
+        &:hover {
+          text-decoration: none;
+        }
+
+        &:after {
+          content: '';
+          display: block;
+          margin-top: 0px;
+          height: 1px;
+          width: 100%;
+          opacity: 1;
+          transform: scaleX(1);
+          transform-origin: left;
+          background-color: currentColor;
+          @include mobile {
+            display: none;
+          }
+        }
+      }
 
       @include mobile {
-        flex-direction: column;
-        width: calc(100vw - 80px);
-        margin-left: 40px;
+        display: block;
+        padding-left: 0;
+        padding-bottom: 0;
         margin-top: 80px;
       }
 
       .labels {
+        font-family: $font-main !important;
         font-size: $size;
         line-height: 12px;
         margin-bottom: calc(2rem + 5px);
@@ -1597,10 +1930,12 @@ body {
         width: 28.38541vw;
 
         @include mobile {
-          width: 100%;
+          width: calc(100vw - 80px);
+          margin-left: 40px;
         }
 
         p {
+          font-family: Suisse;
           margin-top: 2rem;
           font-size: 26px;
           line-height: 34px;
@@ -1619,11 +1954,14 @@ body {
 
         @include mobile {
           margin-left: 0;
-          margin-top: 30px;
-          width: 100%;
+          display: inline-block;
+          margin-top: 40px;
+          margin-left: 40px;
+          width: calc(50vw - 40px)
         }
 
         span {
+          font-family: Suisse;
           display: block;
         }
       }
@@ -1636,11 +1974,14 @@ body {
 
         @include mobile {
           margin-left: 0;
-          margin-top: 30px;
-          width: 100%;
+          display: inline-block;
+          vertical-align:top;
+          margin-top: 40px;
+          width: calc(50vw - 40px)
         }
 
         span {
+          font-family: Suisse;
           display: block;
         }
       }
@@ -1652,9 +1993,10 @@ body {
         line-height: 18px;
 
         @include mobile {
-          margin-left: 0;
-          margin-top: 30px;
-          width: 100%;
+          margin-left: 40px;
+          margin-top: 40px;
+          margin-bottom: 40px;
+          width: calc(100vw - 40px)
         }
 
         span {
@@ -1662,9 +2004,14 @@ body {
         }
 
         a {
+          font-family: Suisse;
           display: inline-block;
+
           @include mobile {
             text-decoration: underline;
+            display: block;
+            padding-top: 5px;
+            padding-bottom: 5px;
           }
         }
       }
@@ -1672,6 +2019,7 @@ body {
   }
 }
 
+/*! locomotive-scroll v3.5.4 | MIT License | https://github.com/locomotivemtl/locomotive-scroll */
 html.has-scroll-smooth {
   overflow: hidden; }
 
@@ -1684,49 +2032,30 @@ html.has-scroll-dragging {
 .has-scroll-smooth body {
   overflow: hidden; }
 
-.has-scroll-smooth [data-scroll-container] { }
+.has-scroll-smooth [data-scroll-container] {
+  min-height: 100vh; }
 
 .c-scrollbar {
   display: none;
   position: absolute;
-  right: 4.53125vw;;
-  bottom: 50px;
+  right: 0;
+  top: 0;
   width: 1px;
-  height: 5vw;
-  background-color: white;
+  height: 100vh;
   transform-origin: center right;
   transition: transform 0.3s, opacity 0.3s;
-  opacity: 1;
-
-  &:before {
-    content: '';
-    width: 10px;
-    height: 1px;
-    position: absolute;
-    top: 0;
-    background-color: white;
-    transform: translateX(-100%);
-  }
-
-  &:after {
-    content: '';
-    width: 10px;
-    height: 1px;
-    position: absolute;
-    bottom: 0;
-    background-color: white;
-    transform: translateX(-100%);
-  }
-}
+  opacity: 1; }
 
 .c-scrollbar_thumb {
   position: absolute;
   top: 0;
   right: 0;
-  margin-right: 5px;
-  height : 0;
-  width : 0;
- border-top : 4px solid transparent;
- border-bottom : 4px solid transparent;
- border-left : 7px solid white;
-}
+  background-color: white;
+  opacity: 1;
+  width: 1px;
+  height: 100%;
+  cursor: -webkit-grab;
+  cursor: grab; }
+  .has-scroll-dragging .c-scrollbar_thumb {
+    cursor: -webkit-grabbing;
+    cursor: grabbing; }

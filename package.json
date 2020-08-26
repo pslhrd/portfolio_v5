@@ -37,6 +37,7 @@
     "gsap": "^3.4.2",
     "imagesloaded": "^4.1.4",
     "locomotive-scroll": "^3.5.4",
-    "smooth-scrolling": "^2.3.12"
+    "smooth-scrolling": "^2.3.12",
+    "soundcloud": "^3.3.2"
   }
 }

@@ -12,3 +12,18 @@
 	font-family: 'Suisse Mono Thin';
 	src: url('./SuisseIntlMono-Thin.woff') format('WOFF')
 }
+
+@font-face {
+	font-family: 'Suisse';
+	src: url('./SuisseIntl-Light.otf') format('OpenType')
+}
+
+@font-face {
+	font-family: 'FRAC';
+	src: url('./FRAC-medium-webfont.otf') format('OpenType')
+}
+
+@font-face {
+	font-family: 'Lausanne';
+	src: url('./Lausanne-Regular.otf') format('OpenType')
+}

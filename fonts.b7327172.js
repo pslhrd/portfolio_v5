@@ -189,7 +189,7 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"./FoundryGridnik-Regular.woff":[["FoundryGridnik-Regular.2e3e548e.woff","src/assets/fonts/FoundryGridnik-Regular.woff"],"src/assets/fonts/FoundryGridnik-Regular.woff"],"./FoundryGridnik-Medium.woff":[["FoundryGridnik-Medium.5c35a355.woff","src/assets/fonts/FoundryGridnik-Medium.woff"],"src/assets/fonts/FoundryGridnik-Medium.woff"],"./SuisseIntlMono-Thin.woff":[["SuisseIntlMono-Thin.48444b35.woff","src/assets/fonts/SuisseIntlMono-Thin.woff"],"src/assets/fonts/SuisseIntlMono-Thin.woff"],"./SuisseIntl-Light.otf":[["SuisseIntl-Light.866ecbe7.otf","src/assets/fonts/SuisseIntl-Light.otf"],"src/assets/fonts/SuisseIntl-Light.otf"],"./FRAC-medium-webfont.otf":[["FRAC-medium-webfont.96154e72.otf","src/assets/fonts/FRAC-medium-webfont.otf"],"src/assets/fonts/FRAC-medium-webfont.otf"],"./Lausanne-Regular.otf":[["Lausanne-Regular.306bd62c.otf","src/assets/fonts/Lausanne-Regular.otf"],"src/assets/fonts/Lausanne-Regular.otf"],"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./FoundryGridnik-Regular.woff":[["FoundryGridnik-Regular.2e3e548e.woff","src/assets/fonts/FoundryGridnik-Regular.woff"],"src/assets/fonts/FoundryGridnik-Regular.woff"],"./FoundryGridnik-Medium.woff":[["FoundryGridnik-Medium.5c35a355.woff","src/assets/fonts/FoundryGridnik-Medium.woff"],"src/assets/fonts/FoundryGridnik-Medium.woff"],"./SuisseIntl-Light.otf":[["SuisseIntl-Light.866ecbe7.otf","src/assets/fonts/SuisseIntl-Light.otf"],"src/assets/fonts/SuisseIntl-Light.otf"],"./SuisseIntlMono-Thin.woff":[["SuisseIntlMono-Thin.48444b35.woff","src/assets/fonts/SuisseIntlMono-Thin.woff"],"src/assets/fonts/SuisseIntlMono-Thin.woff"],"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -217,7 +217,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50273" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59329" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

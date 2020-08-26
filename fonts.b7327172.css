@@ -9,23 +9,13 @@
 }
 
 @font-face {
-	font-family: 'Suisse Mono Thin';
-	src: url('/SuisseIntlMono-Thin.48444b35.woff') format('WOFF')
-}
-
-@font-face {
 	font-family: 'Suisse';
 	src: url('/SuisseIntl-Light.866ecbe7.otf') format('OpenType')
 }
 
 @font-face {
-	font-family: 'FRAC';
-	src: url('/FRAC-medium-webfont.96154e72.otf') format('OpenType')
-}
-
-@font-face {
-	font-family: 'Lausanne';
-	src: url('/Lausanne-Regular.306bd62c.otf') format('OpenType')
+	font-family: 'Suisse Mono Thin';
+	src: url('/SuisseIntlMono-Thin.48444b35.woff') format('WOFF')
 }
 
 /*# sourceMappingURL=/fonts.b7327172.css.map */

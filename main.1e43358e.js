@@ -18130,6 +18130,7 @@ var projectImgs;
 var projectTexts;
 var projectNumber;
 var nextProject;
+var scrollUp;
 var isMobile = {
   Android: function Android() {
     return navigator.userAgent.match(/Android/i);
@@ -18486,6 +18487,8 @@ function homeLaunch() {
   var tl = _gsap.default.timeline();
 
   var introText = document.querySelectorAll('.logo, .about, .dark');
+  var a = document.querySelector('.m3');
+  a.style.pointerEvents = 'none';
 
   if (isMobile.any()) {
     tl.set('.cross', {
@@ -18520,7 +18523,10 @@ function homeLaunch() {
     }, {
       scaleX: 1,
       duration: 1.2,
-      ease: 'power4.out'
+      ease: 'power4.out',
+      onComplete: function onComplete() {
+        a.style.pointerEvents = 'all';
+      }
     }, "-=0.8").add(mainText.play(), "-=2").fromTo('.cross', {
       rotation: -25,
       opacity: 0
@@ -18563,7 +18569,10 @@ function homeLaunch() {
     }, {
       scaleX: 1,
       duration: 1.2,
-      ease: 'power4.out'
+      ease: 'power4.out',
+      onComplete: function onComplete() {
+        a.style.pointerEvents = 'all';
+      }
     }, "-=0.8").add(mainText.play(), "-=2").fromTo('.cross', {
       rotation: -25,
       opacity: 0
@@ -19002,7 +19011,7 @@ _core.default.init({
     },
     beforeLeave: function beforeLeave(data) {
       var projectNumber = document.querySelector('.transition-flex span');
-      projectNumber.innerHTML = 'AB-ME';
+      projectNumber.innerHTML = 'A-M';
 
       var tl = _gsap.default.timeline();
 
@@ -19022,12 +19031,12 @@ _core.default.init({
         y: '0%'
       });
 
-      _gsap.default.set(letters[1], {
+      _gsap.default.set(letters[0], {
         y: '15%',
         autoAlpha: 0
       });
 
-      _gsap.default.set(letters[3], {
+      _gsap.default.set(letters[2], {
         y: '-15%',
         autoAlpha: 0
       });
@@ -19042,12 +19051,12 @@ _core.default.init({
         autoAlpha: 1,
         duration: 2,
         ease: 'power3.inOut'
-      }, '-=1.5').to(letters[1], {
+      }, '-=1.5').to(letters[0], {
         y: '0%',
         duration: 1.5,
         autoAlpha: 1,
         ease: 'power4.inOut'
-      }, '-=1.5').to(letters[3], {
+      }, '-=1.5').to(letters[2], {
         y: '0%',
         duration: 1.5,
         autoAlpha: 1,
@@ -19216,7 +19225,12 @@ _core.default.init({
   views: [{
     namespace: 'home',
     beforeEnter: function beforeEnter() {},
-    afterEnter: function afterEnter() {
+    afterEnter: function afterEnter(_ref10) {
+      var next = _ref10.next;
+      scrollUp = next.container.querySelector('.scrollUp');
+      scrollUp.addEventListener('click', function () {
+        scroll.scrollTo("top");
+      });
       homeScroll();
     }
   }, {
@@ -19224,16 +19238,25 @@ _core.default.init({
     beforeEnter: function beforeEnter() {
       aboutLaunch();
     },
-    afterEnter: function afterEnter() {
+    afterEnter: function afterEnter(_ref11) {
+      var next = _ref11.next;
       aboutScroll();
+      scrollUp = next.container.querySelector('.scrollUp');
+      scrollUp.addEventListener('click', function () {
+        scroll.scrollTo("top");
+      });
     }
   }, {
     namespace: 'project',
     beforeEnter: function beforeEnter() {
       projectLaunch();
     },
-    afterEnter: function afterEnter(_ref10) {
-      var next = _ref10.next;
+    afterEnter: function afterEnter(_ref12) {
+      var next = _ref12.next;
+      scrollUp = next.container.querySelector('.scrollUp');
+      scrollUp.addEventListener('click', function () {
+        scroll.scrollTo("top");
+      });
       nextProject = next.container.querySelector('.next-project');
       projectNumber = new _SplitText.default(nextProject, {
         type: "chars, words"
@@ -19340,7 +19363,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59329" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50203" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

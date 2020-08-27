@@ -13,6 +13,7 @@ let projectImgs;
 let projectTexts;
 let projectNumber;
 let nextProject;
+let scrollUp;
 
 const isMobile = {
     Android: function() {
@@ -215,6 +216,7 @@ function homeLaunch() {
 
   const mainText = gsap.timeline({paused: true})
 
+
   scroll.stop()
 
   for (const char of chars) {
@@ -232,6 +234,9 @@ function homeLaunch() {
 
   const tl = gsap.timeline()
   const introText = document.querySelectorAll('.logo, .about, .dark')
+  const a = document.querySelector('.m3')
+
+  a.style.pointerEvents = 'none'
 
   if (isMobile.any()) {
     tl
@@ -241,7 +246,7 @@ function homeLaunch() {
     .from('.main-project-img', {duration:2.3, ease:'expo.inOut', width:'102vw', height:'100vh', top:'-10px', left:'0'}, 2)
     .add(function(){scroll.start()}, "-=1")
     .fromTo(introText, {opacity:0}, {y:'0px',opacity:1, duration:0.2, ease:'power3.out', stagger:0.2}, "-=1.4")
-    .fromTo('header .line', {scaleX:0}, {scaleX:1, duration:1.2, ease:'power4.out'}, "-=0.8")
+    .fromTo('header .line', {scaleX:0}, {scaleX:1, duration:1.2, ease:'power4.out', onComplete: function(){a.style.pointerEvents = 'all'}}, "-=0.8")
     .add(mainText.play(), "-=2")
     .fromTo('.cross', {rotation:-25, opacity:0}, {rotation:0, opacity:1, duration:2, ease:'power3.out'}, "-=1.6")
   } else {
@@ -252,7 +257,7 @@ function homeLaunch() {
     .from('.main-project-img', {duration:2.6, ease:'expo.inOut', width:'102vw', height:'70vw', top:'-10px', left:'0'}, 2)
     .add(function(){scroll.start()}, "-=1")
     .fromTo(introText, {opacity:0}, {y:'0px',opacity:1, duration:0.2, ease:'power3.out', stagger:0.2}, "-=1.4")
-    .fromTo('header .line', {scaleX:0}, {scaleX:1, duration:1.2, ease:'power4.out'}, "-=0.8")
+    .fromTo('header .line', {scaleX:0}, {scaleX:1, duration:1.2, ease:'power4.out', onComplete: function(){a.style.pointerEvents = 'all'}}, "-=0.8")
     .add(mainText.play(), "-=2")
     .fromTo('.cross', {rotation:-25, opacity:0}, {rotation:0, opacity:1, duration:2, ease:'power3.out'}, "-=1.6")
   }
@@ -455,18 +460,18 @@ barba.init({
     },
     beforeLeave(data) {
       const projectNumber = document.querySelector('.transition-flex span')
-      projectNumber.innerHTML = 'AB-ME'
+      projectNumber.innerHTML = 'A-M'
       const tl = gsap.timeline()
       const text = new SplitText(projectNumber, {type:"chars"}), letters = text.chars;
       gsap.set('.transition', {clip:'rect(100vh 100vw 100vh 0vh)'})
       gsap.set('.transition-flex', {rotation:-6, scale:1.2, autoAlpha:0.8, y:'0%'})
-      gsap.set(letters[1], {y:'15%', autoAlpha:0})
-      gsap.set(letters[3], {y:'-15%', autoAlpha:0})
+      gsap.set(letters[0], {y:'15%', autoAlpha:0})
+      gsap.set(letters[2], {y:'-15%', autoAlpha:0})
       tl
       .to('.transition', {clip:'rect(0vh 100vw 100vh 0vh)', duration:1.5, ease:'expo.inOut'})
       .to('.transition-flex', {rotation:0, scale:1, autoAlpha:1, duration:2, ease:'power3.inOut'}, '-=1.5')
-      .to(letters[1], {y:'0%', duration:1.5, autoAlpha:1, ease:'power4.inOut'}, '-=1.5')
-      .to(letters[3], {y:'0%', duration:1.5, autoAlpha:1, ease:'power4.inOut'}, '-=1.4')
+      .to(letters[0], {y:'0%', duration:1.5, autoAlpha:1, ease:'power4.inOut'}, '-=1.5')
+      .to(letters[2], {y:'0%', duration:1.5, autoAlpha:1, ease:'power4.inOut'}, '-=1.4')
     },
     leave(data) {
       return gsap.to(data.current.container, {opacity: 0,duration:1,ease:'power3.inOut'})
@@ -557,7 +562,12 @@ barba.init({
     namespace: 'home',
     beforeEnter(){
     },
-    afterEnter(){
+    afterEnter({next}){
+
+      scrollUp = next.container.querySelector('.scrollUp')
+      scrollUp.addEventListener('click', function(){
+        scroll.scrollTo("top")
+      })
       homeScroll()
     }
   }, {
@@ -566,8 +576,12 @@ barba.init({
       aboutLaunch()
       
     },
-    afterEnter(){
+    afterEnter({next}){
       aboutScroll()
+      scrollUp = next.container.querySelector('.scrollUp')
+      scrollUp.addEventListener('click', function(){
+        scroll.scrollTo("top")
+      })
     }
   }, {
     namespace: 'project',
@@ -575,6 +589,12 @@ barba.init({
       projectLaunch()
     },
     afterEnter({next}){
+
+    scrollUp = next.container.querySelector('.scrollUp')
+    scrollUp.addEventListener('click', function(){
+      scroll.scrollTo("top")
+    })
+
     nextProject = next.container.querySelector('.next-project')
     projectNumber = new SplitText(nextProject, {type:"chars, words"})
     const node = document.createElement('span')
@@ -603,7 +623,6 @@ function smooth(container) {
     smoothMobile: false,
   });
 }
-
 // function initScroll(){
 //    return new LocomotiveScroll({
 //       el: document.querySelector('[data-scroll-container]'),

@@ -189,7 +189,6 @@ body {
       100% {
         opacity: 1;
       }
-
     }
 
     &:focus {
@@ -419,6 +418,50 @@ body {
         position: absolute;
         left: 17.03125vw;
         top: 22.1875vw;
+
+        .inline {
+          display: inline-block;
+          &:after {
+            content: '';
+            display: block;
+            margin-top: 1px;
+            height: 1px;
+            width: 100%;
+            opacity: 0;
+            transform: scaleX(1);
+            transform-origin: left;
+            background-color: currentColor;
+          }
+
+          @keyframes opacity {
+            0% {
+              opacity: 0;
+            }
+            1% {
+              opacity: 1;
+            }
+            10% {
+              opacity: 1;
+            }
+            11% {
+              opacity: 0;
+            }
+            19% {
+              opacity: 0;
+            }
+            20% {
+              opacity: 0.2;
+            }
+            100% {
+              opacity: 1;
+            }
+          }
+        }
+
+
+        &:hover .inline:after {
+          animation: opacity 0.6s $ease-out forwards;
+        }
 
         @include mobile {
           top: 50vh;

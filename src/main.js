@@ -7,6 +7,12 @@ import transitions from './js/barba/transitions'
 import views from './js/barba/views'
 import scrollMobile from './js/scrollMobile'
 
+// Gtag
+window.dataLayer = window.dataLayer || []
+function gtag () { window.dataLayer.push(arguments) }
+gtag('js', new Date())
+gtag('config', 'UA-176607775-1')
+
 gsap.registerPlugin(ScrollToPlugin)
 
 // if (isMobile.any() === null) {

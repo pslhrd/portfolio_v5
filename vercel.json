@@ -4,8 +4,8 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "src": "(.*).html",
-      "dest": "(.*)"
+      "source": "(.*).html",
+      "destination": "(.*)"
     }
   ]
 }

@@ -1395,6 +1395,26 @@ body {
       p {
         margin-top: 1rem;
         width: 100%;
+
+        a {
+          text-transform: none;
+
+          &:hover {
+            text-decoration: none;
+          }
+
+          &:after {
+            content: '';
+            display: block;
+            margin-top: 0px;
+            height: 1px;
+            width: 100%;
+            opacity: 1;
+            transform: scaleX(1);
+            transform-origin: left;
+            background-color: currentColor;
+          }
+        }
       }
     }
 

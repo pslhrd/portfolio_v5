@@ -1,5 +1,11 @@
 {
   "name": "portfolio_v5",
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "routes": [
+    {
+      "src": "(.*).html",
+      "dest": "(.*)"
+    }
+  ]
 }

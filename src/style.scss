@@ -244,6 +244,12 @@ body {
       @include mobile {
         margin-right: 40px;
       }
+
+      &.active {
+        a::after {
+          opacity: 1 !important;
+        }
+      }
     }
 
     .dark {

@@ -1689,6 +1689,10 @@ body {
         font-size: 3.125vw;
         line-height: 1.25;
 
+        a {
+          text-transform: none;
+        }
+
         @include mobile {
           padding-top: 40px;
           padding-bottom: 40px;

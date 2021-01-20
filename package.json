@@ -34,7 +34,7 @@
     "@barba/core": "^2.9.7",
     "@barba/prefetch": "^2.1.10",
     "@dogstudio/highway": "^2.2.1",
-    "gsap": "^3.4.2",
+    "gsap": "^3.6.0",
     "imagesloaded": "^4.1.4",
     "locomotive-scroll": "^3.5.4",
     "smooth-scrolling": "^2.3.12",
